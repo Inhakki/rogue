@@ -1,0 +1,2 @@
+AKQA-Lib-ResizeManager
+======================

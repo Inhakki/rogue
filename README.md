@@ -25,7 +25,7 @@ You can install Node.js via the package provided on [their site](http://www.node
 You must install AKQA Core package globally by typing the following in your terminal while connected to the AKQA internal network:
 
 ```
-npm install http://core.dc.akqa.com/package/akqa-core  -g
+npm install git+ssh://git@github.com/AKQADC/AKQA-Core.git  -g
 ```
 
 ### Installation
@@ -35,7 +35,7 @@ Then, add this package to your project to your `package.json` file:
 ```javascript
 {
     "devDependencies": {
-        "akqa-web-framework": "http://core.dc.akqa.com/package/akqa-web-framework/[VERSION].tar.gz" // the [VERSION] of the package to use
+        "akqa-web-framework": "git+ssh://git@github.com/AKQADC/AKQA-Web-Framework.git#[VERSION]" // the [VERSION] of the package to use
     }
 }
 ```

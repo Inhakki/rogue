@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         init: true,
 
         loadGruntTasks: {
-            pattern: ['grunt-*'],
+            pattern: ['grunt-*']
         }
     });
 };

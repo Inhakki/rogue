@@ -37,6 +37,36 @@ function (CoreUtils) {
         },
 
         /**
+         * Creates an HTML Element from an html string.
+         * @param {string} html - String of html
+         * @returns {HTMLElement} - Returns and html element node
+         */
+        createHtmlElement: function (html) {
+            var tempParentEl;
+            if (html) {
+                tempParentEl = document.createElement('div');
+                tempParentEl.innerHTML = html;
+                return tempParentEl.childNodes[1];
+            }
+        },
+
+        /**
+         * Gets a simplified mapping of all attributes of an element.
+         * @param {HTMLElement} el - The element containing attributes
+         * @returns {object} - Returns an object containing all attribute mappings
+         */
+        getElementAttrMap: function (el) {
+            var attrs = el.attributes,
+                map = {};
+            if (attrs.length) {
+                for (var i = 0; i < attrs.length; i++) {
+                    map[attrs[i].name] = attrs[i].value;
+                }
+            }
+            return map;
+        },
+
+        /**
          * Checks if browser is IE 8.
          * @returns {boolean} Returns true if the current browser is IE 8.
          */

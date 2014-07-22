@@ -5,3 +5,4 @@ test:
 
 build:
 	grunt build-clean copy
+	core build-deps

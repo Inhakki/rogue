@@ -4,4 +4,4 @@ test:
 	grunt connect qunit
 
 build:
-	grunt copy
+	grunt build-clean copy

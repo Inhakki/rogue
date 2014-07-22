@@ -11,4 +11,6 @@ module.exports = function(grunt) {
             pattern: ['grunt-*']
         }
     });
+
+    grunt.loadNpmTasks('akqa-core');
 };

@@ -1,5 +1,5 @@
 define([
-    'core-utils'
+    'core-modules/core/utils'
 ],
 function (CoreUtils) {
 

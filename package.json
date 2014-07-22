@@ -35,7 +35,9 @@
         "dist": "build",
         "packageDest": "build/libs",
         "packages": {
-            "akqa-core": {}
+            "akqa-core": {
+                "name": "core"
+            }
         }
     }
 }

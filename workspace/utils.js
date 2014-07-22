@@ -1,7 +1,8 @@
 define([
-    'core-modules/core/utils'
+    frameworkConfig.modulePath + '/framework',
+    frameworkConfig.modulePath + '/libs/core-modules/akqa-core/utils'
 ],
-function (CoreUtils) {
+function (App, CoreUtils) {
 
     var Utils = {
 

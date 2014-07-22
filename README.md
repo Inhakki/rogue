@@ -64,6 +64,18 @@ core build-deps
 <a name="usage"></a>
 ## Usage
 
+### Library
+
+To use the javascript library of classes that Web Framework provides, you will need to first specify where your web-framework module is in your `frameworkConfig` configuration variable:
+
+```
+var frameworkConfig = {
+    modulePath: '/path/to/web-framework/module'
+};
+```
+
+Then you're free to use any javascript module provided by web framework.
+
 ### Tasks
 
 Once installed, you can use the following commands:

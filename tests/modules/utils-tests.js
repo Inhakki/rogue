@@ -21,4 +21,15 @@ define([
             QUnit.equal(el.className, '', 'removing class was successful');
         });
 
+        QUnit.test('createElement method', function() {
+            QUnit.expect(3);
+            var innerHtml = '<span>Test stuff</span>';
+            var html = ' \n\r' +
+                '<li class="testClass" data-more="more_data">' + innerHtml + '</li>';
+            var el = Utils.createHtmlElement(html);
+            QUnit.equal(el.tagName.toLowerCase(), 'li', 'passing html produces a new element with the correct tag name');
+            QUnit.deepEqual(Utils.getElementAttrMap(el), {class: 'testClass', 'data-more': 'more_data'}, 'new element has correct attributes');
+            QUnit.equal(el.innerHTML, innerHtml, 'new element has correct html contents');
+        });
+
     });

@@ -3,6 +3,6 @@ module.exports = {
         expand: true,
         cwd: 'workspace',
         src: ['**'],
-        dest: 'dist'
+        dest: 'build'
     }
 };

@@ -42,8 +42,8 @@ utils.setNested = function (obj, map, value) {
 
 
 // make this class useable for both node (backend) and frontend
-if (module && module.exports) {
+if (typeof module !== 'undefined' && module.exports) {
     module.exports = utils;
 } else {
-    utils.setNested(window, 'Core.Utils', utils);
+    define(utils);
 }

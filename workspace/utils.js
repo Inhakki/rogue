@@ -68,6 +68,74 @@ function (App, CoreUtils) {
         },
 
         /**
+         * Gets a deeply nested property of an object.
+         * @param {object} obj - The object to evaluate
+         * @param {string} map - A string denoting where the property that should be extracted exists
+         * @param {object} fallback - The fallback if the property does not exist
+         */
+        getNested: function (obj, map, fallback) {
+            return CoreUtils.getNested.apply(this, arguments);
+        },
+
+        /**
+         * Gets element by its class name.
+         * @param {string} className - The class name
+         * @param {HTMLElement} [rootEl] - The root el used for scoping (optional)
+         * @returns {NodeList|HTMLCollection} - Returns a node list if < IE9 and HTML Collection otherwise.
+         * TODO: does NOT support CSS2 selectors in IE8, update asap
+         */
+        getElementsByClassName: function (className, rootEl) {
+            var el = rootEl || document;
+            if (!this.isIE8()) {
+                return el.getElementsByClassName(className);
+            } else {
+                return el.querySelectorAll(className);
+            }
+        },
+
+        /**
+         * Adds an event listener to an element.
+         * @param {HTMLElement} el - The element to listen to
+         * @param {string} event - The event to listen to
+         * @param {Function} callback - The function that fires when the event happens
+         * @param {boolean} [useCapture] - Whether to use capture (see Web.API.EventTarget.addEventListener)
+         */
+        addEventListener: function (el, event, callback, useCapture) {
+
+            var listener = _.bind(function (e) {
+                // force the 'this' to be the value of the el, rather than the window object
+                // to work like our more modern friend, addEventListener()
+                callback(e);
+            }, el);
+
+            if (!this.isIE8()) {
+                el.addEventListener(event, listener, useCapture);
+            } else {
+                el.attachEvent('on' + event, listener);
+            }
+
+            // cache click function to use as unique identifier
+            // to remove event listener later
+            this.events = this.events || {};
+            this.events[callback] = listener;
+        },
+
+        /**
+         * Removes an event listener from an element.
+         * @param {string} event - The event to remove
+         * @param {Function} listener - The event listener function to be removed
+         * @param {boolean} useCapture - Whether to use capture (see Web.API.EventTarget.addEventListener)
+         */
+        removeEventListener: function (event, listener, useCapture) {
+            listener = this.events[listener];
+            if (!this.isIE8()) {
+                el.removeEventListener(event, listener, useCapture);
+            } else {
+                el.detachEvent(event, listener);
+            }
+        },
+
+        /**
          * Checks if browser is IE 8.
          * @returns {boolean} Returns true if the current browser is IE 8.
          */
@@ -80,7 +148,6 @@ function (App, CoreUtils) {
             }
             return (rv == 4);
         }
-
     };
 
     return Utils;

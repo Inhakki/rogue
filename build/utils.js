@@ -29,7 +29,7 @@ function (App, CoreUtils) {
         removeClass: function (el, className) {
             var re;
             if (this.hasClass(el, className)) {
-                
+
                 if (el.className === className) {
                     // if the only class that exists,  remove to 
                      el.className = '';

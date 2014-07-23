@@ -25,7 +25,8 @@
         "grunt-contrib-copy": "~0.5.0",
         "grunt-contrib-qunit": "~0.5.2",
         "grunt-contrib-connect": "~0.8.0",
-        "akqa-core": "git+ssh://git@github.com/AKQADC/AKQA-Core.git#develop"
+        "akqa-core": "git+ssh://git@github.com/AKQADC/AKQA-Core.git#develop",
+        "grunt-contrib-watch": "~0.5.3"
     },
     "engines": {
         "node": ">=0.10.0"

@@ -13,7 +13,11 @@ function (App, CoreUtils) {
          */
         addClass: function  (el, className) {
             if (!this.hasClass(el, className)) {
-                el.className = el.className + ' ' + className;
+                var existingNames = el.className;
+                if (existingNames) {
+                    el.className = existingNames + ' ';
+                }
+                el.className = el.className + className;
             }
         },
 
@@ -23,8 +27,17 @@ function (App, CoreUtils) {
          * @param {string} className - The css class value to remove
          */
         removeClass: function (el, className) {
+            var re;
             if (this.hasClass(el, className)) {
-                el.className = el.className.replace(className, '');
+                
+                if (el.className === className) {
+                    // if the only class that exists,  remove to 
+                     el.className = '';
+                } else {
+                    re = className + '[\\s]*';
+                    re = new RegExp(re, 'i');
+                    el.className = el.className.replace(re, '');
+                }
             }
         },
 

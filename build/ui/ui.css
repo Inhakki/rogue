@@ -2,6 +2,6 @@
     display: none;
 }
 
-.ui-tooltip.ui-tooltip-showing .ui-tooltip-panel {
+.ui-tooltip-active .ui-tooltip-panel {
     display: block;
 }

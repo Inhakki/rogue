@@ -122,11 +122,12 @@ function (App, CoreUtils) {
 
         /**
          * Removes an event listener from an element.
+         * @param {HTMLElement} el - The element with the event
          * @param {string} event - The event to remove
          * @param {Function} listener - The event listener function to be removed
          * @param {boolean} useCapture - Whether to use capture (see Web.API.EventTarget.addEventListener)
          */
-        removeEventListener: function (event, listener, useCapture) {
+        removeEventListener: function (el, event, listener, useCapture) {
             listener = this.events[listener];
             if (!this.isIE8()) {
                 el.removeEventListener(event, listener, useCapture);

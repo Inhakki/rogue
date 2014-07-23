@@ -14,8 +14,8 @@ define([
         /**
          * Initializes the toggle button.
          * @param {object} options - Options to pass
-         * @param {Array} options.showEvents - An array of event strings to trigger showing the tooltip
-         * @param {Array} options.hideEvents - An array of event strings to trigger hiding the tooltip
+         * @param {HTMLElement} options.el - The container of the tooltip
+         * @param {string} options.event - A string of the event that will trigger showing/hiding of the tooltip
          */
         initialize: function (options) {
 
@@ -24,7 +24,7 @@ define([
                 event: 'click'
             }, options);
 
-            this.showClass = 'ui-tooltip-showing';
+            this.activeClass = 'ui-tooltip-active';
 
             this.el = this.options.el;
             this.trigger = Utils.getElementsByClassName('ui-tooltip-trigger', this.el)[0];
@@ -41,11 +41,7 @@ define([
          * @private
          */
         _setupEvents: function () {
-            var options = this.options,
-                trigger = this.trigger,
-                i;
-
-            Utils.addEventListener(trigger, this.options.event, this._onEvent);
+            Utils.addEventListener(this.trigger, this.options.event, this._onEvent);
         },
 
         /**
@@ -54,7 +50,7 @@ define([
          */
         _onEvent: function () {
             if (this.options.event === 'click') {
-                if (this.isShowing()) {
+                if (this.isActive()) {
                     this.hide();
                 } else {
                     this.show();
@@ -66,22 +62,41 @@ define([
          * Shows the tooltip.
          */
         show: function () {
-            Utils.addClass(this.el, this.showClass);
+            Utils.addClass(this.el, this.activeClass);
         },
 
         /**
          * Hides the tooltip.
          */
         hide: function () {
-            Utils.removeClass(this.el, this.showClass);
+            Utils.removeClass(this.el, this.activeClass);
         },
 
         /**
          * Checks whether tooltip is showing.
          * @returns {boolean} Returns true if showing
          */
-        isShowing: function () {
-            return Utils.hasClass(this.el, this.showClass);
+        isActive: function () {
+            return Utils.hasClass(this.el, this.activeClass);
+        },
+
+        /**
+         * Set tooltip panel text.
+         * @param {string} value - The new value
+         */
+        setPanelText: function (value) {
+            if (!Utils.isIE8) {
+                this.panel.textContent = value;
+            } else {
+                this.panel.innerText = value;
+            }
+        },
+
+        /**
+         * Destruction of this class.
+         */
+        destroy: function () {
+            Utils.removeEventListener(this.trigger, this.options.event, this._onEvent);
         }
 
     };

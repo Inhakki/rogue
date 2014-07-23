@@ -15,6 +15,11 @@ require.config({
         }
     }
 });
+
+var frameworkConfig = {
+    modulePath: '../../build'
+};
+
 // require each test
 require([
     'modules/utils-tests'

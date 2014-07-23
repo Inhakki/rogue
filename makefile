@@ -9,3 +9,6 @@ build:
 
 server:
 	grunt copy connect:local
+
+test-server:
+	grunt copy:tests connect:test-server

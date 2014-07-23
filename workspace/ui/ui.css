@@ -1,0 +1,7 @@
+.ui-tooltip-panel {
+    display: none;
+}
+
+.ui-tooltip-active .ui-tooltip-panel {
+    display: block;
+}

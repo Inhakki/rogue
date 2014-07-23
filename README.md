@@ -3,16 +3,18 @@
 ## Contents
 
 1. [Summary](#summary)
-1. [Developer Setup](#developer-setup)
+1. [Installation](#installation)
 1. [Usage](#usage)
+1. [Development](#development)
 1. [Release History](#release-history)
 
 <a name="summary"></a>
 ## Summary
 AKQA Web Framework is a internal framework built to simplify development of front-end AKQA apps.
 
-<a name="developer-setup"></a>
-## Developer Setup
+<a name="installation"></a>
+
+## Installation
 
 ### Dependencies
 
@@ -27,8 +29,6 @@ You must install AKQA Core package globally by typing the following in your term
 ```
 npm install git+ssh://git@github.com/AKQADC/AKQA-Core.git  -g
 ```
-
-### Installation
 
 Then, add this package to your project to your `package.json` file:
 
@@ -64,8 +64,6 @@ core build-deps
 <a name="usage"></a>
 ## Usage
 
-### Library
-
 To use the javascript library of classes that Web Framework provides, you will need to first specify where your web-framework module is in your `frameworkConfig` configuration variable:
 
 ```
@@ -76,9 +74,18 @@ var frameworkConfig = {
 
 Then you're free to use any javascript module provided by web framework.
 
-### Tasks
+<a name="development"></a>
+## Development
 
-Once installed, you can use the following commands:
+The following are tasks that are available when developing on Web Framework.
+
+#### make build
+
+To build the project for deployment:
+
+```
+make build
+```
 
 #### make test
 

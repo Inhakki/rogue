@@ -12,7 +12,7 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('akqa-core');
-    
+
     // add build-clean job
     grunt.config('build-clean', {
             all: {

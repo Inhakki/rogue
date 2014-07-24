@@ -1,9 +1,12 @@
 .PHONY: build
 
+TESTS = grunt connect:test qunit
+
 test:
-	grunt connect:test qunit
+	$(TESTS)
 
 build:
+	$(TESTS)
 	grunt build-clean copy
 	core build-deps
 

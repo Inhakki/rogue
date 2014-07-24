@@ -1,12 +1,7 @@
-
-var frameworkConfig = {
-    modulePath: '../../'
-};
-
 require([
-    frameworkConfig.modulePath + '/framework',
-    frameworkConfig.modulePath + '/utils',
-    frameworkConfig.modulePath + '/ui/tooltip'
+    'framework/framework',
+    'framework/utils',
+    'framework/ui/tooltip'
 ], function (App, Utils, Tooltip) {
     'use strict';
 

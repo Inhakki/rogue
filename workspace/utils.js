@@ -1,10 +1,21 @@
 define([
-    frameworkConfig.modulePath + '/framework',
-    frameworkConfig.modulePath + '/libs/core-modules/akqa-core/utils'
+    'framework/framework',
+    'framework/libs/core-modules/akqa-core/utils'
 ],
 function (App, CoreUtils) {
 
-    var Utils = {
+    var Utils = function () {
+        this.initialize();
+    };
+
+    Utils.prototype = {
+
+        /**
+         * Initialize.
+         */
+        initialize: function () {
+            this._setupBindPolyfill();
+        },
 
         /**
          * Adds a CSS class to an element.
@@ -13,7 +24,11 @@ function (App, CoreUtils) {
          */
         addClass: function  (el, className) {
             if (!this.hasClass(el, className)) {
-                el.className = el.className + ' ' + className;
+                var existingNames = el.className;
+                if (existingNames) {
+                    el.className = existingNames + ' ';
+                }
+                el.className = el.className + className;
             }
         },
 
@@ -23,8 +38,17 @@ function (App, CoreUtils) {
          * @param {string} className - The css class value to remove
          */
         removeClass: function (el, className) {
+            var re;
             if (this.hasClass(el, className)) {
-                el.className = el.className.replace(className, '');
+
+                if (el.className === className) {
+                    // if the only class that exists,  remove to 
+                     el.className = '';
+                } else {
+                    re = className + '[\\s]*';
+                    re = new RegExp(re, 'i');
+                    el.className = el.className.replace(re, '');
+                }
             }
         },
 
@@ -137,6 +161,15 @@ function (App, CoreUtils) {
         },
 
         /**
+         * Merges the contents of two or more objects.
+         * @param {object} obj - The target object
+         * @param {...object} - Additional objects who's properties will be merged in
+         */
+        extend: function (target) {
+            return CoreUtils.extend.apply(this, arguments);
+        },
+
+        /**
          * Checks if browser is IE 8.
          * @returns {boolean} Returns true if the current browser is IE 8.
          */
@@ -148,8 +181,40 @@ function (App, CoreUtils) {
                 rv = parseFloat(RegExp.$1);
             }
             return (rv == 4);
+        },
+
+        /**
+         * Sets up the fallback polyfill for binding 'this' to functions.
+         * @private
+         */
+        _setupBindPolyfill: function () {
+            if (!Function.prototype.bind) {
+                Function.prototype.bind = function (oThis) {
+                    if (typeof this !== 'function') {
+                        // closest thing possible to the ECMAScript 5
+                        // internal IsCallable function
+                        throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+                    }
+
+                    var aArgs = Array.prototype.slice.call(arguments, 1),
+                        fToBind = this,
+                        fNOP = function () {},
+                        fBound = function () {
+                            return fToBind.apply(this instanceof fNOP && oThis
+                                ? this
+                                : oThis,
+                                aArgs.concat(Array.prototype.slice.call(arguments)));
+                        };
+
+                    fNOP.prototype = this.prototype;
+                    fBound.prototype = new fNOP();
+
+                    return fBound;
+                };
+            }
         }
     };
 
-    return Utils;
+    return new Utils();
+
 });

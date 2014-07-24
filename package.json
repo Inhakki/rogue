@@ -1,6 +1,6 @@
 {
     "name": "akqa-web-framework",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Global framework for AKQA web sites and apps",
     "repository": {
         "type": "git",
@@ -26,7 +26,8 @@
         "grunt-contrib-qunit": "~0.5.2",
         "grunt-contrib-connect": "~0.8.0",
         "akqa-core": "git+ssh://git@github.com/AKQADC/AKQA-Core.git#develop",
-        "grunt-contrib-watch": "~0.5.3"
+        "grunt-contrib-watch": "~0.5.3",
+        "connect-livereload": "~0.3.2"
     },
     "engines": {
         "node": ">=0.10.0"

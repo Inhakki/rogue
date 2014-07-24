@@ -34,3 +34,4 @@ node_modules
 
 # ignore samples build
 build/samples
+build/tests

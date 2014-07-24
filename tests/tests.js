@@ -7,7 +7,8 @@ require.config({
         qunit: 'libs/qunit/qunit-require',
         sinon: 'libs/sinon/sinon-1.9.0',
         workspace: '../workspace/',
-        'core-utils': '../build/libs/core-modules/akqa-core/utils'
+        'core-utils': '../build/libs/core-modules/akqa-core/utils',
+        framework: '../../build'
     },
     shim: {
         'core-utils': {
@@ -15,6 +16,7 @@ require.config({
         }
     }
 });
+
 // require each test
 require([
     'modules/utils-tests'

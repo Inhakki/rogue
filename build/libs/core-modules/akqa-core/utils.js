@@ -40,6 +40,25 @@ utils.setNested = function (obj, map, value) {
     }
 };
 
+/**
+ * Merges the contents of two or more objects.
+ * @param {object} obj - The target object
+ * @param {...object} - Additional objects who's properties will be merged in
+ */
+utils.extend = function (target) {
+    var merged = target,
+        source, i;
+    for (i = 1; i < arguments.length; i++) {
+        source = arguments[i];
+        for (var prop in source) {
+            if (source.hasOwnProperty(prop)) {
+                merged[prop] = source[prop];
+            }
+        }
+    }
+    return merged;
+};
+
 
 // make this class useable for both node (backend) and frontend
 if (typeof module !== 'undefined' && module.exports) {

@@ -2,8 +2,15 @@ module.exports = {
     test: {
         options: {
             hostname: 'localhost',
-            port: 7000,
-            base: '.'
+            port: 7000
+        }
+    },
+    'test-server': {
+        options: {
+            hostname: 'localhost',
+            port: 7500,
+            keepalive: true,
+            options: { livereload: true }
         }
     },
     local: {
@@ -11,7 +18,8 @@ module.exports = {
             hostname: 'localhost',
             port: 9000,
             base: 'build',
-            keepalive: true
+            keepalive: true,
+            options: { livereload: true }
         }
     }
 };

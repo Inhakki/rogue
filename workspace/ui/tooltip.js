@@ -1,12 +1,12 @@
 define([
-    frameworkConfig.modulePath + '/framework',
-    frameworkConfig.modulePath + '/utils'
-], function (App, Utils) {
+    'framework/framework',
+    'framework/utils'
+],
+function (App, Utils) {
     "use strict";
 
     var Tooltip = function (options) {
         this.initialize(options);
-        return this;
     };
 
     Tooltip.prototype = {
@@ -30,8 +30,6 @@ define([
             this.trigger = Utils.getElementsByClassName('ui-tooltip-trigger', this.el)[0];
             this.panel = Utils.getElementsByClassName('ui-tooltip-panel', this.el)[0];
 
-            _.bindAll(this, '_onEvent');
-
             this._setupEvents();
 
         },
@@ -41,7 +39,7 @@ define([
          * @private
          */
         _setupEvents: function () {
-            Utils.addEventListener(this.trigger, this.options.event, this._onEvent);
+            Utils.addEventListener(this.trigger, this.options.event, this._onEvent.bind(this));
         },
 
         /**
@@ -96,7 +94,7 @@ define([
          * Destruction of this class.
          */
         destroy: function () {
-            Utils.removeEventListener(this.trigger, this.options.event, this._onEvent);
+            Utils.removeEventListener(this.trigger, this.options.event, this._onEvent.bind(this));
         }
 
     };

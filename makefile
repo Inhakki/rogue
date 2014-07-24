@@ -8,7 +8,10 @@ build:
 	core build-deps
 
 server:
-	grunt copy connect:local
+	grunt build-clean copy
+	core build-deps
+	grunt connect:local
 
 test-server:
-	grunt copy:tests connect:test-server
+	grunt copy
+	grunt connect:test-server

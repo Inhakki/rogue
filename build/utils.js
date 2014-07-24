@@ -45,7 +45,7 @@ function (App, CoreUtils) {
                     // if the only class that exists,  remove to 
                      el.className = '';
                 } else {
-                    re = className + '[\\s]*';
+                    re = '[\\s]*' + className;
                     re = new RegExp(re, 'i');
                     el.className = el.className.replace(re, '');
                 }

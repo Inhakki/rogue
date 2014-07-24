@@ -20,13 +20,14 @@ define([
             QUnit.equal(el.className, '', 'removing class was successful');
         });
 
-        QUnit.test('removing a class from an element when other classes already exist', function() {
+        QUnit.test('adding and removing a class from an element when other classes already exist', function() {
             QUnit.expect(2);
             var testClass = 'test2';
             var fixture = document.getElementById('qunit-fixture');
             var el = document.createElement('div');
             fixture.appendChild(el);
-            el.className = 'existingclass ' + testClass + ' supercedingclass testing2';
+            el.className = 'existingclass supercedingclass testing2';
+            Utils.addClass(el, testClass);
             QUnit.ok(Utils.hasClass(el, testClass), 'target element has class initially');
             var result = 'existingclass supercedingclass testing2';
             Utils.removeClass(el, testClass);

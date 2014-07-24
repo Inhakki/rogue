@@ -12,16 +12,20 @@ function (App, Utils) {
     Tooltip.prototype = {
 
         /**
-         * Initializes the toggle button.
+         * Initializes the Tooltip.
          * @param {object} options - Options to pass
          * @param {HTMLElement} options.el - The container of the tooltip
          * @param {string} options.event - A string of the event that will trigger showing/hiding of the tooltip
+         * @param {Function} options.onShow - A callback function that fires when tooltip panel is shown
+         * @param {Function} options.onHide - A callback function that fires when tooltip panel is hidden
          */
         initialize: function (options) {
 
-            this.options = _.extend({
+            this.options = Utils.extend({
                 el: null,
-                event: 'click'
+                event: 'click',
+                onShow: null,
+                onHide: null
             }, options);
 
             this.activeClass = 'ui-tooltip-active';
@@ -61,6 +65,9 @@ function (App, Utils) {
          */
         show: function () {
             Utils.addClass(this.el, this.activeClass);
+            if (this.options.onShow) {
+                this.options.onShow();
+            }
         },
 
         /**
@@ -68,6 +75,9 @@ function (App, Utils) {
          */
         hide: function () {
             Utils.removeClass(this.el, this.activeClass);
+            if (this.options.onHide) {
+                this.options.onHide();
+            }
         },
 
         /**

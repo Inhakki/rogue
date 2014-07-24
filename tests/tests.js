@@ -19,7 +19,8 @@ require.config({
 
 // require each test
 require([
-    'modules/utils-tests'
+    'modules/utils-tests',
+    'modules/tooltip-tests'
 ], function() {
     QUnit.config.requireExpects = true;
     QUnit.start();

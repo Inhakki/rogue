@@ -13,13 +13,17 @@ require.config({
     shim: {
         'core-utils': {
             exports: 'Core.Utils'
+        },
+        sinon: {
+            exports: 'sinon'
         }
     }
 });
 
 // require each test
 require([
-    'modules/utils-tests'
+    'modules/utils-tests',
+    'modules/tooltip-tests'
 ], function() {
     QUnit.config.requireExpects = true;
     QUnit.start();

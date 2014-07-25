@@ -69,10 +69,27 @@ function (App, CoreUtils) {
         createHtmlElement: function (html) {
             var tempParentEl;
             if (html) {
+                html = this.trim(html);
                 tempParentEl = document.createElement('div');
                 tempParentEl.innerHTML = html;
-                return tempParentEl.childNodes[1];
+                return tempParentEl.childNodes[0];
             }
+        },
+
+        /**
+         * Zaps whitespace from both ends of a string.
+         * @param {string} val - The string value to trim
+         * @returns {string} Returns a trimmed string
+         */
+        trim: function (val) {
+            if (!String.prototype.trim) {
+                String.prototype.trim = function () {
+                    return val.replace(/^\s+|\s+$/g, '');
+                };
+            } else {
+                val = val.trim();
+            }
+            return val;
         },
 
         /**
@@ -126,11 +143,13 @@ function (App, CoreUtils) {
          */
         addEventListener: function (el, event, callback, useCapture) {
 
-            var listener = _.bind(function (e) {
-                // force the 'this' to be the value of the el, rather than the window object
-                // to work like our more modern friend, addEventListener()
+            var listener = function (e) {
                 callback(e);
-            }, el);
+            };
+
+            // force the 'this' to be the value of the el, rather than the window object
+            // to work like our more modern friend, addEventListener()
+            listener.bind(el);
 
             if (!this.isIE8()) {
                 el.addEventListener(event, listener, useCapture);

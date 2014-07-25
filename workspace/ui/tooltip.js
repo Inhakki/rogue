@@ -23,7 +23,7 @@ function (App, Utils) {
 
             this.options = Utils.extend({
                 el: null,
-                event: 'click',
+                event: null,
                 onShow: null,
                 onHide: null
             }, options);
@@ -34,7 +34,9 @@ function (App, Utils) {
             this.trigger = Utils.getElementsByClassName('ui-tooltip-trigger', this.el)[0];
             this.panel = Utils.getElementsByClassName('ui-tooltip-panel', this.el)[0];
 
-            this._setupEvents();
+            if (this.options.event) {
+                this._setupEvents();
+            }
 
         },
 
@@ -104,7 +106,9 @@ function (App, Utils) {
          * Destruction of this class.
          */
         destroy: function () {
-            Utils.removeEventListener(this.trigger, this.options.event, this._onEvent.bind(this));
+            if (this.options.event) {
+                Utils.removeEventListener(this.trigger, this.options.event, this._onEvent.bind(this));
+            }
         }
 
     };

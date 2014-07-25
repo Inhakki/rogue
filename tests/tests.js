@@ -13,6 +13,9 @@ require.config({
     shim: {
         'core-utils': {
             exports: 'Core.Utils'
+        },
+        sinon: {
+            exports: 'sinon'
         }
     }
 });

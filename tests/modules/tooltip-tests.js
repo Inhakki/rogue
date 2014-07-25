@@ -37,7 +37,7 @@ define([
             var showCallCount = 0;
             var hideSpy = Sinon.spy(Tooltip.prototype, 'hide');
             var hideCallCount = 0;
-            var tooltip = new Tooltip({el: el, event: 'click'});
+            var tooltip = new Tooltip({el: el, showEvent: 'click', hideEvent: 'click'});
             var trigger = Utils.getElementsByClassName('ui-tooltip-trigger', el)[0];
             var panel = Utils.getElementsByClassName('ui-tooltip-panel', el)[0];
             QUnit.equal(showSpy.callCount, showCallCount, 'show method was NOT fired on init');

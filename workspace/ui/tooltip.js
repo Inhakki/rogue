@@ -15,6 +15,8 @@ function (App, Utils) {
          * Initializes the Tooltip.
          * @param {object} options - Options to pass
          * @param {HTMLElement} options.el - The container of the tooltip
+         * @param {string} options.showEvent - A string indicating which event should trigger showing the tooltip
+         * @param {string} options.hideEvent - A string indicating which event should trigger hiding the tooltip
          * @param {string} options.event - A string of the event that will trigger showing/hiding of the tooltip
          * @param {Function} options.onShow - A callback function that fires when tooltip panel is shown
          * @param {Function} options.onHide - A callback function that fires when tooltip panel is hidden
@@ -23,7 +25,8 @@ function (App, Utils) {
 
             this.options = Utils.extend({
                 el: null,
-                event: null,
+                showEvent: null,
+                hideEvent: null,
                 onShow: null,
                 onHide: null
             }, options);
@@ -34,32 +37,77 @@ function (App, Utils) {
             this.trigger = Utils.getElementsByClassName('ui-tooltip-trigger', this.el)[0];
             this.panel = Utils.getElementsByClassName('ui-tooltip-panel', this.el)[0];
 
-            if (this.options.event) {
-                this._setupEvents();
-            }
+            this.setup();
 
         },
 
         /**
          * Sets up events for showing/hiding tooltip.
-         * @private
          */
-        _setupEvents: function () {
-            Utils.addEventListener(this.trigger, this.options.event, this._onEvent.bind(this));
+        setup: function () {
+            var options = this.options,
+                key, e, map;
+
+            // setup events
+            map = this.eventMap = this._buildEventMap(options.showEvent, options.hideEvent);
+
+            for (key in map) {
+                if (map.hasOwnProperty(key)) {
+                    e = map[key];
+                    Utils.addEventListener(this.trigger, e.name, e.event);
+                }
+            }
         },
 
         /**
-         * When an event is triggered.
+         * Fires when the show and hide events are the same and we need to determine whether to show or hide.
          * @private
          */
-        _onEvent: function () {
-            if (this.options.event === 'click') {
-                if (this.isActive()) {
-                    this.hide();
-                } else {
-                    this.show();
+        _onDuplicateEvent: function () {
+            if (this.isActive()) {
+                this.hide();
+            } else {
+                this.show();
+            }
+        },
+
+
+        /**
+         * Builds the event map.
+         * @param {string} showEvent - The event string to hide tooltip
+         * @param {string} hideEvent - The event string to show tooltip
+         * @returns {object} - Returns a mapping of all events to their trigger functions.
+         * @private
+         */
+        _buildEventMap: function (showEvent, hideEvent) {
+            var map = {};
+
+            if (!showEvent) {
+                return;
+            }
+
+            if (showEvent === hideEvent) {
+                // show event and hide events are the same
+                map['showEvent'] = {
+                    name: showEvent,
+                    event: this._onDuplicateEvent.bind(this)
+                };
+                return map;
+            }
+            
+            if (showEvent) {
+                map['showEvent'] = {
+                    name: showEvent,
+                    event: this.show.bind(this)
                 }
             }
+            if (hideEvent) {
+                map['hideEvent'] = {
+                    name: hideEvent,
+                    event: this.hide.bind(this)
+                }
+            }
+            return map;
         },
 
         /**
@@ -106,8 +154,15 @@ function (App, Utils) {
          * Destruction of this class.
          */
         destroy: function () {
-            if (this.options.event) {
-                Utils.removeEventListener(this.trigger, this.options.event, this._onEvent.bind(this));
+
+            // destroy events
+            var eventMap = this.eventMap,
+                key;
+            for (key in eventMap) {
+                var e = eventMap[key];
+                if (eventMap.hasOwnProperty(key)) {
+                    Utils.removeEventListener(this.trigger, e.name, e.event);
+                }
             }
         }
 

@@ -5,7 +5,7 @@ module.exports = {
         options: { livereload: true }
     },
     tests: {
-        files : ['tests', 'workspace'],
+        files : ['tests/**', 'workspace/**'],
         tasks : ['copy:tests'],
         options: { livereload: true }
     }

@@ -45,18 +45,32 @@ function (App, Utils) {
          * Sets up events for showing/hiding tooltip.
          */
         setup: function () {
-            var options = this.options,
-                key, e, map;
+            var options = this.options;
 
-            // setup events
-            map = this.eventMap = this._buildEventMap(options.showEvent, options.hideEvent);
+            // setup events if needed
+            if (options.showEvent) {
+                this._setupEvents(options.showEvent, options.hideEvent);
+            }
+        },
 
+        /**
+         * Sets up events.
+         * @param {string} showEvent - The event string to hide tooltip
+         * @param {string} hideEvent - The event string to show tooltip
+         * @returns {object} - Returns a mapping of all events to their trigger functions.
+         * @private
+         */
+        _setupEvents: function (showEvent, hideEvent) {
+            var map = this._buildEventMap(showEvent, hideEvent),
+                key,
+                e;
             for (key in map) {
                 if (map.hasOwnProperty(key)) {
                     e = map[key];
                     Utils.addEventListener(this.trigger, e.name, e.event);
                 }
             }
+            this.eventMap = map;
         },
 
         /**
@@ -82,10 +96,6 @@ function (App, Utils) {
         _buildEventMap: function (showEvent, hideEvent) {
             var map = {};
 
-            if (!showEvent) {
-                return;
-            }
-
             if (showEvent === hideEvent) {
                 // show event and hide events are the same
                 map['showEvent'] = {
@@ -94,7 +104,7 @@ function (App, Utils) {
                 };
                 return map;
             }
-            
+
             if (showEvent) {
                 map['showEvent'] = {
                     name: showEvent,
@@ -154,14 +164,16 @@ function (App, Utils) {
          * Destruction of this class.
          */
         destroy: function () {
-
-            // destroy events
             var eventMap = this.eventMap,
                 key;
-            for (key in eventMap) {
-                var e = eventMap[key];
-                if (eventMap.hasOwnProperty(key)) {
-                    Utils.removeEventListener(this.trigger, e.name, e.event);
+
+            // destroy events
+            if (eventMap) {
+                for (key in eventMap) {
+                    var e = eventMap[key];
+                    if (eventMap.hasOwnProperty(key)) {
+                        Utils.removeEventListener(this.trigger, e.name, e.event);
+                    }
                 }
             }
         }

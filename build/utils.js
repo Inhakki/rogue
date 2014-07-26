@@ -1,6 +1,6 @@
 define([
     'framework/framework',
-    'core-utils'
+    'framework/libs/core-modules/akqa-core/utils'
 ],
 function (App, CoreUtils) {
 

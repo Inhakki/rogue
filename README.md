@@ -40,6 +40,12 @@ Then, add this package to your project to your `package.json` file:
 }
 ```
 
+Then run:
+
+```
+npm install
+```
+
 Then, add your build destination to the `core.packages` config in your `package.json` file:
 
 ```javascript

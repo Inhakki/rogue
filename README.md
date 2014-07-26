@@ -10,7 +10,7 @@
 
 <a name="summary"></a>
 ## Summary
-AKQA Web Framework is a internal framework built to simplify development of front-end AKQA apps.
+AKQA Web Framework is a internal framework built to simplify development of all web-based front-end AKQA apps.
 
 <a name="installation"></a>
 
@@ -40,6 +40,12 @@ Then, add this package to your project to your `package.json` file:
 }
 ```
 
+Then run:
+
+```
+npm install
+```
+
 Then, add your build destination to the `core.packages` config in your `package.json` file:
 
 ```javascript
@@ -64,7 +70,9 @@ core build-deps
 <a name="usage"></a>
 ## Usage
 
-To use the javascript library of classes that Web Framework provides, you will need to first specify where your web-framework modules are located in your `paths` configuration in your require config:
+To use the javascript library of classes that Web Framework provides, you will need to first make sure you're using [RequireJS](http://requirejs.org/).
+
+Then,specify where your web-framework modules are located in your `paths` configuration of your require config:
 
 ```
 require.config({

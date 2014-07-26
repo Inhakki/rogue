@@ -17,7 +17,6 @@ function (App, Utils) {
          * @param {HTMLElement} options.el - The container of the tooltip
          * @param {string} options.showEvent - A string indicating which event should trigger showing the tooltip
          * @param {string} options.hideEvent - A string indicating which event should trigger hiding the tooltip
-         * @param {string} options.event - A string of the event that will trigger showing/hiding of the tooltip
          * @param {Function} options.onShow - A callback function that fires when tooltip panel is shown
          * @param {Function} options.onHide - A callback function that fires when tooltip panel is hidden
          */

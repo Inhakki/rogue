@@ -1,7 +1,7 @@
 define([
     'sinon',
     'qunit',
-    'workspace/utils'
+    'framework/utils'
 ],
     function(Sinon, QUnit, Utils){
         "use strict";
@@ -43,6 +43,21 @@ define([
             QUnit.equal(el.tagName.toLowerCase(), 'li', 'passing html produces a new element with the correct tag name');
             QUnit.deepEqual(Utils.getElementAttrMap(el), {class: 'testClass', 'data-more': 'more_data'}, 'new element has correct attributes');
             QUnit.equal(el.innerHTML, innerHtml, 'new element has correct html contents');
+        });
+
+        QUnit.test('getClosestAncestorElementByClassName method', function() {
+            QUnit.expect(3);
+            var html = ' \n\r' +
+                '<li class="ancestor" data-more="more_data">' +
+                    '<div>' +
+                        '<div class="test-child"></div>' +
+                    '</div>' +
+                '</li>';
+            var el = Utils.createHtmlElement(html);
+            var testChild = Utils.getElementsByClassName('test-child', el)[0];
+            QUnit.equal(Utils.getClosestAncestorElementByClassName('ancestor', testChild), el, 'getting closest ancestor element returns correct element');
+            QUnit.ok(!Utils.getClosestAncestorElementByClassName('nothing', testChild), 'returns falsy when no ancestors have the class specified');
+            QUnit.ok(!Utils.getClosestAncestorElementByClassName('test-child', testChild), ' does NOT return the source element when attempting to get an ancestor element with the same class');
         });
 
     });

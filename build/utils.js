@@ -1,6 +1,6 @@
 define([
     'framework/framework',
-    'framework/libs/core-modules/akqa-core/utils'
+    'core-utils'
 ],
 function (App, CoreUtils) {
 
@@ -132,6 +132,26 @@ function (App, CoreUtils) {
             } else {
                 return el.querySelectorAll(className);
             }
+        },
+
+        /**
+         * Gets the closest ancestor element that has a class.
+         * @param {string} className - The class name that the ancestor must have to match
+         * @param {HTMLElement} el - The source element
+         */
+        getClosestAncestorElementByClassName: function (className, el) {
+            var result,
+                parentNode = el.parentNode;
+            // we must check if the node has classname property because some don't (#document element)
+            while (parentNode && typeof parentNode.className === 'string') {
+                if (this.hasClass(parentNode, className)) {
+                    result = parentNode;
+                    break;
+                } else {
+                    parentNode = parentNode.parentNode;
+                }
+            }
+            return result;
         },
 
         /**

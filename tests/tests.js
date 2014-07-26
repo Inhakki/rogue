@@ -6,14 +6,10 @@ require.config({
     'paths': {
         qunit: 'libs/qunit/qunit-require',
         sinon: 'libs/sinon/sinon-1.9.0',
-        workspace: '../workspace/',
-        'core-utils': '../build/libs/core-modules/akqa-core/utils',
-        framework: '../../build'
+        'core-utils': '/build/libs/core-modules/akqa-core/utils',
+        framework: '../../workspace'
     },
     shim: {
-        'core-utils': {
-            exports: 'Core.Utils'
-        },
         sinon: {
             exports: 'sinon'
         }

@@ -14,7 +14,7 @@ define([
             /**
              * Initialization.
              * @param {object} options - Options to pass
-             * @param {HTMLElement} options.el - The input element checkbox
+             * @param {HTMLInputElement} options.el - The input element checkbox
              * @param {Function} options.onChecked - A callback function that fires when the checkbox is checked
              * @param {Function} options.onUnchecked - A callback function that fires when the checkbox is un-checked
              */
@@ -29,8 +29,8 @@ define([
                 this.checkedClass = 'ui-checkbox-checked';
                 this.el = this.options.el;
 
-                if (!Utils.hasClass(this.el, 'ui-checkbox')) {
-                    console.error('checkbox cannot be created: no ui-checkbox class!');
+                if (!Utils.hasClass(this.el, 'ui-checkbox-input')) {
+                    console.error('checkbox cannot be created: input element has no ui-checkbox-input class!');
                 } else {
                     this.setup();
                 }
@@ -41,7 +41,9 @@ define([
              * Sets up html.
              */
             setup: function () {
-                var isCheckedOnInit = this.getFormElement().checked;
+                var isCheckedOnInit = this.getFormElement().checked,
+                    input = this.getFormElement();
+                Utils.addClass(input, 'ui-checkbox-input');
                 this._container = this._buildUIElement(this.el);
                 // if input element is already checked initially, check it!
                 if (isCheckedOnInit) {
@@ -53,11 +55,11 @@ define([
 
             /**
              * Builds the checkbox UI-friendly version.
-             * @param {HTMLElement} inputEl - The input element
+             * @param {HTMLInputElement} inputEl - The input element
              * @private
              */
             _buildUIElement: function (inputEl) {
-                return Utils.wrapHtmlElement(inputEl, '<div class="ui-checkbox-container"></div>');
+                return Utils.wrapHtmlElement(inputEl, '<div class="ui-checkbox"></div>');
             },
 
             /**
@@ -95,7 +97,7 @@ define([
 
             /**
              * Gets the checkbox input element.
-             * @returns {HTMLElement} Returns the checkbox input element
+             * @returns {HTMLInputElement} Returns the checkbox input element
              */
             getFormElement: function () {
                 return this.el;

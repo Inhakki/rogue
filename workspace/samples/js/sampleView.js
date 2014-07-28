@@ -21,7 +21,7 @@ require([
         });
 
         this.checkbox = new Checkbox({
-            el: Utils.getElementsByClassName('ui-checkbox')[0]
+            el: Utils.getElementsByClassName('ui-checkbox-input')[0]
         });
     };
 

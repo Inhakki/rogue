@@ -10,16 +10,16 @@ define([
 
         QUnit.module('Checkbox Tests');
 
-        var html = '<label><input type="checkbox" class="ui-checkbox" value="NY" name="ny" /> New York</label>';
+        var html = '<label><input type="checkbox" class="ui-checkbox-input" value="NY" name="ny" /> New York</label>';
 
         QUnit.test('initializing/destroying the checkbox', function() {
             QUnit.expect(2);
             var fixture = document.getElementById('qunit-fixture');
             var container = Utils.createHtmlElement(html);
             fixture.appendChild(container);
-            var input = container.getElementsByClassName('ui-checkbox')[0];
+            var input = container.getElementsByClassName('ui-checkbox-input')[0];
             var checkbox = new Checkbox({el: input});
-            var checkboxContainer = container.getElementsByClassName('ui-checkbox-container')[0];
+            var checkboxContainer = container.getElementsByClassName('ui-checkbox')[0];
             QUnit.ok(checkboxContainer.childNodes[0].isEqualNode(input), 'ui checkbox container was created with input element as its nested child');
             checkbox.destroy();
             QUnit.equal(input.parentNode, container, 'after destroy, input element\'s parent node is back to original');
@@ -30,9 +30,9 @@ define([
             var fixture = document.getElementById('qunit-fixture');
             var container = Utils.createHtmlElement(html);
             fixture.appendChild(container);
-            var input = container.getElementsByClassName('ui-checkbox')[0];
+            var input = container.getElementsByClassName('ui-checkbox-input')[0];
             var checkbox = new Checkbox({el: input});
-            var checkboxContainer = container.getElementsByClassName('ui-checkbox-container')[0];
+            var checkboxContainer = container.getElementsByClassName('ui-checkbox')[0];
             QUnit.ok(!Utils.hasClass(checkboxContainer, 'ui-checkbox-checked'), 'checkbox does not have active class initially');
             QUnit.ok(!checkbox.isChecked(), 'isChecked() returns falsy');
             QUnit.ok(!input.checked, 'input\'s checked boolean returns falsy');
@@ -51,10 +51,10 @@ define([
             QUnit.expect(5);
             var container = Utils.createHtmlElement(html);
             var fixture = document.getElementById('qunit-fixture').appendChild(container);
-            var input = container.getElementsByClassName('ui-checkbox')[0];
+            var input = container.getElementsByClassName('ui-checkbox-input')[0];
             input.setAttribute('checked', 'checked'); // make it so that input is checked initially
             var checkbox = new Checkbox({el: input});
-            var checkboxContainer = container.getElementsByClassName('ui-checkbox-container')[0];
+            var checkboxContainer = container.getElementsByClassName('ui-checkbox')[0];
             QUnit.ok(input.checked, 'input was checked initially');
             QUnit.ok(Utils.hasClass(checkboxContainer, 'ui-checkbox-checked'), 'checkbox has active class initially because original input was checked initially');
             QUnit.ok(checkbox.isChecked(), 'isChecked() returns truthy');
@@ -69,11 +69,11 @@ define([
             var fixture = document.getElementById('qunit-fixture');
             var container = Utils.createHtmlElement(html);
             fixture.appendChild(container);
-            var input = container.getElementsByClassName('ui-checkbox')[0];
+            var input = container.getElementsByClassName('ui-checkbox-input')[0];
             var onCheckedSpy = Sinon.spy();
             var onUncheckedSpy = Sinon.spy();
             var checkbox = new Checkbox({el: input, onChecked: onCheckedSpy, onUnchecked: onUncheckedSpy});
-            var UICheckbox = container.getElementsByClassName('ui-checkbox-container')[0];
+            var UICheckbox = container.getElementsByClassName('ui-checkbox')[0];
             checkbox.check();
             QUnit.deepEqual(onCheckedSpy.args[0], ['NY', input, UICheckbox], 'on check(), onChecked callback was fired with correct args');
             QUnit.equal(onUncheckedSpy.callCount, 0, 'onUnchecked callback was NOT fired yet');

@@ -10,7 +10,7 @@ define([
 
         QUnit.module('Checkbox Tests');
 
-        var html = '<label><input type="checkbox" class="ui-checkbox" name="ny" /> New York</label>';
+        var html = '<label><input type="checkbox" class="ui-checkbox" value="NY" name="ny" /> New York</label>';
 
         QUnit.test('initializing/destroying the checkbox', function() {
             QUnit.expect(2);
@@ -62,6 +62,24 @@ define([
             QUnit.ok(!checkbox.isChecked(), 'isChecked() returns falsy');
             checkbox.destroy();
             QUnit.ok(input.checked, 'input checked boolean returns true because that\'s how it was initially');
+        });
+
+        QUnit.test('checking/unchecking callbacks', function() {
+            QUnit.expect(4);
+            var fixture = document.getElementById('qunit-fixture');
+            var container = Utils.createHtmlElement(html);
+            fixture.appendChild(container);
+            var input = container.getElementsByClassName('ui-checkbox')[0];
+            var onCheckedSpy = Sinon.spy();
+            var onUncheckedSpy = Sinon.spy();
+            var checkbox = new Checkbox({el: input, onChecked: onCheckedSpy, onUnchecked: onUncheckedSpy});
+            checkbox.check();
+            QUnit.deepEqual(onCheckedSpy.args[0], ['NY'], 'on check(), onChecked callback was fired with correct value as its first argument');
+            QUnit.equal(onUncheckedSpy.callCount, 0, 'onUnchecked callback was NOT fired yet');
+            checkbox.uncheck();
+            QUnit.deepEqual(onUncheckedSpy.args[0], ['NY'], 'on uncheck(), onUnchecked callback was fired with correct value as its first argument');
+            QUnit.equal(onCheckedSpy.callCount, 1, 'onChecked callback was NOT fired');
+            checkbox.destroy();
         });
 
     });

@@ -66,6 +66,9 @@ define([
             check: function () {
                 this.el.setAttribute('checked', 'checked');
                 Utils.addClass(this.container, this.checkedClass);
+                if (this.options.onChecked) {
+                    this.options.onChecked(this.el.value);
+                }
             },
 
             /**
@@ -74,6 +77,9 @@ define([
             uncheck: function () {
                 this.el.removeAttribute('checked');
                 Utils.removeClass(this.container, this.checkedClass);
+                if (this.options.onUnchecked) {
+                    this.options.onUnchecked(this.el.value);
+                }
             },
 
 

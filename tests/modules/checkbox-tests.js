@@ -73,11 +73,12 @@ define([
             var onCheckedSpy = Sinon.spy();
             var onUncheckedSpy = Sinon.spy();
             var checkbox = new Checkbox({el: input, onChecked: onCheckedSpy, onUnchecked: onUncheckedSpy});
+            var UICheckbox = container.getElementsByClassName('ui-checkbox-container')[0];
             checkbox.check();
-            QUnit.deepEqual(onCheckedSpy.args[0], ['NY'], 'on check(), onChecked callback was fired with correct value as its first argument');
+            QUnit.deepEqual(onCheckedSpy.args[0], ['NY', input, UICheckbox], 'on check(), onChecked callback was fired with correct args');
             QUnit.equal(onUncheckedSpy.callCount, 0, 'onUnchecked callback was NOT fired yet');
             checkbox.uncheck();
-            QUnit.deepEqual(onUncheckedSpy.args[0], ['NY'], 'on uncheck(), onUnchecked callback was fired with correct value as its first argument');
+            QUnit.deepEqual(onUncheckedSpy.args[0], ['NY', input, UICheckbox], 'on uncheck(), onUnchecked callback was fired with correct args');
             QUnit.equal(onCheckedSpy.callCount, 1, 'onChecked callback was NOT fired');
             checkbox.destroy();
         });

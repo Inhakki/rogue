@@ -60,4 +60,26 @@ define([
             QUnit.ok(!Utils.getClosestAncestorElementByClassName('test-child', testChild), ' does NOT return the source element when attempting to get an ancestor element with the same class');
         });
 
+        QUnit.test('getElementsByClassName method', function() {
+            QUnit.expect(1);
+            var html = '<div class="container" data-more="more_data"></div>';
+            var el = Utils.createHtmlElement(html);
+            var child = Utils.createHtmlElement('<span class="content">Test stuff</span>');
+            el.appendChild(child);
+            var isIE8Stub = Sinon.stub(Utils, 'isIE8').returns(false); // not ie8
+            QUnit.equal(Utils.getElementsByClassName('content', el)[0], child, 'calling getElementsByClassName returns correct el');
+            isIE8Stub.restore();
+        });
+
+        QUnit.test('getElementsByClassName method (IE8 mode)', function() {
+            QUnit.expect(1);
+            var html = '<div class="container" data-more="more_data"></div>';
+            var el = Utils.createHtmlElement(html);
+            var child = Utils.createHtmlElement('<span class="content">Test stuff</span>');
+            el.appendChild(child);
+            var isIE8Stub = Sinon.stub(Utils, 'isIE8').returns(true); // put into ie 8 mode
+            QUnit.equal(Utils.getElementsByClassName('content', el)[0], child, 'calling getElementsByClassName in IE 8 mode returns correct el');
+            isIE8Stub.restore();
+        });
+
     });

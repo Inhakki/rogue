@@ -145,7 +145,7 @@ function (App, CoreUtils) {
             if (!this.isIE8()) {
                 return el.getElementsByClassName(className);
             } else {
-                return el.querySelectorAll(className);
+                return el.querySelectorAll('.' + className);
             }
         },
 

@@ -60,4 +60,16 @@ define([
             QUnit.ok(!Utils.getClosestAncestorElementByClassName('test-child', testChild), ' does NOT return the source element when attempting to get an ancestor element with the same class');
         });
 
+        QUnit.test('wrapHtmlElement method', function() {
+            QUnit.expect(2);
+            var origParent = Utils.createHtmlElement('<div class="content"></div>');
+            var innerHtml = '<span>Test stuff</span>';
+            var wrapped = Utils.createHtmlElement(innerHtml);
+            origParent.appendChild(wrapped);
+            var wrapperHtml = '<div class="wrapper"></div>';
+            var wrapper = Utils.wrapHtmlElement(wrapped, wrapperHtml);
+            QUnit.equal(wrapper.innerHTML, innerHtml, 'new element has inner html contents');
+            QUnit.equal(wrapper.parentNode, origParent, 'new wrapper\'s parent node is the wrapped element\'s original parent');
+        });
+
     });

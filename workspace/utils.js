@@ -79,6 +79,19 @@ function (App, CoreUtils) {
         },
 
         /**
+         * Wrap a container element around another element.
+         * @param {HTMLElement} el - The element to be wrapped
+         * @param {string} html - The wrapper element
+         */
+        wrapHtmlElement: function (el, html) {
+            var origContainer = el.parentNode,
+                container = this.createHtmlElement(html);
+            origContainer.replaceChild(container, el);
+            container.innerHTML = el.outerHTML;
+            return container;
+        },
+
+        /**
          * Zaps whitespace from both ends of a string.
          * @param {string} val - The string value to trim
          * @returns {string} Returns a trimmed string

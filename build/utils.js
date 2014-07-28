@@ -67,12 +67,14 @@ function (App, CoreUtils) {
          * @returns {HTMLElement} - Returns and html element node
          */
         createHtmlElement: function (html) {
-            var tempParentEl;
+            var tempParentEl,
+                el;
             if (html) {
                 html = this.trim(html);
                 tempParentEl = document.createElement('div');
                 tempParentEl.innerHTML = html;
-                return tempParentEl.childNodes[0];
+                el = tempParentEl.childNodes[0];
+                return tempParentEl.removeChild(el);
             }
         },
 

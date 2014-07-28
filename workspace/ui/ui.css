@@ -5,3 +5,13 @@
 .ui-tooltip-active .ui-tooltip-panel {
     display: block;
 }
+
+/* Checkboxes */
+.ui-checkbox-container .ui-checkbox {
+    left: -10000px;
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    top: auto;
+    width: 1px;
+}

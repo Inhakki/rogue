@@ -1,0 +1,194 @@
+define([
+    'framework/framework',
+    'framework/utils'
+],
+    function (App, Utils) {
+        "use strict";
+
+        var ButtonToggleElement = function (options) {
+            this.initialize(options);
+        };
+
+        ButtonToggleElement.prototype = {
+
+            /**
+             * Initialization.
+             * @param {object} options - Options to pass
+             * @param {HTMLInputElement} options.el - The input element checkbox
+             * @param {Function} options.onSelect - A callback function that fires when the button toggle element is selected
+             * @param {Function} options.onDeselect - A callback function that fires when the button toggle element is deselected
+             */
+            initialize: function (options) {
+
+                this.options = Utils.extend({
+                    el: null,
+                    onSelect: null,
+                    onDeselect: null
+                }, options);
+
+                // cache vars
+                this.selectedClass = 'ui-button-toggle-selected';
+                this.disabledClass = 'ui-button-toggle-disabled';
+                this._input = this.options.el;
+
+                if (this._input.tagName.toLowerCase() !== 'input') {
+                    console.error('button toggle element cannot be created: constructor must be passed an input element!');
+                } else {
+                    this.setup();
+                }
+
+            },
+
+            /**
+             * Sets up html.
+             */
+            setup: function () {
+                var input = this.getFormElement();
+
+                this.isInitChecked = input.checked;
+                this.isInitDisabled = input.disabled;
+
+                Utils.addClass(input, 'ui-button-toggle-input');
+                this._container = this._buildUIElement(input);
+
+                if (this.isInitChecked) {
+                    this.select();
+                }
+                if (this.isInitDisabled) {
+                    this.disable();
+                }
+
+                this._setupEvents();
+            },
+
+            /**
+             * Sets up events.
+             * @private
+             */
+            _setupEvents: function () {
+                Utils.addEventListener(this.getUIElement(), 'click', this._onToggleClick.bind(this))
+            },
+
+            /**
+             * When the input item is clicked.
+             * @param {Event} e - The event
+             * @private
+             */
+            _onToggleClick: function (e) {
+                var hasClass = Utils.hasClass(this.getUIElement(), this.selectedClass);
+                // this function has potential to fire twice (one for parent element and one for its nested child)
+                // so we ensure that this function only fires once by always checking
+                // if the event was actually fired by the item that was clicked
+                if (e.target === e.currentTarget) {
+                    if (!hasClass) {
+                        this.select();
+                    } else {
+                        this.deselect();
+                    }
+                }
+            },
+
+            /**
+             * Builds the UI-friendly version of the toggle input.
+             * @param {HTMLInputElement} inputEl - The input element
+             * @private
+             */
+            _buildUIElement: function (inputEl) {
+                return Utils.wrapHtmlElement(inputEl, '<div class="ui-button-toggle"></div>');
+            },
+
+            /**
+             * Checks whether the button toggle is selected.
+             * @returns {boolean}
+             */
+            isSelected: function () {
+                return this.getFormElement().checked;
+            },
+
+            /**
+             * Selects the toggle item.
+             */
+            select: function () {
+                var input = this.getFormElement(),
+                    toggle = this.getUIElement();
+                if (!this.isSelected()) {
+                    input.setAttribute('checked', 'checked');
+                }
+                Utils.addClass(toggle, this.selectedClass);
+                if (this.options.onSelected) {
+                    this.options.onSelected(input.value, input, toggle);
+                }
+
+            },
+
+            /**
+             * De-selects the toggle item.
+             */
+            deselect: function () {
+                var input = this.getFormElement(),
+                    toggle = this.getUIElement();
+                if (this.isSelected()) {
+                    input.removeAttribute('checked');
+                }
+                Utils.removeClass(toggle, this.selectedClass);
+                if (this.options.onDeselected) {
+                    this.options.onDeselected(input.value, input, toggle);
+                }
+            },
+
+            /**
+             * Gets the checkbox input element.
+             * @returns {HTMLInputElement} Returns the checkbox input element
+             */
+            getFormElement: function () {
+                return this._input;
+            },
+
+            /**
+             * Gets the checkbox div element.
+             * @returns {HTMLElement} Returns the checkbox div element.
+             */
+            getUIElement: function () {
+                return this._container;
+            },
+
+            /**
+             * Enables the button toggle.
+             */
+            enable: function () {
+                this.getFormElement().removeAttribute('disabled');
+                Utils.removeClass(this.getUIElement(), this.disabledClass);
+            },
+
+            /**
+             * Disables the button toggle.
+             */
+            disable: function () {
+                this.getFormElement().setAttribute('disabled', 'true');
+                Utils.addClass(this.getUIElement(), this.disabledClass);
+            },
+
+            /**
+             * Destruction of this class.
+             */
+            destroy: function () {
+                var container = this.getUIElement(),
+                    input = this.getFormElement();
+
+                container.parentNode.replaceChild(input, container);
+
+                if (this.isInitChecked) {
+                    input.setAttribute('checked', 'checked');
+                }
+
+                if (this.isInitDisabled) {
+                    input.setAttribute('disabled', 'true');
+                }
+
+                Utils.removeEventListener(this.getUIElement(), 'click', this._onToggleClick.bind(this))
+            }
+
+        };
+
+        return ButtonToggleElement;
+    });

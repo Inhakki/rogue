@@ -52,10 +52,10 @@ define([
                 this._container = this._buildUIElement(input);
 
                 if (this.isInitChecked) {
-                    this.select();
+                    Utils.addClass(this._container, this.selectedClass);
                 }
                 if (this.isInitDisabled) {
-                    this.disable();
+                    Utils.addClass(this._container, this.disabledClass);
                 }
 
                 this._setupEvents();

@@ -48,20 +48,25 @@ define([
         });
 
         QUnit.test('initializing and destroying when checked initially', function() {
-            QUnit.expect(5);
+            QUnit.expect(7);
             var container = Utils.createHtmlElement(html);
             var fixture = document.getElementById('qunit-fixture').appendChild(container);
             var input = container.getElementsByClassName('ui-button-toggle-input')[0];
             input.setAttribute('checked', 'checked'); // make it so that input is checked initially
-            var instance = new ButtonToggleElement({el: input});
+            var onSelectedSpy = Sinon.spy();
+            var setAttrSpy = Sinon.spy(input, 'setAttribute');
+            var instance = new ButtonToggleElement({el: input, onSelected: onSelectedSpy});
             var toggle = container.getElementsByClassName('ui-button-toggle')[0];
             QUnit.ok(input.checked, 'input was checked initially');
             QUnit.ok(Utils.hasClass(toggle, 'ui-button-toggle-selected'), 'toggle has active class initially because original input was checked initially');
+            QUnit.equal(setAttrSpy.callCount, 0, 'inputs attribute was NOT set to ensure no unnecessary change events are fired');
+            QUnit.equal(onSelectedSpy.callCount, 0, 'onSelected callback was NOT fired');
             QUnit.ok(instance.isSelected(), 'isSelected() returns truthy');
             instance.deselect();
             QUnit.ok(!instance.isSelected(), 'isSelected() returns falsy');
             instance.destroy();
             QUnit.ok(input.checked, 'input checked boolean returns true because that\'s how it was initially');
+            setAttrSpy.restore();
         });
 
         QUnit.test('selecting and deselecting callbacks', function() {
@@ -129,19 +134,22 @@ define([
         });
 
         QUnit.test('initialize and destroy when initially disabled', function() {
-            QUnit.expect(4);
+            QUnit.expect(5);
             var container = Utils.createHtmlElement(html);
             var fixture = document.getElementById('qunit-fixture').appendChild(container);
             var input = container.getElementsByClassName('ui-button-toggle-input')[0];
             input.setAttribute('disabled', 'true'); // make it so that input is checked initially
+            var setAttrSpy = Sinon.spy(input, 'setAttribute');
             var instance = new ButtonToggleElement({el: input});
             var toggle = container.getElementsByClassName('ui-button-toggle')[0];
             QUnit.ok(input.disabled, 'input was disabled initially');
             QUnit.ok(Utils.hasClass(toggle, 'ui-button-toggle-disabled'), 'toggle element has disabled class initially because original input was disabled initially');
+            QUnit.equal(setAttrSpy.callCount, 0, 'setAttribute was NOT called to ensure no unnecessary change events are fired');
             instance.enable();
             QUnit.ok(!Utils.hasClass(toggle, 'ui-button-toggle-disabled'), 'when enabling, toggle element\'s disabled class is removed');
             instance.destroy();
             QUnit.ok(input.disabled, 'input disabled boolean returns true because that\'s how it was initially');
+            setAttrSpy.restore();
         });
 
 

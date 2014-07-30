@@ -11,6 +11,7 @@ define([
         QUnit.module('Checkbox Tests');
 
         var html = '<label><input type="checkbox" class="ui-checkbox-input" value="NY" name="ny" /> New York</label>';
+        var disabledClass = 'ui-checkbox-disabled';
 
         QUnit.test('initializing/destroying the checkbox', function() {
             QUnit.expect(2);
@@ -107,6 +108,44 @@ define([
             QUnit.equal(uncheckSpy.callCount, 1, 'uncheck() method was not called');
             checkSpy.restore();
             uncheckSpy.restore();
+        });
+
+        QUnit.test('enabling and disabling', function () {
+            QUnit.expect(6);
+            var fixture = document.getElementById('qunit-fixture');
+            var container = Utils.createHtmlElement(html);
+            fixture.appendChild(container);
+            var inputEl = container.getElementsByClassName('ui-checkbox-input')[0];
+            var instance = new Checkbox({el: inputEl});
+            var checkboxEl = container.getElementsByClassName('ui-checkbox')[0];
+            QUnit.ok(!Utils.hasClass(checkboxEl, disabledClass), 'checkbox element does not have active class initially');
+            QUnit.ok(!inputEl.disabled, 'input\'s checked boolean returns falsy');
+            instance.disable();
+            QUnit.ok(Utils.hasClass(checkboxEl, disabledClass), 'checkbox element has correct disabled class after disable()');
+            QUnit.ok(inputEl.disabled, 'input\'s checked boolean returns truthy');
+            instance.enable();
+            QUnit.ok(!Utils.hasClass(checkboxEl, disabledClass), 'after enable(), checkbox element does not have disabled class');
+            QUnit.ok(!inputEl.disabled, 'input\'s checked boolean returns falsy');
+            instance.destroy();
+        });
+
+        QUnit.test('initializing and destroying when disabled state already exists', function () {
+            QUnit.expect(5);
+            var container = Utils.createHtmlElement(html);
+            var fixture = document.getElementById('qunit-fixture').appendChild(container);
+            var inputEl = container.getElementsByClassName('ui-checkbox-input')[0];
+            inputEl.setAttribute('disabled', 'disabled'); // make it so that input is checked initially
+            var setAttrSpy = Sinon.spy(inputEl, 'setAttribute');
+            var instance = new Checkbox({el: inputEl});
+            var checkboxEl = container.getElementsByClassName('ui-checkbox')[0];
+            QUnit.ok(inputEl.disabled, 'input was disabled initially');
+            QUnit.ok(Utils.hasClass(checkboxEl, disabledClass), 'checkbox element has disabled class initially because original input was disabled initially');
+            QUnit.equal(setAttrSpy.callCount, 0, 'setAttribute was NOT called to ensure no unnecessary change events are fired');
+            instance.enable();
+            QUnit.ok(!Utils.hasClass(checkboxEl, disabledClass), 'when enabling, checkbox element\'s disabled class is removed');
+            instance.destroy();
+            QUnit.ok(inputEl.disabled, 'input disabled boolean returns true because that\'s how it was initially');
+            setAttrSpy.restore();
         });
 
     });

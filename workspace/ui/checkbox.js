@@ -27,6 +27,7 @@ define([
                 }, options);
 
                 this.checkedClass = 'ui-checkbox-checked';
+                this.disabledClass = 'ui-checkbox-disabled';
                 this.el = this.options.el;
 
                 if (!Utils.hasClass(this.el, 'ui-checkbox-input')) {
@@ -41,17 +42,21 @@ define([
              * Sets up html.
              */
             setup: function () {
-                var isCheckedOnInit = this.getFormElement().checked,
-                    input = this.getFormElement();
+                var input = this.getFormElement();
 
                 Utils.addClass(input, 'ui-checkbox-input');
 
                 this._container = this._buildUIElement(this.el);
                 
                 // if input element is already checked initially, check it!
-                if (isCheckedOnInit) {
-                    this.check();
-                    this.isCheckedOnInit = isCheckedOnInit;
+                this.isInitChecked = input.checked;
+                if (this.isInitChecked) {
+                    Utils.addClass(this._container, this.checkedClass);
+                }
+
+                this.isInitDisabled = input.disabled;
+                if (this.isInitDisabled) {
+                    Utils.addClass(this._container, this.disabledClass);
                 }
 
                 // setup events
@@ -117,6 +122,22 @@ define([
             },
 
             /**
+             * Enables the checkbox.
+             */
+            enable: function () {
+                this.getFormElement().removeAttribute('disabled');
+                Utils.removeClass(this.getUIElement(), this.disabledClass);
+            },
+
+            /**
+             * Disables the checkbox.
+             */
+            disable: function () {
+                this.getFormElement().setAttribute('disabled', 'disabled');
+                Utils.addClass(this.getUIElement(), this.disabledClass);
+            },
+
+            /**
              * Gets the checkbox input element.
              * @returns {HTMLInputElement} Returns the checkbox input element
              */
@@ -145,8 +166,11 @@ define([
                 // remove stray html
                 container.parentNode.replaceChild(input, container);
 
-                if (this.isCheckedOnInit) {
+                if (this.isInitChecked) {
                     input.setAttribute('checked', 'checked');
+                }
+                if (this.isInitDisabled) {
+                    input.setAttribute('disabled', 'disabled');
                 }
             }
 

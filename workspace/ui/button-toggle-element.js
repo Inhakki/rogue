@@ -71,20 +71,14 @@ define([
 
             /**
              * When the input item is clicked.
-             * @param {Event} e - The event
              * @private
              */
-            _onToggleClick: function (e) {
+            _onToggleClick: function () {
                 var hasClass = Utils.hasClass(this.getUIElement(), this.selectedClass);
-                // this function has potential to fire twice (one for parent element and one for its nested child)
-                // so we ensure that this function only fires once by always checking
-                // if the event was actually fired by the item that was clicked
-                if (e.target === e.currentTarget) {
-                    if (!hasClass) {
-                        this.select();
-                    } else {
-                        this.deselect();
-                    }
+                if (!hasClass) {
+                    this.select();
+                } else {
+                    this.deselect();
                 }
             },
 

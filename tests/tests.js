@@ -26,7 +26,8 @@ require([
     'ui/utils-tests',
     'ui/tooltip-tests',
     'ui/checkbox-tests',
-    'ui/button-toggle-element-tests'
+    'ui/button-toggle-element-tests',
+    'ui/button-toggle-tests'
 ], function() {
     QUnit.config.requireExpects = true;
     QUnit.start();

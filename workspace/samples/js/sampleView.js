@@ -11,8 +11,9 @@ require([
     'framework/framework',
     'framework/utils',
     'framework/ui/tooltip',
-    'framework/ui/checkbox'
-], function (App, Utils, Tooltip, Checkbox) {
+    'framework/ui/checkbox',
+    'framework/ui/button-toggle'
+], function (App, Utils, Tooltip, Checkbox, ButtonToggle) {
     'use strict';
 
     var SampleView = function () {
@@ -22,6 +23,14 @@ require([
 
         this.checkbox = new Checkbox({
             el: Utils.getElementsByClassName('ui-checkbox-input')[0]
+        });
+
+        this.multiSelectToggle = new ButtonToggle({
+            container: Utils.getElementsByClassName('multi-select-button-toggle')[0]
+        });
+
+        this.singleSelectToggle = new ButtonToggle({
+            container: Utils.getElementsByClassName('single-select-button-toggle')[0]
         });
     };
 

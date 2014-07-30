@@ -83,4 +83,30 @@ define([
             checkbox.destroy();
         });
 
+        QUnit.test('clicking on and off', function () {
+            QUnit.expect(8);
+            var fixture = document.getElementById('qunit-fixture');
+            var container = Utils.createHtmlElement(html);
+            fixture.appendChild(container);
+            var input = container.getElementsByClassName('ui-checkbox-input')[0];
+            var checkSpy = Sinon.spy(Checkbox.prototype, 'check');
+            var uncheckSpy = Sinon.spy(Checkbox.prototype, 'uncheck');
+            var instance = new Checkbox({el: input});
+            var checkboxEl = container.getElementsByClassName('ui-checkbox')[0];
+            QUnit.equal(checkSpy.callCount, 0, 'check() method was not called initially');
+            QUnit.equal(uncheckSpy.callCount, 0, 'uncheck() method was not called initially');
+            checkboxEl.dispatchEvent(TestUtils.createEvent('click'));
+            QUnit.equal(checkSpy.callCount, 1, 'clicking checkbox element calls check() method');
+            QUnit.equal(uncheckSpy.callCount, 0, 'uncheck() method was not called');
+            checkboxEl.dispatchEvent(TestUtils.createEvent('click'));
+            QUnit.equal(uncheckSpy.callCount, 1, 'clicking checkbox element a second time calls uncheck() method');
+            QUnit.equal(checkSpy.callCount, 1, 'check() method was not called');
+            instance.destroy();
+            checkboxEl.dispatchEvent(TestUtils.createEvent('click'));
+            QUnit.equal(checkSpy.callCount, 1, 'clicking checkbox element again does NOT call check() method because instance was destroyed');
+            QUnit.equal(uncheckSpy.callCount, 1, 'uncheck() method was not called');
+            checkSpy.restore();
+            uncheckSpy.restore();
+        });
+
     });

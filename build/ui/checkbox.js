@@ -43,14 +43,31 @@ define([
             setup: function () {
                 var isCheckedOnInit = this.getFormElement().checked,
                     input = this.getFormElement();
+
                 Utils.addClass(input, 'ui-checkbox-input');
+
                 this._container = this._buildUIElement(this.el);
+                
                 // if input element is already checked initially, check it!
                 if (isCheckedOnInit) {
                     this.check();
                     this.isCheckedOnInit = isCheckedOnInit;
                 }
 
+                // setup events
+                Utils.addEventListener(this.getUIElement(), 'click', this._onClick.bind(this));
+            },
+
+            /**
+             * When the checkbox element is clicked.
+             * @private
+             */
+            _onClick: function () {
+                if (!this.isChecked()) {
+                    this.check();
+                } else {
+                    this.uncheck();
+                }
             },
 
             /**
@@ -75,7 +92,9 @@ define([
             check: function () {
                 var input = this.getFormElement(),
                     container = this.getUIElement();
-                input.setAttribute('checked', 'checked');
+                if (!input.checked) {
+                    input.setAttribute('checked', 'checked');
+                }
                 Utils.addClass(container, this.checkedClass);
                 if (this.options.onChecked) {
                     this.options.onChecked(input.value, input, container);
@@ -88,7 +107,9 @@ define([
             uncheck: function () {
                 var input = this.getFormElement(),
                     container = this.getUIElement();
-                input.removeAttribute('checked');
+                if (input.checked) {
+                    input.removeAttribute('checked');
+                }
                 Utils.removeClass(container, this.checkedClass);
                 if (this.options.onUnchecked) {
                     this.options.onUnchecked(input.value, input, container);
@@ -117,7 +138,13 @@ define([
             destroy: function () {
                 var container = this.getUIElement(),
                     input = this.getFormElement();
+
+                // remove event listener
+                Utils.removeEventListener(this.getUIElement(), 'click', this._onClick.bind(this));
+
+                // remove stray html
                 container.parentNode.replaceChild(input, container);
+
                 if (this.isCheckedOnInit) {
                     input.setAttribute('checked', 'checked');
                 }

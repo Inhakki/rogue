@@ -122,23 +122,4 @@ define([
             hideSpy.restore();
         });
 
-        QUnit.test('accessibility element', function() {
-            QUnit.expect(3);
-            var container = Utils.createHtmlElement(html);
-            var fixture = document.getElementById('qunit-fixture').appendChild(container);
-            var panel = Utils.getElementsByClassName('ui-tooltip-panel', container)[0];
-            var panelText = 'Panel text';
-            panel.innerHTML = panelText;
-            var tooltip = new Tooltip({el: container});
-            var trigger = Utils.getElementsByClassName('ui-tooltip-trigger', container)[0];
-            var accessibilityEl = Utils.getElementsByClassName('ui-tooltip-accessibility-text', container)[0];
-            QUnit.equal(accessibilityEl.innerHTML, panelText, 'on initialize, accessibility element was created with same text as panel text');
-            var newPanelText = 'Changed text';
-            tooltip.setPanelText(newPanelText);
-            QUnit.equal(accessibilityEl.innerHTML, newPanelText, 'calling setPanelText() with new text changes the accessibility panel\'s text');
-            tooltip.destroy();
-            var accessibilityEl = Utils.getElementsByClassName('ui-tooltip-accessibility-text', container);
-            QUnit.equal(accessibilityEl.length, 0, 'accessibility element was removed on destroy');
-        });
-
     });

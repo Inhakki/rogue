@@ -35,7 +35,6 @@ function (App, Utils) {
             this.el = this.options.el;
             this.trigger = Utils.getElementsByClassName('ui-tooltip-trigger', this.el)[0];
             this.panel = Utils.getElementsByClassName('ui-tooltip-panel', this.el)[0];
-            this.accessibility = this._buildAccessbilityEl(this.panel);
 
             this.setup();
 
@@ -71,17 +70,6 @@ function (App, Utils) {
                 }
             }
             this.eventMap = map;
-        },
-
-        /**
-         * Builds a hidden panel for accessibility.
-         * @param {HTMLElement} panel - The panel under which accessibility element should be appended
-         * @returns {HTMLElement} Returns accessibility element after being appended to the panel
-         * @private
-         */
-        _buildAccessbilityEl: function (panel) {
-            var el = Utils.createHtmlElement('<div class="ui-tooltip-accessibility-text">' + panel.innerHTML + '</div>');
-            return this.panel.parentNode.insertBefore(el, this.panel.nextSibling);
         },
 
         /**
@@ -160,28 +148,11 @@ function (App, Utils) {
         },
 
         /**
-         * Set tooltip panel text.
-         * @param {string} value - The new value
-         */
-        setPanelText: function (value) {
-            if (!Utils.isIE8) {
-                this.panel.textContent = value;
-                this.accessibility.textContent = value;
-            } else {
-                this.panel.innerText = value;
-                this.accessibility.innerText = value;
-            }
-        },
-
-        /**
          * Destruction of this class.
          */
         destroy: function () {
             var eventMap = this.eventMap,
                 key;
-
-            // destroy accessibility element
-            this.panel.parentNode.removeChild(this.accessibility);
 
             // destroy events
             if (eventMap) {

@@ -6,15 +6,6 @@
     display: block;
 }
 
-.ui-tooltip-accessibility-text {
-    left: -10000px;
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    top: auto;
-    width: 1px;
-}
-
 /* Checkboxes */
 .ui-checkbox-input {
     left: -10000px;

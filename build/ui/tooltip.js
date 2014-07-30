@@ -148,18 +148,6 @@ function (App, Utils) {
         },
 
         /**
-         * Set tooltip panel text.
-         * @param {string} value - The new value
-         */
-        setPanelText: function (value) {
-            if (!Utils.isIE8) {
-                this.panel.textContent = value;
-            } else {
-                this.panel.innerText = value;
-            }
-        },
-
-        /**
          * Destruction of this class.
          */
         destroy: function () {

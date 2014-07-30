@@ -19,8 +19,8 @@ define(function () {
             } else {
                 // must register click old-fashioned way so that running tests headlessly will work
                 event = document.createEvent('Event');
-                bubbles = options.bubbles || true;
-                cancelable = options.cancelable || true;
+                bubbles = options.bubbles || false;
+                cancelable = options.cancelable || false;
                 event.initEvent(name, bubbles, cancelable);
             }
             return event;

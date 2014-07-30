@@ -67,13 +67,28 @@ function (App, CoreUtils) {
          * @returns {HTMLElement} - Returns and html element node
          */
         createHtmlElement: function (html) {
-            var tempParentEl;
+            var tempParentEl,
+                el;
             if (html) {
                 html = this.trim(html);
                 tempParentEl = document.createElement('div');
                 tempParentEl.innerHTML = html;
-                return tempParentEl.childNodes[0];
+                el = tempParentEl.childNodes[0];
+                return tempParentEl.removeChild(el);
             }
+        },
+
+        /**
+         * Wrap a container element around another element.
+         * @param {HTMLElement} el - The element to be wrapped
+         * @param {string} html - The wrapper element
+         */
+        wrapHtmlElement: function (el, html) {
+            var origContainer = el.parentNode,
+                container = this.createHtmlElement(html);
+            origContainer.replaceChild(container, el);
+            container.innerHTML = el.outerHTML;
+            return container;
         },
 
         /**

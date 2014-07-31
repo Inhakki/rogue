@@ -87,7 +87,7 @@ function (App, CoreUtils) {
             var origContainer = el.parentNode,
                 container = this.createHtmlElement(html);
             origContainer.replaceChild(container, el);
-            container.innerHTML = el.outerHTML;
+            container.appendChild(el);
             return container;
         },
 

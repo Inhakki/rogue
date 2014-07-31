@@ -31,7 +31,3 @@ node_modules
 # Mac OS
 *\.DS_Store
 .DS_Store
-
-# ignore samples build
-build/samples
-build/tests

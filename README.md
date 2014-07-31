@@ -90,14 +90,27 @@ __Please note that your module ID for require must be 'framework' as we have res
 <a name="development"></a>
 ## Development
 
+### Folder Structure
+
+The project is set up as follows:
+
+* **grunt** - Files for grunt configuration
+* **samples** - A folder that can be browsed to see all module usage
+* **tests** - Test files
+* **workspace** - Parent folder for development (This folder is what is distributed when the package is installed in other projects)
+    * **libs** - Project libraries
+    * **ui** - All ui-based modules (form fields, toggle buttons, etc.)
+
+### Tasks
+
 The following are tasks that are available when developing on Web Framework.
 
-#### make build
+#### make server
 
-To build the project for deployment:
+To run the server:
 
 ```
-make build
+make server
 ```
 
 #### make test
@@ -107,6 +120,3 @@ To run all tests on the project, type:
 ```
 make test
 ```
-
-## Release History
-* 2014-20-07   v0.1.0   Added testing framework and necessary project dependencies

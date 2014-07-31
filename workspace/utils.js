@@ -182,13 +182,13 @@ function (App, CoreUtils) {
                 callback(e);
             };
 
-            // force the 'this' to be the value of the el, rather than the window object
-            // to work like our more modern friend, addEventListener()
-            listener.bind(el);
-
-            if (!this.isIE8()) {
+            if (!this.getIEVersion() === 8) {
+                // IE 8!
                 el.addEventListener(event, listener, useCapture);
             } else {
+                // force the 'this' to be the value of the el, rather than the window object
+                // to work like our more modern friend, addEventListener()
+                listener = listener.bind(el);
                 el.attachEvent('on' + event, listener);
             }
 
@@ -226,15 +226,30 @@ function (App, CoreUtils) {
         /**
          * Checks if browser is IE 8.
          * @returns {boolean} Returns true if the current browser is IE 8.
+         * @deprecated
          */
         isIE8: function () {
-            var rv = -1;
-            var ua = navigator.userAgent;
-            var re = new RegExp("Trident\/([0-9]{1,}[\.0-9]{0,})");
-            if (re.exec(ua) != null) {
-                rv = parseFloat(RegExp.$1);
+            return this.getIEVersion() === 8;
+        },
+
+        /**
+         * Gets the current IE version.
+         * @returns {Number} Returns the IE version number
+         */
+        getIEVersion: function () {
+            if (navigator.appName == "Microsoft Internet Explorer") {
+                //Create a user agent var
+                var ua = navigator.userAgent;
+                //Write a new regEx to find the version number
+                var re = new RegExp("MSIE ([0-9]{1,}[.0-9]{0,})");
+                //If the regEx through the userAgent is not null
+                if (re.exec(ua) != null) {
+                    //Set the IE version
+                    return parseInt(RegExp.$1);
+                }
+            } else {
+                return false;
             }
-            return (rv == 4);
         },
 
         /**

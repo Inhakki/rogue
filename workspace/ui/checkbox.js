@@ -47,7 +47,7 @@ define([
                 Utils.addClass(input, 'ui-checkbox-input');
 
                 this._container = this._buildUIElement(this.el);
-                
+
                 // if input element is already checked initially, check it!
                 this.isInitChecked = input.checked;
                 if (this.isInitChecked) {
@@ -68,8 +68,9 @@ define([
              * @private
              */
             _onClick: function () {
-                if (!this.getFormElement().disabled) {
-                    if (!this.isChecked()) {
+                var input = this.getFormElement();
+                if (!input.disabled) {
+                    if (!Utils.hasClass(this.getUIElement(), this.checkedClass)) {
                         this.check();
                     } else {
                         this.uncheck();
@@ -86,12 +87,6 @@ define([
                 return Utils.wrapHtmlElement(inputEl, '<div class="ui-checkbox"></div>');
             },
 
-            /**
-             * Checks whether the checkbox is checked.
-             */
-            isChecked: function () {
-                return Utils.hasClass(this.getUIElement(), this.checkedClass);
-            },
 
             /**
              * Checks the checkbox.
@@ -101,6 +96,7 @@ define([
                     container = this.getUIElement();
                 if (!input.checked) {
                     input.setAttribute('checked', 'checked');
+                    input.checked = true;
                 }
                 Utils.addClass(container, this.checkedClass);
                 if (this.options.onChecked) {
@@ -116,6 +112,7 @@ define([
                     container = this.getUIElement();
                 if (input.checked) {
                     input.removeAttribute('checked');
+                    this.checked = false;
                 }
                 Utils.removeClass(container, this.checkedClass);
                 if (this.options.onUnchecked) {

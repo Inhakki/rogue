@@ -68,10 +68,12 @@ define([
              * @private
              */
             _onClick: function () {
-                if (!this.isChecked()) {
-                    this.check();
-                } else {
-                    this.uncheck();
+                if (!this.getFormElement().disabled) {
+                    if (!this.isChecked()) {
+                        this.check();
+                    } else {
+                        this.uncheck();
+                    }
                 }
             },
 

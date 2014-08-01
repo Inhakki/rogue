@@ -33,6 +33,10 @@ require([
             container: Utils.getElementsByClassName('single-select-button-toggle')[0]
         });
 
+        this.inputField = new InputField({
+            el: Utils.getElementsByClassName('name-input-field')[0]
+        });
+
     };
 
     return new SampleView();

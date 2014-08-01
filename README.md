@@ -22,6 +22,14 @@ AKQA Web Framework is a internal framework built to simplify development of all 
 
 You can install Node.js via the package provided on [their site](http://www.nodejs.org).
 
+#### Apache Setup
+
+In your hosts file, add the following entry:
+
+```
+0.0.0.0       web-framework.dc.akqa.com
+```
+
 #### AKQA Core
 
 You must install AKQA Core package globally by typing the following in your terminal while connected to the AKQA internal network:

@@ -2,18 +2,18 @@
 require.config({
     'baseUrl': '',
     'paths': {
-        framework: '../../'
+        framework: '../../workspace'
     }
 });
-
 
 require([
     'framework/framework',
     'framework/utils',
     'framework/ui/tooltip',
     'framework/ui/checkbox',
-    'framework/ui/button-toggle'
-], function (App, Utils, Tooltip, Checkbox, ButtonToggle) {
+    'framework/ui/button-toggle',
+    'framework/ui/input-field'
+], function (App, Utils, Tooltip, Checkbox, ButtonToggle, InputField) {
     'use strict';
 
     var SampleView = function () {
@@ -32,6 +32,11 @@ require([
         this.singleSelectToggle = new ButtonToggle({
             container: Utils.getElementsByClassName('single-select-button-toggle')[0]
         });
+
+        this.inputField = new InputField({
+            el: Utils.getElementsByClassName('name-input-field')[0]
+        });
+
     };
 
     return new SampleView();

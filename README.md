@@ -22,6 +22,14 @@ AKQA Web Framework is a internal framework built to simplify development of all 
 
 You can install Node.js via the package provided on [their site](http://www.nodejs.org).
 
+#### Apache Setup
+
+In your hosts file, add the following entry:
+
+```
+0.0.0.0       web-framework.dc.akqa.com
+```
+
 #### AKQA Core
 
 You must install AKQA Core package globally by typing the following in your terminal while connected to the AKQA internal network:
@@ -90,14 +98,27 @@ __Please note that your module ID for require must be 'framework' as we have res
 <a name="development"></a>
 ## Development
 
+### Folder Structure
+
+The project is set up as follows:
+
+* **grunt** - Files for grunt configuration
+* **samples** - A folder that can be browsed to see all module usage
+* **tests** - Test files
+* **workspace** - Parent folder for development (This folder is what is distributed when the package is installed in other projects)
+    * **libs** - Project libraries
+    * **ui** - All ui-based modules (form fields, toggle buttons, etc.)
+
+### Tasks
+
 The following are tasks that are available when developing on Web Framework.
 
-#### make build
+#### make server
 
-To build the project for deployment:
+To run the server:
 
 ```
-make build
+make server
 ```
 
 #### make test
@@ -107,6 +128,3 @@ To run all tests on the project, type:
 ```
 make test
 ```
-
-## Release History
-* 2014-20-07   v0.1.0   Added testing framework and necessary project dependencies

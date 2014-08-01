@@ -12,12 +12,6 @@ require.config({
         sinon: {
             exports: 'sinon'
         }
-    },
-    map: {
-        'framework/utils': {
-            // we must remap core utils for tests
-            'framework/libs/core-modules/akqa-core/utils': '../../build/libs/core-modules/akqa-core/utils'
-        }
     }
 });
 
@@ -27,7 +21,8 @@ require([
     'ui/tooltip-tests',
     'ui/checkbox-tests',
     'ui/button-toggle-element-tests',
-    'ui/button-toggle-tests'
+    'ui/button-toggle-tests',
+    'ui/input-field-tests'
 ], function() {
     QUnit.config.requireExpects = true;
     QUnit.start();

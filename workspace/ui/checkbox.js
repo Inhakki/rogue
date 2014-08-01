@@ -27,6 +27,7 @@ define([
                 }, options);
 
                 this.checkedClass = 'ui-checkbox-checked';
+                this.disabledClass = 'ui-checkbox-disabled';
                 this.el = this.options.el;
 
                 if (!Utils.hasClass(this.el, 'ui-checkbox-input')) {
@@ -41,16 +42,37 @@ define([
              * Sets up html.
              */
             setup: function () {
-                var isCheckedOnInit = this.getFormElement().checked,
-                    input = this.getFormElement();
+                var input = this.getFormElement();
+
                 Utils.addClass(input, 'ui-checkbox-input');
+
                 this._container = this._buildUIElement(this.el);
+                
                 // if input element is already checked initially, check it!
-                if (isCheckedOnInit) {
-                    this.check();
-                    this.isCheckedOnInit = isCheckedOnInit;
+                this.isInitChecked = input.checked;
+                if (this.isInitChecked) {
+                    Utils.addClass(this._container, this.checkedClass);
                 }
 
+                this.isInitDisabled = input.disabled;
+                if (this.isInitDisabled) {
+                    Utils.addClass(this._container, this.disabledClass);
+                }
+
+                // setup events
+                Utils.addEventListener(this.getUIElement(), 'click', this._onClick.bind(this));
+            },
+
+            /**
+             * When the checkbox element is clicked.
+             * @private
+             */
+            _onClick: function () {
+                if (!this.isChecked()) {
+                    this.check();
+                } else {
+                    this.uncheck();
+                }
             },
 
             /**
@@ -75,7 +97,9 @@ define([
             check: function () {
                 var input = this.getFormElement(),
                     container = this.getUIElement();
-                input.setAttribute('checked', 'checked');
+                if (!input.checked) {
+                    input.setAttribute('checked', 'checked');
+                }
                 Utils.addClass(container, this.checkedClass);
                 if (this.options.onChecked) {
                     this.options.onChecked(input.value, input, container);
@@ -88,11 +112,29 @@ define([
             uncheck: function () {
                 var input = this.getFormElement(),
                     container = this.getUIElement();
-                input.removeAttribute('checked');
+                if (input.checked) {
+                    input.removeAttribute('checked');
+                }
                 Utils.removeClass(container, this.checkedClass);
                 if (this.options.onUnchecked) {
                     this.options.onUnchecked(input.value, input, container);
                 }
+            },
+
+            /**
+             * Enables the checkbox.
+             */
+            enable: function () {
+                this.getFormElement().removeAttribute('disabled');
+                Utils.removeClass(this.getUIElement(), this.disabledClass);
+            },
+
+            /**
+             * Disables the checkbox.
+             */
+            disable: function () {
+                this.getFormElement().setAttribute('disabled', 'disabled');
+                Utils.addClass(this.getUIElement(), this.disabledClass);
             },
 
             /**
@@ -117,9 +159,18 @@ define([
             destroy: function () {
                 var container = this.getUIElement(),
                     input = this.getFormElement();
+
+                // remove event listener
+                Utils.removeEventListener(this.getUIElement(), 'click', this._onClick.bind(this));
+
+                // remove stray html
                 container.parentNode.replaceChild(input, container);
-                if (this.isCheckedOnInit) {
+
+                if (this.isInitChecked) {
                     input.setAttribute('checked', 'checked');
+                }
+                if (this.isInitDisabled) {
+                    input.setAttribute('disabled', 'disabled');
                 }
             }
 

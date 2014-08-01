@@ -3,6 +3,7 @@ define([
     'framework/libs/core-modules/akqa-core/utils'
 ],
 function (App, CoreUtils) {
+    "use strict";
 
     var Utils = function () {
         this.initialize();
@@ -182,36 +183,40 @@ function (App, CoreUtils) {
                 callback(e);
             };
 
-            if (!this.getIEVersion() === 8) {
+            if (this.getIEVersion() === 8) {
                 // IE 8!
-                el.addEventListener(event, listener, useCapture);
-            } else {
                 // force the 'this' to be the value of the el, rather than the window object
                 // to work like our more modern friend, addEventListener()
-                listener = listener.bind(el);
-                el.attachEvent('on' + event, listener);
+                el.attachEvent('on' + event, listener.bind(this));
+            } else {
+                el.addEventListener(event, listener, useCapture);
             }
 
             // cache click function to use as unique identifier
             // to remove event listener later
             this.events = this.events || {};
-            this.events[callback] = listener;
+            this.events['e' + el + event + callback] = listener;
         },
 
         /**
          * Removes an event listener from an element.
          * @param {HTMLElement} el - The element with the event
          * @param {string} event - The event to remove
-         * @param {Function} listener - The event listener function to be removed
+         * @param {Function} callback - The event listener function to be removed
          * @param {boolean} useCapture - Whether to use capture (see Web.API.EventTarget.addEventListener)
          */
-        removeEventListener: function (el, event, listener, useCapture) {
-            listener = this.events[listener];
-            if (!this.isIE8()) {
-                el.removeEventListener(event, listener, useCapture);
-            } else {
+        removeEventListener: function (el, event, callback, useCapture) {
+            var eventKey = 'e' + el + event + callback,
+                listener = this.events[eventKey];
+
+            if (this.isIE8()) {
+                // IE 8!
                 el.detachEvent(event, listener);
+            } else {
+                el.removeEventListener(event, listener, useCapture);
             }
+
+            this.events[eventKey] = null;
         },
 
         /**
@@ -237,11 +242,11 @@ function (App, CoreUtils) {
          * @returns {Number} Returns the IE version number
          */
         getIEVersion: function () {
-            if (navigator.appName == "Microsoft Internet Explorer") {
+            if (navigator.appName == 'Microsoft Internet Explorer') {
                 //Create a user agent var
                 var ua = navigator.userAgent;
                 //Write a new regEx to find the version number
-                var re = new RegExp("MSIE ([0-9]{1,}[.0-9]{0,})");
+                var re = new RegExp('MSIE ([0-9]{1,}[.0-9]{0,})');
                 //If the regEx through the userAgent is not null
                 if (re.exec(ua) != null) {
                     //Set the IE version

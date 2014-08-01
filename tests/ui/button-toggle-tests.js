@@ -58,7 +58,7 @@ define([
         });
 
         QUnit.test('selecting and deselecting (checkbox inputs)', function() {
-            QUnit.expect(9);
+            QUnit.expect(3);
             var fixture = document.getElementById('qunit-fixture');
             var container = Utils.createHtmlElement(multiSelectHtml);
             fixture.appendChild(container);
@@ -68,36 +68,16 @@ define([
             var toggles = container.getElementsByClassName('ui-button-toggle');
 
             toggles[0].dispatchEvent(TestUtils.createEvent('click'));
-            QUnit.equal(onChangeSpy.args[0][0], inputs[0].value, 'onChange callback fired with correct first arg when first toggle item is clicked');
-            var secondArgExpected =  Utils.getElementAttrMap(onChangeSpy.args[0][1]);
-            var secondArgResult = Utils.extend(Utils.getElementAttrMap(inputs[0]), {checked: 'checked'});
-            QUnit.deepEqual(secondArgExpected, secondArgResult, 'onChange callback fired with correct second arg');
-            var thirdArgExpected = Utils.getElementAttrMap(onChangeSpy.args[0][2]);
-            var thirdArgResult = Utils.getElementAttrMap(toggles[0]);
-            QUnit.deepEqual(thirdArgExpected, thirdArgResult, 'onChange callback fired with correct third arg');
-
+            QUnit.deepEqual(onChangeSpy.args[0], [inputs[0].value, inputs[0], toggles[0]], 'onChange callback fired with correct args when first toggle item is clicked');
             toggles[1].dispatchEvent(TestUtils.createEvent('click'));
-            QUnit.equal(onChangeSpy.args[1][0], inputs[1].value, 'onChange callback fired with correct first arg when second toggle item is clicked');
-            var secondArgExpected =  Utils.getElementAttrMap(onChangeSpy.args[1][1]);
-            var secondArgResult = Utils.extend(Utils.getElementAttrMap(inputs[1]), {checked: 'checked'});
-            QUnit.deepEqual(secondArgExpected, secondArgResult, 'onChange callback fired with correct second arg');
-            var thirdArgExpected = Utils.getElementAttrMap(onChangeSpy.args[1][2]);
-            var thirdArgResult = Utils.getElementAttrMap(toggles[1]);
-            QUnit.deepEqual(thirdArgExpected, thirdArgResult, 'onChange callback fired with correct third arg');
-
+            QUnit.deepEqual(onChangeSpy.args[1], [inputs[1].value, inputs[1], toggles[1]], 'onChange callback fired with correct args when second toggle item is clicked');
             toggles[2].dispatchEvent(TestUtils.createEvent('click'));
-            QUnit.equal(onChangeSpy.args[2][0], inputs[2].value, 'onChange callback fired with correct first arg when third toggle item is clicked');
-            var secondArgExpected =  Utils.getElementAttrMap(onChangeSpy.args[2][1]);
-            var secondArgResult = Utils.extend(Utils.getElementAttrMap(inputs[2]), {checked: 'checked'});
-            QUnit.deepEqual(secondArgExpected, secondArgResult, 'onChange callback fired with correct second arg');
-            var thirdArgExpected = Utils.getElementAttrMap(onChangeSpy.args[2][2]);
-            var thirdArgResult = Utils.getElementAttrMap(toggles[2]);
-            QUnit.deepEqual(thirdArgExpected, thirdArgResult, 'onChange callback fired with correct third arg');
+            QUnit.deepEqual(onChangeSpy.args[2], [inputs[2].value, inputs[2], toggles[2]], 'onChange callback fired with correct args when third toggle item is clicked');
             instance.destroy();
         });
 
         QUnit.test('selecting and deselecting (radio button inputs)', function() {
-            QUnit.expect(15);
+            QUnit.expect(12);
             var fixture = document.getElementById('qunit-fixture');
             var container = Utils.createHtmlElement(singleSelectHtml);
             fixture.appendChild(container);
@@ -111,28 +91,19 @@ define([
             var thirdToggleElementDeselectStub = Sinon.stub(instance.getToggleElementMap()[2], 'deselect');
 
             toggles[0].dispatchEvent(TestUtils.createEvent('click'));
-            QUnit.equal(onChangeSpy.args[0][0], inputs[0].value, 'onChange callback fired with correct first arg when first toggle item is clicked');
-            var expected =  Utils.getElementAttrMap(onChangeSpy.args[0][1]);
-            var result = Utils.extend(Utils.getElementAttrMap(inputs[0]), {checked: 'checked'});
-            QUnit.deepEqual(expected, result, 'onChange callback fired with correct second arg');
+            QUnit.deepEqual(onChangeSpy.args[0], [inputs[0].value, inputs[0], toggles[0]], 'onChange callback fired with correct args when first toggle item is clicked');
             QUnit.equal(firstToggleElementDeselectStub.callCount, 0, 'deselect() was NOT called on first instance');
             QUnit.equal(secondToggleElementDeselectStub.callCount, 1, 'deselect() was called on second instance');
             QUnit.equal(thirdToggleElementDeselectStub.callCount, 1, 'deselect() was called on third instance');
 
             toggles[1].dispatchEvent(TestUtils.createEvent('click'));
-            QUnit.equal(onChangeSpy.args[1][0], inputs[1].value, 'onChange callback fired with correct first arg when second toggle item is clicked');
-            var expected =  Utils.getElementAttrMap(onChangeSpy.args[1][1]);
-            var result = Utils.extend(Utils.getElementAttrMap(inputs[1]), {checked: 'checked'});
-            QUnit.deepEqual(expected, result, 'onChange callback fired with correct second arg');
+            QUnit.deepEqual(onChangeSpy.args[1], [inputs[1].value, inputs[1], toggles[1]], 'onChange callback fired with correct args when second toggle item is clicked');
             QUnit.equal(firstToggleElementDeselectStub.callCount, 1, 'deselect() was called on first instance');
             QUnit.equal(secondToggleElementDeselectStub.callCount, 1, 'deselect() was NOT called on second instance');
             QUnit.equal(thirdToggleElementDeselectStub.callCount, 2, 'deselect() was called on third instance');
 
             toggles[2].dispatchEvent(TestUtils.createEvent('click'));
-            QUnit.equal(onChangeSpy.args[2][0], inputs[2].value, 'onChange callback fired with correct first arg when third toggle item is clicked');
-            var expected =  Utils.getElementAttrMap(onChangeSpy.args[2][1]);
-            var result = Utils.extend(Utils.getElementAttrMap(inputs[2]), {checked: 'checked'});
-            QUnit.deepEqual(expected, result, 'onChange callback fired with correct second arg');
+            QUnit.deepEqual(onChangeSpy.args[2], [inputs[2].value, inputs[2], toggles[2]], 'onChange callback fired with correct args when third toggle item is clicked');
             QUnit.equal(firstToggleElementDeselectStub.callCount, 2, 'deselect() was called on first instance');
             QUnit.equal(secondToggleElementDeselectStub.callCount, 2, 'deselect() was called on second instance');
             QUnit.equal(thirdToggleElementDeselectStub.callCount, 2, 'deselect() was NOT called on third instance');

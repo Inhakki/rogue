@@ -95,7 +95,6 @@ define([
                 var input = this.getFormElement(),
                     container = this.getUIElement();
                 if (!input.checked) {
-                    input.setAttribute('checked', 'checked');
                     input.checked = true;
                 }
                 Utils.addClass(container, this.checkedClass);
@@ -111,8 +110,7 @@ define([
                 var input = this.getFormElement(),
                     container = this.getUIElement();
                 if (input.checked) {
-                    input.removeAttribute('checked');
-                    this.checked = false;
+                    input.checked = false;
                 }
                 Utils.removeClass(container, this.checkedClass);
                 if (this.options.onUnchecked) {
@@ -124,7 +122,7 @@ define([
              * Enables the checkbox.
              */
             enable: function () {
-                this.getFormElement().removeAttribute('disabled');
+                this.getFormElement().disabled = false;
                 Utils.removeClass(this.getUIElement(), this.disabledClass);
             },
 
@@ -132,7 +130,7 @@ define([
              * Disables the checkbox.
              */
             disable: function () {
-                this.getFormElement().setAttribute('disabled', 'disabled');
+                this.getFormElement().disabled = true;
                 Utils.addClass(this.getUIElement(), this.disabledClass);
             },
 
@@ -166,10 +164,10 @@ define([
                 container.parentNode.replaceChild(input, container);
 
                 if (this.isInitChecked) {
-                    input.setAttribute('checked', 'checked');
+                    input.checked = true;
                 }
                 if (this.isInitDisabled) {
-                    input.setAttribute('disabled', 'disabled');
+                    input.disabled = true;
                 }
             }
 

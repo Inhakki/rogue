@@ -92,21 +92,13 @@ define([
             },
 
             /**
-             * Checks whether the button toggle is selected.
-             * @returns {boolean}
-             */
-            isSelected: function () {
-                return this.getFormElement().checked;
-            },
-
-            /**
              * Selects the toggle item.
              */
             select: function () {
                 var input = this.getFormElement(),
                     toggle = this.getUIElement();
-                if (!this.isSelected()) {
-                    input.setAttribute('checked', 'checked');
+                if (!input.checked) {
+                    input.checked = true;
                 }
                 Utils.addClass(toggle, this.selectedClass);
                 if (this.options.onSelected) {
@@ -121,8 +113,8 @@ define([
             deselect: function () {
                 var input = this.getFormElement(),
                     toggle = this.getUIElement();
-                if (this.isSelected()) {
-                    input.removeAttribute('checked');
+                if (input.checked) {
+                    input.checked = false;
                 }
                 Utils.removeClass(toggle, this.selectedClass);
                 if (this.options.onDeselected) {
@@ -150,7 +142,7 @@ define([
              * Enables the button toggle.
              */
             enable: function () {
-                this.getFormElement().removeAttribute('disabled');
+                this.getFormElement().disabled = false;
                 Utils.removeClass(this.getUIElement(), this.disabledClass);
             },
 
@@ -158,7 +150,7 @@ define([
              * Disables the button toggle.
              */
             disable: function () {
-                this.getFormElement().setAttribute('disabled', 'true');
+                this.getFormElement().disabled = true;
                 Utils.addClass(this.getUIElement(), this.disabledClass);
             },
 
@@ -172,11 +164,11 @@ define([
                 container.parentNode.replaceChild(input, container);
 
                 if (this.isInitChecked) {
-                    input.setAttribute('checked', 'checked');
+                    input.checked = true;
                 }
 
                 if (this.isInitDisabled) {
-                    input.setAttribute('disabled', 'true');
+                    input.disabled = true;
                 }
 
                 Utils.removeEventListener(this.getUIElement(), 'click', this._onToggleClick.bind(this))

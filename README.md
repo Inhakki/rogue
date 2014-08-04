@@ -115,7 +115,7 @@ The following are tasks that are available when developing on Web Framework.
 
 #### make server
 
-To run the server:
+Starts a web server to make the entire project "browseable".  To run the server:
 
 ```
 make server
@@ -123,8 +123,14 @@ make server
 
 #### make test
 
-To run all tests on the project, type:
+Runs all tests on the project (currently all tests are written in QUnit).  This does the following:
+* starts a headless web server
+* runs all tests in the [QUnit](http://qunitjs.com) tests/index.html file
 
 ```
 make test
 ```
+
+_Tests can also be run via browser by running `make server` and just browsing to the tests/index.html file._
+
+

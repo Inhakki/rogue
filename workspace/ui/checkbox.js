@@ -15,26 +15,28 @@ define([
              * Initialization.
              * @param {object} options - Options to pass
              * @param {HTMLInputElement} options.el - The input element checkbox
-             * @param {Function} options.onChecked - A callback function that fires when the checkbox is checked
-             * @param {Function} options.onUnchecked - A callback function that fires when the checkbox is un-checked
+             * @param {Function} [options.onChecked] - A callback function that fires when the checkbox is checked
+             * @param {Function} [options.onUnchecked] - A callback function that fires when the checkbox is un-checked
+             * @param {string} [options.cssPrefix] - A custom css class that will be used as namespace for all css classes applied
              */
             initialize: function (options) {
 
                 this.options = Utils.extend({
                     el: null,
                     onChecked: null,
-                    onUnchecked: null
+                    onUnchecked: null,
+                    cssPrefix: 'ui-checkbox'
                 }, options);
 
-                this.checkedClass = 'ui-checkbox-checked';
-                this.disabledClass = 'ui-checkbox-disabled';
+                this.checkedClass = this.options.cssPrefix + '-checked';
+                this.disabledClass = this.options.cssPrefix + '-disabled';
                 this.el = this.options.el;
 
-                if (!Utils.hasClass(this.el, 'ui-checkbox-input')) {
-                    console.error('checkbox cannot be created: input element has no ui-checkbox-input class!');
-                } else {
-                    this.setup();
+                if (!this.el.tagName.toLowerCase() !== 'input') {
+                    console.warn('checkbox error: no input element was passed');
                 }
+
+                this.setup();
 
             },
 
@@ -44,7 +46,7 @@ define([
             setup: function () {
                 var input = this.getFormElement();
 
-                Utils.addClass(input, 'ui-checkbox-input');
+                Utils.addClass(input, this.options.cssPrefix + '-input');
 
                 this._container = this._buildUIElement(this.el);
 
@@ -81,10 +83,11 @@ define([
             /**
              * Builds the checkbox UI-friendly version.
              * @param {HTMLInputElement} inputEl - The input element
+             * @returns {HTMLElement} Returns the input element wrapped in a new container
              * @private
              */
             _buildUIElement: function (inputEl) {
-                return Utils.wrapHtmlElement(inputEl, '<div class="ui-checkbox"></div>');
+                return Utils.wrapHtmlElement(inputEl, '<div class="' + this.options.cssPrefix + '"></div>');
             },
 
 

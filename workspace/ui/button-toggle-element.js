@@ -15,20 +15,22 @@ define([
              * Initialization.
              * @param {object} options - Options to pass
              * @param {HTMLInputElement} options.el - The input element checkbox
-             * @param {Function} options.onSelect - A callback function that fires when the button toggle element is selected
-             * @param {Function} options.onDeselect - A callback function that fires when the button toggle element is deselected
+             * @param {Function} [options.onSelect] - A callback function that fires when the button toggle element is selected
+             * @param {Function} [options.onDeselect] - A callback function that fires when the button toggle element is deselected
+             * @param {string} [options.cssPrefix] - A custom css class that will be used as namespace for all css classes applied
              */
             initialize: function (options) {
 
                 this.options = Utils.extend({
                     el: null,
                     onSelect: null,
-                    onDeselect: null
+                    onDeselect: null,
+                    cssPrefix: 'ui-button-toggle'
                 }, options);
 
                 // cache vars
-                this.selectedClass = 'ui-button-toggle-selected';
-                this.disabledClass = 'ui-button-toggle-disabled';
+                this.selectedClass = this.options.cssPrefix + '-selected';
+                this.disabledClass = this.options.cssPrefix + '-disabled';
                 this._input = this.options.el;
 
                 if (this._input.tagName.toLowerCase() !== 'input') {
@@ -48,7 +50,7 @@ define([
                 this.isInitChecked = input.checked;
                 this.isInitDisabled = input.disabled;
 
-                Utils.addClass(input, 'ui-button-toggle-input');
+                Utils.addClass(input, this.options.cssPrefix + '-input');
                 this._container = this._buildUIElement(input);
 
                 if (this.isInitChecked) {
@@ -83,12 +85,12 @@ define([
             },
 
             /**
-             * Builds the UI-friendly version of the toggle input.
+             * Builds the UI-friendly version of the toggle input by wrapping it in a container.
              * @param {HTMLInputElement} inputEl - The input element
              * @private
              */
             _buildUIElement: function (inputEl) {
-                return Utils.wrapHtmlElement(inputEl, '<div class="ui-button-toggle"></div>');
+                return Utils.wrapHtmlElement(inputEl, '<div class="' + this.options.cssPrefix + '"></div>');
             },
 
             /**

@@ -15,20 +15,24 @@ define([
              * Initializes the Input Field class.
              * @param {object} options - Options to pass
              * @param {HTMLInputElement} options.el - The input field element
-             * @param {Function} options.onChange - A callback function that fires when the input value changes
+             * @param {Function} [options.onChange] - A callback function that fires when the input value changes
+             * @param {string} [options.cssPrefix] - A custom css class that will be used as namespace for all css classes applied
              */
             initialize: function (options) {
 
                 this.options = Utils.extend({
                     el: null,
-                    onChange: null
+                    onChange: null,
+                    cssPrefix: 'ui-input-text'
                 }, options);
 
-                this.disabledClass = 'ui-input-text-disabled';
-                this.activeClass = 'ui-input-text-active';
-                this.inputClass = 'ui-input-text-input';
-                this.containerClass = 'ui-input-text';
-                this.placeholderClass = 'ui-input-text-placeholder';
+                this.prefix = this.options.cssPrefix;
+
+                this.disabledClass = this.prefix + '-disabled';
+                this.activeClass = this.prefix + '-active';
+                this.inputClass = this.prefix + '-input';
+                this.containerClass = this.prefix;
+                this.placeholderClass = this.prefix + '-placeholder';
 
                 this.setup();
 
@@ -125,6 +129,7 @@ define([
 
             /**
              * Gets the current input field value.
+             * @returns {string} Returns current value
              */
             getValue: function () {
                 return this.getFormElement().value;
@@ -141,8 +146,9 @@ define([
             },
 
             /**
-             * Builds the UI-friendly version of input field.
+             * Builds the UI-friendly version of input field by wrapping it inside of a container.
              * @param {HTMLInputElement} inputEl - The input element
+             * @returns {HTMLElement} Returns the input element wrapped in its container
              * @private
              */
             _buildUIElement: function (inputEl) {

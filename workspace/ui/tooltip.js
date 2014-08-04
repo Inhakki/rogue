@@ -15,10 +15,11 @@ function (App, Utils) {
          * Initializes the Tooltip.
          * @param {object} options - Options to pass
          * @param {HTMLElement} options.el - The container of the tooltip
-         * @param {string} options.showEvent - A string indicating which event should trigger showing the tooltip
-         * @param {string} options.hideEvent - A string indicating which event should trigger hiding the tooltip
-         * @param {Function} options.onShow - A callback function that fires when tooltip panel is shown
-         * @param {Function} options.onHide - A callback function that fires when tooltip panel is hidden
+         * @param {string} [options.showEvent] - A string indicating which event should trigger showing the tooltip
+         * @param {string} [options.hideEvent] - A string indicating which event should trigger hiding the tooltip
+         * @param {Function} [options.onShow] - A callback function that fires when tooltip panel is shown
+         * @param {Function} [options.onHide] - A callback function that fires when tooltip panel is hidden
+         * @param {string} [options.cssPrefix] - A custom css class that will be used as namespace for all css classes applied
          */
         initialize: function (options) {
 
@@ -27,14 +28,16 @@ function (App, Utils) {
                 showEvent: null,
                 hideEvent: null,
                 onShow: null,
-                onHide: null
+                onHide: null,
+                cssPrefix: 'ui-tooltip'
             }, options);
 
-            this.activeClass = 'ui-tooltip-active';
+            this.prefix = this.options.cssPrefix;
+            this.activeClass = this.prefix + '-active';
 
             this.el = this.options.el;
-            this.trigger = Utils.getElementsByClassName('ui-tooltip-trigger', this.el)[0];
-            this.panel = Utils.getElementsByClassName('ui-tooltip-panel', this.el)[0];
+            this.trigger = Utils.getElementsByClassName(this.prefix + '-trigger', this.el)[0];
+            this.panel = Utils.getElementsByClassName(this.prefix + '-panel', this.el)[0];
 
             this.setup();
 
@@ -48,7 +51,7 @@ function (App, Utils) {
 
             // setup events if needed
             if (options.showEvent) {
-                this._setupEvents(options.showEvent, options.hideEvent);
+                this.eventMap = this._setupEvents(options.showEvent, options.hideEvent);
             }
         },
 
@@ -69,7 +72,7 @@ function (App, Utils) {
                     Utils.addEventListener(this.trigger, e.name, e.event);
                 }
             }
-            this.eventMap = map;
+            return map;
         },
 
         /**
@@ -152,13 +155,14 @@ function (App, Utils) {
          */
         destroy: function () {
             var eventMap = this.eventMap,
-                key;
+                key,
+                e;
 
             // destroy events
             if (eventMap) {
                 for (key in eventMap) {
-                    var e = eventMap[key];
                     if (eventMap.hasOwnProperty(key)) {
+                        e = eventMap[key];
                         Utils.removeEventListener(this.trigger, e.name, e.event);
                     }
                 }

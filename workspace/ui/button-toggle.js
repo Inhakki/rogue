@@ -16,20 +16,22 @@ define([
              * Initialization.
              * @param {object} options - Options to pass
              * @param {HTMLInputElement} options.container - The element that contains the toggle elements
-             * @param {Function} options.onChange - A callback function that fires when of the toggle elements are selected
+             * @param {Function} [options.onChange] - A callback function that fires when of the toggle elements are selected
+             * @param {string} [options.cssPrefix] - A custom css class that will be used as namespace for all css classes applied
              */
             initialize: function (options) {
 
                 this.options = Utils.extend({
                     container: null,
-                    onChange: null
+                    onChange: null,
+                    cssPrefix: 'ui-button-toggle'
                 }, options);
 
                 this._container = this.options.container;
 
-                var toggleItems = Utils.getElementsByClassName('ui-button-toggle-input', this._container);
+                var toggleItems = Utils.getElementsByClassName(this.options.cssPrefix + '-input', this._container);
                 if (!toggleItems.length) {
-                    console.error('could not build toggle items: container has no matching toggle items with the ui-button-toggle-input class');
+                    console.error('could not build toggle items: container has no matching nested toggle items with ' + this.options.cssPrefix + ' class');
                 } else {
                     this._elementMap = this._buildToggleMap(toggleItems);
                 }
@@ -62,7 +64,8 @@ define([
             _buildInstanceOptions: function (el) {
                 var options = {
                     el: el,
-                    onSelected: this._onToggleSelect.bind(this)
+                    onSelected: this._onToggleSelect.bind(this),
+                    cssPrefix: this.options.cssPrefix
                 };
                 if (!this.isRadio(el)) {
                     options.onDeselected = this._onToggleSelect.bind(this);

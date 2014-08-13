@@ -34,6 +34,15 @@ define([
             QUnit.equal(el.className, result, 'class was removed successfully, leaving all other existing classes in tact');
         });
 
+        QUnit.test('hasClass() method when an element has class names that all begin with the same prefix', function() {
+            QUnit.expect(1);
+            var fixture = document.getElementById('qunit-fixture');
+            var el = document.createElement('div');
+            fixture.appendChild(el);
+            el.className = 'mock_new mock-test mockahkd';
+            QUnit.ok(!Utils.hasClass(el, 'mock'), 'element does not have the class specified even though it has classes with prefixes that are the same');
+        });
+
         QUnit.test('createElement method', function() {
             QUnit.expect(3);
             var innerHtml = '<span>Test stuff</span>';

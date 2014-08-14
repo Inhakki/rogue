@@ -59,7 +59,8 @@ function (App, CoreUtils) {
          * @param {string} className - The css class value to check
          */
         hasClass: function (el, className) {
-            return el.className.indexOf(className) !== -1;
+            var classes = el.className.split(' ');
+            return classes.indexOf(className) !== -1;
         },
 
         /**

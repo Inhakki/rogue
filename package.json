@@ -4,7 +4,7 @@
     "description": "Global framework for AKQA web sites and apps",
     "repository": {
         "type": "git",
-        "url": "git://github.com/AKQADC/AKQA-Lib-ResizeManager.git"
+        "url": "git://github.com/AKQADC/AKQA-Web-Framework.git"
     },
     "private": true,
     "devDependencies": {

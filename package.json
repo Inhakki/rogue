@@ -1,6 +1,6 @@
 {
     "name": "akqa-web-framework",
-    "version": "1.2.13",
+    "version": "1.2.14",
     "description": "Global framework for AKQA web sites and apps",
     "repository": {
         "type": "git",

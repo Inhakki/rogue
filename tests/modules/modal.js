@@ -26,7 +26,7 @@ define([
                 contentEl: null,
                 onHide: null,
                 onShow: null,
-                onClickOutside: this.destroy.bind(this),
+                onClickOutside: this.hide.bind(this),
                 activeClass: 'modal-active'
             }, options);
 

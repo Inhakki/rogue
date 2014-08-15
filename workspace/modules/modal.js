@@ -33,16 +33,22 @@ define([
 
             this.container = this.options.containerEl;
             this.content = this.options.el;
+        },
 
+        /**
+         * Sets stuff up.
+         */
+        setup: function () {
+            if (!this.container.contains(this.content)) {
+                this.container.appendChild(this.content);
+            }
         },
 
         /**
          * Shows the modal.
          */
         show: function () {
-            if (!this.container.contains(this.content)) {
-                this.container.appendChild(this.content);
-            }
+            this.setup();
             Utils.addClass(this.container, this.options.activeClass);
             Utils.addEventListener(document, 'click', this._onDocClick.bind(this));
             if (this.options.onShow) {

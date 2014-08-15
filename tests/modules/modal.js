@@ -88,6 +88,7 @@ define([
         destroy: function () {
             Utils.removeClass(this.el, this.options.activeClass);
             this.el.removeChild(this.options.contentEl);
+            Utils.removeEventListener(document, 'click', this._onDocClick.bind(this));
         }
 
     };

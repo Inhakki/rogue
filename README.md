@@ -10,7 +10,9 @@
 
 <a name="summary"></a>
 ## Summary
-AKQA Web Framework is a internal framework built to simplify development of all web-based front-end AKQA apps.
+AKQA Web Framework is a internal framework built to standardize development and increase velocity across all web-based, front-end AKQA apps.
+
+Everything built in this framework is vanilla javascript to eliminate dependencies which means things will process a lot faster than libraries like [jQuery](http://jquery.com/) and [Dojo](http://dojotoolkit.org/) and contain a lot less bloat. It also supports IE8+ and all modern browsers (including mobile).
 
 <a name="installation"></a>
 

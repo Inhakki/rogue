@@ -50,7 +50,7 @@ define([
         show: function () {
             this.setup();
             Utils.addClass(this.container, this.options.activeClass);
-            Utils.addEventListener(document, 'click', this._onDocClick.bind(this));
+            Utils.addEventListener(document, 'click', this._onDocClick.bind(this), true);
             if (this.options.onShow) {
                 this.options.onShow();
             }
@@ -61,7 +61,7 @@ define([
          */
         hide: function () {
             Utils.removeClass(this.container, this.options.activeClass);
-            Utils.removeEventListener(document, 'click', this._onDocClick.bind(this));
+            Utils.removeEventListener(document, 'click', this._onDocClick.bind(this), true);
             if (this.options.onHide) {
                 this.options.onHide();
             }
@@ -96,7 +96,7 @@ define([
         destroy: function () {
             Utils.removeClass(this.container, this.options.activeClass);
             this.container.removeChild(this.content);
-            Utils.removeEventListener(document, 'click', this._onDocClick.bind(this));
+            Utils.removeEventListener(document, 'click', this._onDocClick.bind(this), true);
         }
 
     };

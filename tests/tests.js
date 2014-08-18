@@ -17,7 +17,7 @@ require.config({
 
 // require each test
 require([
-    'ui/utils-tests',
+    'utils-tests',
     'ui/tooltip-tests',
     'ui/checkbox-tests',
     'ui/button-toggle-element-tests',

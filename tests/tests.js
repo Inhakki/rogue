@@ -22,7 +22,8 @@ require([
     'ui/checkbox-tests',
     'ui/button-toggle-element-tests',
     'ui/button-toggle-tests',
-    'ui/input-field-tests'
+    'ui/input-field-tests',
+    'cache-manager-tests'
 ], function() {
     QUnit.config.requireExpects = true;
     QUnit.start();

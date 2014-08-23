@@ -3,7 +3,7 @@ define(function () {
 
     /**
      * Creates a new CacheManager instance.
-     * @description Allows storing and removing persistent data.
+     * @description Allows storing and removing data that persists beyond a page refresh and isn’t transmitted to the server.
      */
     var CacheManager = function () {
         this.initialize();
@@ -40,8 +40,19 @@ define(function () {
          * @param {string} key - A unique identifier to keep track of data
          * @param {*} data - Any type of data that needs to be cache
          * @param {string} [password] - A secret key that will be required to override or remove the data from cache
+         * @deprecated since 1.3.0
          */
         cacheData: function (key, data, password) {
+            this.setValue(key, data, password);
+        },
+
+        /**
+         * Caches data for all eternity (or until CacheManager is destroyed).
+         * @param {string} key - A unique identifier to keep track of data
+         * @param {*} data - Any type of data that needs to be cache
+         * @param {string} [password] - A secret key that will be required to override or remove the data from cache
+         */
+        setValue: function (key, data, password) {
             var existingData;
 
             if (!this._started) {
@@ -59,8 +70,19 @@ define(function () {
          * @param {string} key - The unique identifier of the data that should be removed
          * @param {string} [password] - The secret key needed access the data
          * @returns {*} Returns the data that was cached
+         * @deprecated since 1.3.0
          */
         getCacheData: function (key, password) {
+            return this.getValue(key, password);
+        },
+
+        /**
+         * Gets cached data that was previously stored.
+         * @param {string} key - The unique identifier of the data that should be removed
+         * @param {string} [password] - The secret key needed access the data
+         * @returns {*} Returns the data that was cached
+         */
+        getValue: function (key, password) {
             var existingData,
                 data;
 
@@ -79,8 +101,18 @@ define(function () {
          * Removes cached data that was previously stored.
          * @param {string} key - The unique identifier of the data that should be removed
          * @param {string} [password] - The secret key needed to flush the data
+         * @deprecated since 1.3.0
          */
         flushData: function (key, password) {
+            this.flushValue(key, password);
+        },
+
+        /**
+         * Removes cached data that was previously stored.
+         * @param {string} key - The unique identifier of the data that should be removed
+         * @param {string} [password] - The secret key needed to flush the data
+         */
+        flushValue: function (key, password) {
             var existingData;
 
             if (!this._started) {

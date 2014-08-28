@@ -18,7 +18,7 @@ define(function () {
          */
         setValue: function (key, data, expires, callback) {
             callback = callback || this._getCallback(arguments);
-            this._delegateMethod(localStorage.setItem, key, data, callback);
+            this._delegateMethod(localStorage, 'setItem', key, data, callback);
             if (expires) {
                 this._setupFlushTime(key, expires);
             }
@@ -31,7 +31,7 @@ define(function () {
          * @returns {*} Returns the data that was cached
          */
         getValue: function (key, callback) {
-            return this._delegateMethod(localStorage.getItem, key, null, callback);
+            return this._delegateMethod(localStorage, 'getItem', key, null, callback);
         },
 
         /**
@@ -40,7 +40,7 @@ define(function () {
          * @param {Function} [callback] - The callback fired when data is successfully removed
          */
         flushValue: function (key, callback) {
-            this._delegateMethod(localStorage.removeItem, key, null, callback);
+            this._delegateMethod(localStorage, 'removeItem', key, null, callback);
         },
 
         /**
@@ -50,7 +50,7 @@ define(function () {
          * @param {Function} [callback] - The callback fired when data is successfully stored
          */
         setSessionValue: function (key, data, callback) {
-            this._delegateMethod(sessionStorage.setItem, key, data, callback);
+            this._delegateMethod(sessionStorage, 'setItem', key, data, callback);
         },
 
         /**
@@ -60,7 +60,7 @@ define(function () {
          * @returns {*} Returns the data that was cached
          */
         getSessionValue: function (key, callback) {
-            return this._delegateMethod(sessionStorage.getItem, key, null, callback);
+            return this._delegateMethod(sessionStorage, 'getItem', key, null, callback);
         },
 
         /**
@@ -69,7 +69,7 @@ define(function () {
          * @param {Function} [callback] - The callback fired when data is successfully removed
          */
         flushSessionValue: function (key, callback) {
-            this._delegateMethod(sessionStorage.removeItem, key, null, callback);
+            this._delegateMethod(sessionStorage, 'removeItem', key, null, callback);
         },
 
         /**
@@ -103,20 +103,22 @@ define(function () {
 
         /**
          * A private delegator that handles a lot of repetitive operations with storage methods.
+         * @param {Object} obj - The Storage object
          * @param {string} method - The method name to call
          * @param {string} key - The key for the data
          * @param {*} [data] - The data
          * @param {Function} [callback] - Function to call when operation completes
          * @private
          */
-        _delegateMethod: function (method, key, data, callback) {
-            var args = [];
-            if (!data) {
-                args = [key];
+        _delegateMethod: function (obj, method, key, data, callback) {
+
+            if (method === 'getItem' || method === 'getItem') {
+                data = obj[method](key);
+            } else if (!data) {
+                obj[method](key);
             } else {
-                args = [key, data]
+                obj[method](key, data);
             }
-            data = method.apply(this, args);
 
             if (callback) {
                 callback(data);

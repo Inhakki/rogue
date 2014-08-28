@@ -1,6 +1,6 @@
 {
     "name": "akqa-web-framework",
-    "version": "1.3.1",
+    "version": "1.3.2",
     "description": "Global framework for AKQA web sites and apps",
     "repository": {
         "type": "git",
@@ -24,19 +24,13 @@
         "grunt-jsdoc": "~0.5.4",
         "grunt-contrib-qunit": "~0.5.2",
         "grunt-contrib-connect": "~0.8.0",
-        "akqa-core": "git+ssh://git@github.com/AKQADC/AKQA-Core.git#develop",
+        "akqa-core": "git+ssh://git@github.com/AKQADC/AKQA-Core.git#master",
         "connect-livereload": "~0.3.2"
     },
     "engines": {
         "node": ">=0.10.0"
     },
     "core": {
-        "dist": "workspace",
-        "packageDest": "workspace/libs",
-        "packages": {
-            "akqa-core": {
-                "dirName": "akqa-core"
-            }
-        }
+        "dist": "workspace"
     }
 }

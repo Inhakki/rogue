@@ -1,0 +1,8 @@
+{
+    "packageDest": "workspace/libs",
+    "packages": {
+        "akqa-core": {
+            "dirName": "akqa-core"
+        }
+    }
+}

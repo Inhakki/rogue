@@ -98,7 +98,7 @@ define([
                         unselectedItems.push(instance);
                     }
                 }
-                
+
                 this._triggerAll('deselect', unselectedItems);
 
                 if (this.options.onChange) {

@@ -76,10 +76,10 @@ define([
              * @private
              */
             _onToggleClick: function () {
-                var hasClass = Utils.hasClass(this.getUIElement(), this.selectedClass);
-                if (!hasClass) {
+                var input = this.getFormElement();
+                if (input.checked) {
                     this.select();
-                } else {
+                } else if (!this.isRadio()) {
                     this.deselect();
                 }
             },
@@ -94,14 +94,20 @@ define([
             },
 
             /**
+             * Checks whether input is a radio button.
+             * @param {HTMLInputElement} el - The input to check
+             * @returns {boolean}
+             */
+            isRadio: function (el) {
+                return this.getFormElement().getAttribute('type') === 'radio';
+            },
+
+            /**
              * Selects the toggle item.
              */
             select: function () {
                 var input = this.getFormElement(),
                     toggle = this.getUIElement();
-                if (!input.checked) {
-                    input.checked = true;
-                }
                 Utils.addClass(toggle, this.selectedClass);
                 if (this.options.onSelected) {
                     this.options.onSelected(input.value, input, toggle);
@@ -115,9 +121,6 @@ define([
             deselect: function () {
                 var input = this.getFormElement(),
                     toggle = this.getUIElement();
-                if (input.checked) {
-                    input.checked = false;
-                }
                 Utils.removeClass(toggle, this.selectedClass);
                 if (this.options.onDeselected) {
                     this.options.onDeselected(input.value, input, toggle);

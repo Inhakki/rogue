@@ -67,9 +67,6 @@ define([
                     onSelected: this._onToggleSelect.bind(this),
                     cssPrefix: this.options.cssPrefix
                 };
-                if (!this.isRadio(el)) {
-                    options.onDeselected = this._onToggleSelect.bind(this);
-                }
                 return options;
             },
 
@@ -79,15 +76,6 @@ define([
              */
             getToggleElementMap: function () {
                 return this._elementMap;
-            },
-
-            /**
-             * Checks whether input is a radio button.
-             * @param {HTMLInputElement} el - The input to check
-             * @returns {boolean}
-             */
-            isRadio: function (el) {
-                return el.getAttribute('type') === 'radio';
             },
 
             /**
@@ -103,17 +91,15 @@ define([
                     instance,
                     i;
 
-                // deselect all other ones if they are radio buttons
-                if (this.isRadio(el)) {
-
-                    for (i = 0; i < items.length; i++) {
-                        instance = items[i];
-                        if (instance.getFormElement().value !== value) {
-                            unselectedItems.push(instance);
-                        }
+                for (i = 0; i < items.length; i++) {
+                    instance = items[i];
+                    // deselect all other ones if they are radio buttons
+                    if (instance.getFormElement().value !== value && instance.isRadio()) {
+                        unselectedItems.push(instance);
                     }
-                    this._triggerAll('deselect', unselectedItems);
                 }
+
+                this._triggerAll('deselect', unselectedItems);
 
                 if (this.options.onChange) {
                     this.options.onChange(value, el, container);

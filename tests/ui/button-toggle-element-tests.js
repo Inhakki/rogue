@@ -40,14 +40,33 @@ define([
             QUnit.ok(!Utils.hasClass(toggle, 'ui-button-toggle-selected'), 'toggle does not have active class initially');
             QUnit.equal(input.checked, false, 'input checked boolean returns false');
             QUnit.ok(!input.checked, 'input\'s checked boolean returns falsy');
-            instance.select();
-            QUnit.ok(Utils.hasClass(toggle, 'ui-button-toggle-selected'), 'toggle has correct active class after check()');
+            container.dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
+            QUnit.ok(Utils.hasClass(toggle, 'ui-button-toggle-selected'), 'after click, active class has been added');
             QUnit.equal(input.checked, true, 'input checked boolean returns true');
             QUnit.ok(input.checked, 'input\'s checked boolean returns truthy');
-            instance.deselect();
-            QUnit.ok(!Utils.hasClass(toggle, 'ui-button-toggle-selected'), 'after select() toggle does not have active class');
+            container.dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
+            QUnit.ok(!Utils.hasClass(toggle, 'ui-button-toggle-selected'), 'after clicking again, toggle active class has been removed');
             QUnit.equal(input.checked, false, 'input checked boolean returns false');
             QUnit.ok(!input.checked, 'input\'s checked boolean returns falsy');
+            instance.destroy();
+        });
+
+        QUnit.test('selecting and deselecting radio button toggles', function() {
+            QUnit.expect(6);
+            var fixture = document.getElementById('qunit-fixture');
+            var html = '<label><input type="radio" class="ui-button-toggle-input" value="Apple" name="fruit" checked="true" />Apple</label>';
+            var container = Utils.createHtmlElement(html);
+            fixture.appendChild(container);
+            var input = container.getElementsByClassName(inputClass)[0];
+            var instance = new ButtonToggleElement({el: input});
+            var toggle = container.getElementsByClassName(wrapperClass)[0];
+            QUnit.ok(Utils.hasClass(toggle, 'ui-button-toggle-selected'), 'toggle has correct active class initially because it was checked upon instantiation');
+            QUnit.equal(input.checked, true, 'input checked boolean returns true');
+            QUnit.ok(input.checked, 'input\'s checked boolean returns truthy');
+            container.dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
+            QUnit.ok(Utils.hasClass(toggle, 'ui-button-toggle-selected'), 'toggle still has active class even after clicking because it is a radio button');
+            QUnit.equal(input.checked, true, 'input checked boolean returns true');
+            QUnit.ok(input.checked, 'input\'s checked boolean returns truthy');
             instance.destroy();
         });
 
@@ -66,7 +85,7 @@ define([
             QUnit.equal(setAttrSpy.callCount, 0, 'inputs attribute was NOT set to ensure no unnecessary change events are fired');
             QUnit.equal(onSelectedSpy.callCount, 0, 'onSelected callback was NOT fired');
             QUnit.equal(input.checked, true, 'input checked boolean returns true');
-            instance.deselect();
+            container.dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
             QUnit.equal(input.checked, false, 'input checked boolean returns false');
             instance.destroy();
             QUnit.ok(input.checked, 'input checked boolean returns true because that\'s how it was initially');
@@ -92,7 +111,7 @@ define([
             instance.destroy();
         });
 
-        QUnit.test('clicking on and off', function () {
+        QUnit.test('checkbox toggle clicking on and off', function () {
             QUnit.expect(7);
             var fixture = document.getElementById('qunit-fixture');
             var container = Utils.createHtmlElement(html);
@@ -104,14 +123,14 @@ define([
             var toggle = container.getElementsByClassName(wrapperClass)[0];
             QUnit.equal(selectSpy.callCount, 0, 'select() method was not called initially');
             QUnit.equal(deselectSpy.callCount, 0, 'deselect() method was not called initially');
-            toggle.dispatchEvent(TestUtils.createEvent('click'));
+            container.dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
             QUnit.equal(selectSpy.callCount, 1, 'clicking toggle calls select() method');
             QUnit.equal(deselectSpy.callCount, 0, 'deselect() method was not called');
-            toggle.dispatchEvent(TestUtils.createEvent('click'));
+            container.dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
             QUnit.equal(deselectSpy.callCount, 1, 'clicking toggle a second time calls deselect() method');
             QUnit.equal(selectSpy.callCount, 1, 'select() method was not called');
             instance.destroy();
-            toggle.dispatchEvent(TestUtils.createEvent('click'));
+            container.dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
             QUnit.equal(selectSpy.callCount, 1, 'clicking toggle again does NOT call select() method because instance was destroyed');
             selectSpy.restore();
             deselectSpy.restore();

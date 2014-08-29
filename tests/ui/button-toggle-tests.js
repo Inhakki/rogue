@@ -67,11 +67,11 @@ define([
             var instance = new ButtonToggle({container: container, onChange: onChangeSpy});
             var toggles = container.getElementsByClassName('ui-button-toggle');
 
-            toggles[0].dispatchEvent(TestUtils.createEvent('click'));
+            toggles[0].dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
             QUnit.deepEqual(onChangeSpy.args[0], [inputs[0].value, inputs[0], toggles[0]], 'onChange callback fired with correct args when first toggle item is clicked');
-            toggles[1].dispatchEvent(TestUtils.createEvent('click'));
+            toggles[1].dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
             QUnit.deepEqual(onChangeSpy.args[1], [inputs[1].value, inputs[1], toggles[1]], 'onChange callback fired with correct args when second toggle item is clicked');
-            toggles[2].dispatchEvent(TestUtils.createEvent('click'));
+            toggles[2].dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
             QUnit.deepEqual(onChangeSpy.args[2], [inputs[2].value, inputs[2], toggles[2]], 'onChange callback fired with correct args when third toggle item is clicked');
             instance.destroy();
         });
@@ -90,19 +90,19 @@ define([
             var secondToggleElementDeselectStub = Sinon.stub(instance.getToggleElementMap()[1], 'deselect');
             var thirdToggleElementDeselectStub = Sinon.stub(instance.getToggleElementMap()[2], 'deselect');
 
-            toggles[0].dispatchEvent(TestUtils.createEvent('click'));
+            toggles[0].dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
             QUnit.deepEqual(onChangeSpy.args[0], [inputs[0].value, inputs[0], toggles[0]], 'onChange callback fired with correct args when first toggle item is clicked');
             QUnit.equal(firstToggleElementDeselectStub.callCount, 0, 'deselect() was NOT called on first instance');
             QUnit.equal(secondToggleElementDeselectStub.callCount, 1, 'deselect() was called on second instance');
             QUnit.equal(thirdToggleElementDeselectStub.callCount, 1, 'deselect() was called on third instance');
 
-            toggles[1].dispatchEvent(TestUtils.createEvent('click'));
+            toggles[1].dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
             QUnit.deepEqual(onChangeSpy.args[1], [inputs[1].value, inputs[1], toggles[1]], 'onChange callback fired with correct args when second toggle item is clicked');
             QUnit.equal(firstToggleElementDeselectStub.callCount, 1, 'deselect() was called on first instance');
             QUnit.equal(secondToggleElementDeselectStub.callCount, 1, 'deselect() was NOT called on second instance');
             QUnit.equal(thirdToggleElementDeselectStub.callCount, 2, 'deselect() was called on third instance');
 
-            toggles[2].dispatchEvent(TestUtils.createEvent('click'));
+            toggles[2].dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
             QUnit.deepEqual(onChangeSpy.args[2], [inputs[2].value, inputs[2], toggles[2]], 'onChange callback fired with correct args when third toggle item is clicked');
             QUnit.equal(firstToggleElementDeselectStub.callCount, 2, 'deselect() was called on first instance');
             QUnit.equal(secondToggleElementDeselectStub.callCount, 2, 'deselect() was called on second instance');

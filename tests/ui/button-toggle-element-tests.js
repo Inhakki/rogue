@@ -51,6 +51,25 @@ define([
             instance.destroy();
         });
 
+        QUnit.test('selecting and deselecting radio button toggles', function() {
+            QUnit.expect(6);
+            var fixture = document.getElementById('qunit-fixture');
+            var html = '<label><input type="radio" class="ui-button-toggle-input" value="Apple" name="fruit" checked="true" />Apple</label>';
+            var container = Utils.createHtmlElement(html);
+            fixture.appendChild(container);
+            var input = container.getElementsByClassName(inputClass)[0];
+            var instance = new ButtonToggleElement({el: input});
+            var toggle = container.getElementsByClassName(wrapperClass)[0];
+            QUnit.ok(Utils.hasClass(toggle, 'ui-button-toggle-selected'), 'toggle has correct active class initially because it was checked upon instantiation');
+            QUnit.equal(input.checked, true, 'input checked boolean returns true');
+            QUnit.ok(input.checked, 'input\'s checked boolean returns truthy');
+            toggle.dispatchEvent(TestUtils.createEvent('click'));
+            QUnit.ok(Utils.hasClass(toggle, 'ui-button-toggle-selected'), 'toggle still has active class even after clicking because it is a radio button');
+            QUnit.equal(input.checked, true, 'input checked boolean returns true');
+            QUnit.ok(input.checked, 'input\'s checked boolean returns truthy');
+            instance.destroy();
+        });
+
         QUnit.test('initializing and destroying when checked initially', function() {
             QUnit.expect(7);
             var container = Utils.createHtmlElement(html);

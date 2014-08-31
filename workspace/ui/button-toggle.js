@@ -141,6 +141,17 @@ define([
             },
 
             /**
+             * Gets the unique identifiers for button toggles by name.
+             * @returns {string}
+             */
+            getElementKey: function () {
+                // assume that the first toggle's element key is the same as the rest
+                // since they should all be the same type
+                return this.getToggleElementMap()[0].getElementKey();
+
+            },
+
+            /**
              * Destruction of this class.
              */
             destroy: function () {

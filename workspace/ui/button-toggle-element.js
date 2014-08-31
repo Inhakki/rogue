@@ -163,6 +163,18 @@ define([
             },
 
             /**
+             * Gets the unique identifier for button toggles.
+             * @returns {string}
+             */
+            getElementKey: function () {
+                if (this.isRadio()) {
+                    return 'buttonToggleRadio';
+                } else {
+                    return 'buttonToggleCheckbox';
+                }
+            },
+
+            /**
              * Destruction of this class.
              */
             destroy: function () {

@@ -239,6 +239,14 @@ define([
             },
 
             /**
+             * Gets the unique identifier for input fields.
+             * @returns {string}
+             */
+            getElementKey: function () {
+                return 'inputText';
+            },
+
+            /**
              * Destruction of this class.
              */
             destroy: function () {

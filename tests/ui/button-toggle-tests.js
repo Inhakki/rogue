@@ -114,4 +114,18 @@ define([
             instance.destroy();
         });
 
+        QUnit.test('getElementKey()', function() {
+            QUnit.expect(1);
+            var fixture = document.getElementById('qunit-fixture');
+            var container = Utils.createHtmlElement(singleSelectHtml);
+            var key = 'testKey';
+            var buttonToggleElementGetElementKeyStub = Sinon.stub(ButtonToggleElement.prototype, 'getElementKey');
+            buttonToggleElementGetElementKeyStub.returns(key);
+            fixture.appendChild(container);
+            var instance = new ButtonToggle({container: container});
+            QUnit.equal(instance.getElementKey(), key, 'ButtonToggleElement\'s getElementKey() method was called and returned correct key');
+            instance.destroy();
+            buttonToggleElementGetElementKeyStub.restore();
+        });
+
     });

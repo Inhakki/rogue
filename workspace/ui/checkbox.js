@@ -157,6 +157,14 @@ define([
             },
 
             /**
+             * Gets the unique identifier for checkboxes.
+             * @returns {string}
+             */
+            getElementKey: function () {
+                return 'checkbox';
+            },
+
+            /**
              * Destruction of this class.
              */
             destroy: function () {

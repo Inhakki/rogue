@@ -1,16 +1,17 @@
 define([
     'framework/framework',
     'framework/utils',
+    'framework/form/base-form-element',
     'framework/ui/button-toggle-element'
 ],
-    function (App, Utils, ButtonToggleElement) {
+    function (App, Utils, BaseFormElement, ButtonToggleElement) {
         "use strict";
 
         var ButtonToggle = function (options) {
             this.initialize(options);
         };
 
-        ButtonToggle.prototype = {
+        ButtonToggle.prototype = Utils.extend({}, BaseFormElement.prototype, {
 
             /**
              * Initialization.
@@ -26,6 +27,8 @@ define([
                     onChange: null,
                     cssPrefix: 'ui-button-toggle'
                 }, options);
+
+                BaseFormElement.prototype.initialize.call(this, options);
 
                 this._container = this.options.container;
 
@@ -142,9 +145,10 @@ define([
              */
             destroy: function () {
                 this._triggerAll('destroy', this.getToggleElementMap());
+                BaseFormElement.prototype.destroy.call(this);
             }
 
-        };
+        });
 
         return ButtonToggle;
     });

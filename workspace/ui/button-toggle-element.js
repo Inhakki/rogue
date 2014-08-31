@@ -1,15 +1,16 @@
 define([
     'framework/framework',
-    'framework/utils'
+    'framework/utils',
+    'framework/form/base-form-element'
 ],
-    function (App, Utils) {
+    function (App, Utils, BaseFormElement) {
         "use strict";
 
         var ButtonToggleElement = function (options) {
             this.initialize(options);
         };
 
-        ButtonToggleElement.prototype = {
+        ButtonToggleElement.prototype = Utils.extend({}, BaseFormElement.prototype, {
 
             /**
              * Initialization.
@@ -38,6 +39,8 @@ define([
                 } else {
                     this.setup();
                 }
+
+                BaseFormElement.prototype.initialize.call(this);
 
             },
 
@@ -177,9 +180,10 @@ define([
                 }
 
                 Utils.removeEventListener(this.getUIElement(), 'click', this._onToggleClick.bind(this))
+                BaseFormElement.prototype.destroy.call(this);
             }
 
-        };
+        });
 
         return ButtonToggleElement;
     });

@@ -1,15 +1,16 @@
 define([
     'framework/framework',
-    'framework/utils'
+    'framework/utils',
+    'framework/form/base-form-element'
 ],
-    function (App, Utils) {
+    function (App, Utils, BaseFormElement) {
         "use strict";
 
         var InputField = function (options) {
             this.initialize(options);
         };
 
-        InputField.prototype = {
+        InputField.prototype = Utils.extend({}, BaseFormElement.prototype, {
 
             /**
              * Initializes the Input Field class.
@@ -25,6 +26,8 @@ define([
                     onChange: null,
                     cssPrefix: 'ui-input-text'
                 }, options);
+
+                BaseFormElement.prototype.initialize.call(this, options);
 
                 this.prefix = this.options.cssPrefix;
 
@@ -255,9 +258,11 @@ define([
                 }
                 // set original value back
                 this.setValue(this.origInputValue);
+
+                BaseFormElement.prototype.destroy.call(this);
             }
 
-        };
+        });
 
         return InputField;
     });

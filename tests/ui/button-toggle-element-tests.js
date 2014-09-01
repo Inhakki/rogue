@@ -10,7 +10,8 @@ define([
 
         QUnit.module('Button Toggle Element Tests');
 
-        var html = '<label class="container"><input type="checkbox" class="ui-button-toggle-input" value="DC" name="state" />District Of Columbia</label>',
+        var checkboxHtml = '<label class="container"><input type="checkbox" class="ui-button-toggle-input" value="DC" name="state" />District Of Columbia</label>',
+            radioHtml = '<label><input type="radio" class="ui-button-toggle-input" value="Apple" name="fruit" checked="true" />Apple</label>',
             selectedClass = 'ui-button-toggle-selected',
             disabledClass = 'ui-button-toggle-disabled',
             inputClass = 'ui-button-toggle-input',
@@ -19,7 +20,7 @@ define([
         QUnit.test('initializing and destroying', function() {
             QUnit.expect(2);
             var fixture = document.getElementById('qunit-fixture');
-            var container = Utils.createHtmlElement(html);
+            var container = Utils.createHtmlElement(checkboxHtml);
             fixture.appendChild(container);
             var input = container.getElementsByClassName(inputClass)[0];
             var instance = new ButtonToggleElement({el: input});
@@ -32,7 +33,7 @@ define([
         QUnit.test('selecting and deselecting', function() {
             QUnit.expect(9);
             var fixture = document.getElementById('qunit-fixture');
-            var container = Utils.createHtmlElement(html);
+            var container = Utils.createHtmlElement(checkboxHtml);
             fixture.appendChild(container);
             var input = container.getElementsByClassName(inputClass)[0];
             var instance = new ButtonToggleElement({el: input});
@@ -54,8 +55,7 @@ define([
         QUnit.test('selecting and deselecting radio button toggles', function() {
             QUnit.expect(6);
             var fixture = document.getElementById('qunit-fixture');
-            var html = '<label><input type="radio" class="ui-button-toggle-input" value="Apple" name="fruit" checked="true" />Apple</label>';
-            var container = Utils.createHtmlElement(html);
+            var container = Utils.createHtmlElement(radioHtml);
             fixture.appendChild(container);
             var input = container.getElementsByClassName(inputClass)[0];
             var instance = new ButtonToggleElement({el: input});
@@ -72,7 +72,7 @@ define([
 
         QUnit.test('initializing and destroying when checked initially', function() {
             QUnit.expect(7);
-            var container = Utils.createHtmlElement(html);
+            var container = Utils.createHtmlElement(checkboxHtml);
             var fixture = document.getElementById('qunit-fixture').appendChild(container);
             var input = container.getElementsByClassName(inputClass)[0];
             input.setAttribute('checked', 'checked'); // make it so that input is checked initially
@@ -95,7 +95,7 @@ define([
         QUnit.test('selecting and deselecting callbacks', function() {
             QUnit.expect(4);
             var fixture = document.getElementById('qunit-fixture');
-            var container = Utils.createHtmlElement(html);
+            var container = Utils.createHtmlElement(checkboxHtml);
             fixture.appendChild(container);
             var input = container.getElementsByClassName(inputClass)[0];
             var onSelectedSpy = Sinon.spy();
@@ -114,7 +114,7 @@ define([
         QUnit.test('checkbox toggle clicking on and off', function () {
             QUnit.expect(7);
             var fixture = document.getElementById('qunit-fixture');
-            var container = Utils.createHtmlElement(html);
+            var container = Utils.createHtmlElement(checkboxHtml);
             fixture.appendChild(container);
             var input = container.getElementsByClassName(inputClass)[0];
             var selectSpy = Sinon.spy(ButtonToggleElement.prototype, 'select');
@@ -139,7 +139,7 @@ define([
         QUnit.test('enabling and disabling', function () {
             QUnit.expect(6);
             var fixture = document.getElementById('qunit-fixture');
-            var container = Utils.createHtmlElement(html);
+            var container = Utils.createHtmlElement(checkboxHtml);
             fixture.appendChild(container);
             var input = container.getElementsByClassName(inputClass)[0];
             var instance = new ButtonToggleElement({el: input});
@@ -157,7 +157,7 @@ define([
 
         QUnit.test('initialize and destroy when initially disabled', function() {
             QUnit.expect(5);
-            var container = Utils.createHtmlElement(html);
+            var container = Utils.createHtmlElement(checkboxHtml);
             var fixture = document.getElementById('qunit-fixture').appendChild(container);
             var input = container.getElementsByClassName(inputClass)[0];
             input.setAttribute('disabled', 'true'); // make it so that input is checked initially
@@ -172,6 +172,24 @@ define([
             instance.destroy();
             QUnit.ok(input.disabled, 'input disabled boolean returns true because that\'s how it was initially');
             setAttrSpy.restore();
+        });
+
+        QUnit.test('getElementKey() for radio toggles', function() {
+            QUnit.expect(1);
+            var container = Utils.createHtmlElement(radioHtml);
+            var input = container.getElementsByClassName(inputClass)[0];
+            var instance = new ButtonToggleElement({el: input});
+            QUnit.equal(instance.getElementKey(), 'buttonToggleRadio', 'getElementKey() method returns "buttonToggleRadio"');
+            instance.destroy();
+        });
+
+        QUnit.test('getElementKey() for checkbox toggles', function() {
+            QUnit.expect(1);
+            var container = Utils.createHtmlElement(checkboxHtml);
+            var input = container.getElementsByClassName(inputClass)[0];
+            var instance = new ButtonToggleElement({el: input});
+            QUnit.equal(instance.getElementKey(), 'buttonToggleCheckbox', 'getElementKey() method returns "buttonToggleRadio"');
+            instance.destroy();
         });
 
 

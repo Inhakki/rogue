@@ -20,20 +20,20 @@ define(function () {
 
         /**
          * Gets the form element.
-         * @returns {HTMLInputElement} Returns the input field element
+         * @returns {HTMLElement} Returns the form element
          * @abstract
          */
         getFormElement: function () {
-            console.error('form element: getFormElement() method not implemented');
+            return this.el;
         },
 
         /**
          * Gets the ui version of the form element.
-         * @returns {HTMLElement} Returns the checkbox div element.
+         * @returns {HTMLElement} Returns the ui-version of the element.
          * @abstract
          */
         getUIElement: function () {
-            console.error('form element: getUIElement() method not implemented');
+            return this.getFormElement();
         },
 
         /**
@@ -51,12 +51,12 @@ define(function () {
         },
 
         /**
-         * Gets the key (must be unique from all other form elements) that is associated.
+         * Gets the element's identifier (preferably unique form all other form elements).
          * @returns {string} Return the unique key
          * @abstract
          */
         getElementKey: function () {
-            console.error('form element: getUIElement() method not implemented');
+            return 'element';
         },
 
         /**

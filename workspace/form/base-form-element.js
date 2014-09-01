@@ -2,9 +2,9 @@ define(function () {
     "use strict";
 
     /**
-     * Used as the base class from which all form elements should extend that primarily provides methods
-     * that eliminate code redundancy and provide fallbacks for methods that which all forms should have.
-     * @param options
+     * @class BaseFormElement
+     * @description An extendable base class that provides common functionality among all form elements.
+     * @param {Object} options - Instantiation options
      * @constructor
      */
     var BaseFormElement = function (options) {
@@ -51,7 +51,7 @@ define(function () {
         },
 
         /**
-         * Gets the element's identifier (preferably unique form all other form elements).
+         * Gets the element's identifier (preferably unique from all other elements that extend this class).
          * @returns {string} Return the unique key
          * @abstract
          */

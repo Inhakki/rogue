@@ -37,6 +37,24 @@ define(function () {
         },
 
         /**
+         * Gets the form elements.
+         * @returns {Array} Returns the array of form elements
+         * @abstract
+         */
+        getFormElements: function () {
+            return [this.getFormElement()];
+        },
+
+        /**
+         * Gets the ui versions of the form elements.
+         * @returns {Array} Returns the array of ui-versions of the element.
+         * @abstract
+         */
+        getUIElements: function () {
+            return [this.getUIElement()];
+        },
+
+        /**
          * Enables the form element.
          */
         enable: function () {

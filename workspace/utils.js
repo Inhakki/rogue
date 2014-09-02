@@ -200,6 +200,17 @@ function (App, CoreUtils) {
         },
 
         /**
+         * Checks if an event listener has been bounded to an element.
+         * @param {HTMLElement} el - The element to check
+         * @param {string} event - The event to check
+         * @param {Function} callback - The bounded function
+         * @returns {boolean} Returns true if element has listener
+         */
+        hasEventListener: function (el, event, callback) {
+            return this.events['e' + el + event + callback] ? true : false;
+        },
+
+        /**
          * Removes an event listener from an element.
          * @param {HTMLElement} el - The element with the event
          * @param {string} event - The event to remove

@@ -1,15 +1,16 @@
 define([
     'framework/framework',
-    'framework/utils'
+    'framework/utils',
+    'framework/form/base-form-element'
 ],
-    function (App, Utils) {
+    function (App, Utils, BaseFormElement) {
         "use strict";
 
         var Checkbox = function (options) {
             this.initialize(options);
         };
 
-        Checkbox.prototype = {
+        Checkbox.prototype = Utils.extend({}, BaseFormElement.prototype, {
 
             /**
              * Initialization.
@@ -35,6 +36,8 @@ define([
                 if (!this.el.tagName.toLowerCase() !== 'input') {
                     console.warn('checkbox error: no input element was passed');
                 }
+
+                BaseFormElement.prototype.initialize.call(this, options);
 
                 this.setup();
 
@@ -154,6 +157,14 @@ define([
             },
 
             /**
+             * Gets the unique identifier for checkboxes.
+             * @returns {string}
+             */
+            getElementKey: function () {
+                return 'checkbox';
+            },
+
+            /**
              * Destruction of this class.
              */
             destroy: function () {
@@ -172,9 +183,10 @@ define([
                 if (this.isInitDisabled) {
                     input.disabled = true;
                 }
+                BaseFormElement.prototype.destroy.call(this);
             }
 
-        };
+        });
 
         return Checkbox;
     });

@@ -25,12 +25,14 @@ require([
             el: Utils.getElementsByClassName('ui-checkbox-input')[0]
         });
 
+        var checkboxToggleContainer = Utils.getElementsByClassName('multi-select-button-toggle')[0];
         this.multiSelectToggle = new ButtonToggle({
-            container: Utils.getElementsByClassName('multi-select-button-toggle')[0]
+            inputs: Utils.getElementsByClassName('ui-button-toggle-input', checkboxToggleContainer)
         });
 
+        var radioToggleContainer = Utils.getElementsByClassName('single-select-button-toggle')[0];
         this.singleSelectToggle = new ButtonToggle({
-            container: Utils.getElementsByClassName('single-select-button-toggle')[0]
+            inputs: Utils.getElementsByClassName('ui-button-toggle-input', radioToggleContainer)
         });
 
         this.inputField = new InputField({

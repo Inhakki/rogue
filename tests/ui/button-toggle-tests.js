@@ -110,7 +110,7 @@ define([
     });
 
     QUnit.test('clicking checkbox toggles', function() {
-        QUnit.expect(12);
+        QUnit.expect(18);
         var fixture = document.getElementById('qunit-fixture');
         var wrapper = Utils.createHtmlElement(checkboxHtml);
         fixture.appendChild(wrapper);
@@ -118,6 +118,10 @@ define([
         var onChangeSpy = Sinon.spy();
         var instance = new ButtonToggle({inputs: inputs, onChange: onChangeSpy});
         var UIElements = wrapper.getElementsByClassName('ui-button-toggle');
+        // check event listeners
+        QUnit.ok(Utils.hasEventListener(UIElements[0], 'click', instance._onToggleClick.bind(instance)), 'event listener was added for first ui element');
+        QUnit.ok(Utils.hasEventListener(UIElements[1], 'click', instance._onToggleClick.bind(instance)), 'event listener was added for second ui element');
+        QUnit.ok(Utils.hasEventListener(UIElements[2], 'click', instance._onToggleClick.bind(instance)), 'event listener was added for third ui element');
         // click first toggle
         UIElements[0].dispatchEvent(TestUtils.createEvent('click', {bubbles:true, cancelable: true}));
         QUnit.deepEqual(onChangeSpy.args[0], [inputs[0].value, inputs[0], UIElements[0]], 'clicking on first toggle fires onChange callback with correct args');
@@ -139,10 +143,14 @@ define([
         QUnit.deepEqual(onChangeSpy.args[3], [inputs[2].value, inputs[2], UIElements[2]], 'clicking on third toggle fires onChange callback with correct args');
         QUnit.ok(Utils.hasClass(UIElements[2], selectedClass), 'third toggle ui element now contains active class');
         instance.destroy();
+        // check event listeners
+        QUnit.ok(!Utils.hasEventListener(UIElements[0], 'click', instance._onToggleClick.bind(instance)), 'event listener was removed from first ui element');
+        QUnit.ok(!Utils.hasEventListener(UIElements[1], 'click', instance._onToggleClick.bind(instance)), 'event listener was removed from second ui element');
+        QUnit.ok(!Utils.hasEventListener(UIElements[2], 'click', instance._onToggleClick.bind(instance)), 'event listener was removed from third ui element');
     });
 
     QUnit.test('selecting and deselecting radio toggles', function() {
-        QUnit.expect(28);
+        QUnit.expect(34);
         var fixture = document.getElementById('qunit-fixture');
         var wrapper = Utils.createHtmlElement(radioHtml);
         fixture.appendChild(wrapper);
@@ -150,6 +158,10 @@ define([
         var onChangeSpy = Sinon.spy();
         var instance = new ButtonToggle({inputs: inputs, onChange: onChangeSpy});
         var UIElements = wrapper.getElementsByClassName('ui-button-toggle');
+        // check event listeners
+        QUnit.ok(Utils.hasEventListener(UIElements[0], 'click', instance._onToggleClick.bind(instance)), 'event listener was added for first ui element');
+        QUnit.ok(Utils.hasEventListener(UIElements[1], 'click', instance._onToggleClick.bind(instance)), 'event listener was added for second ui element');
+        QUnit.ok(Utils.hasEventListener(UIElements[2], 'click', instance._onToggleClick.bind(instance)), 'event listener was added for third ui element');
         // select first toggle
         instance.select(0);
         QUnit.deepEqual(onChangeSpy.args[0], [inputs[0].value, inputs[0], UIElements[0]], 'onChange callback fired with correct args when select() was called on first toggle');
@@ -187,6 +199,9 @@ define([
         QUnit.ok(!inputs[1].checked, 'second toggle input boolean returns falsy');
         QUnit.ok(!Utils.hasClass(UIElements[1], selectedClass), 'second toggle ui element does NOT contain active class');
         instance.destroy();
+        QUnit.ok(!Utils.hasEventListener(UIElements[0], 'click', instance._onToggleClick.bind(instance)), 'event listener was removed from first ui element');
+        QUnit.ok(!Utils.hasEventListener(UIElements[1], 'click', instance._onToggleClick.bind(instance)), 'event listener was removed from second ui element');
+        QUnit.ok(!Utils.hasEventListener(UIElements[2], 'click', instance._onToggleClick.bind(instance)), 'event listener was removed from third ui element');
     });
 
     QUnit.test('clicking radio toggles', function() {

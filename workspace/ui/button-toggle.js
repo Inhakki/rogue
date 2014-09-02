@@ -57,8 +57,10 @@ define([
              * Sets up html.
              */
             setup: function () {
-//                var input = this.getFormElement();
-//                Utils.addClass(input, this.options.cssPrefix + '-input');
+                // add initial class
+                this._triggerAll(function (formElement) {
+                    Utils.addClass(formElement, this.options.cssPrefix + '-input');
+                }.bind(this));
                 this._setupEvents();
             },
 

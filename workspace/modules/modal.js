@@ -95,7 +95,9 @@ define([
          */
         destroy: function () {
             Utils.removeClass(this.container, this.options.activeClass);
-            this.container.removeChild(this.content);
+            if (this.container.contains(this.content)) {
+                this.container.removeChild(this.content);
+            }
             Utils.removeEventListener(document, 'click', this._onDocClick.bind(this), true);
         }
 

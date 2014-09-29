@@ -131,6 +131,19 @@ define([
             getPlaceholderStub.restore();
         });
 
+        QUnit.test('getPlaceholder() on inputs in IE with no placeholder attribute that return "null"', function() {
+            QUnit.expect(1);
+            var fixture = document.getElementById('qunit-fixture');
+            var el = Utils.createHtmlElement('<input type="text" value="" name="first_name" />');
+            fixture.appendChild(el);
+            var instance = new InputField({el: el});
+            var getAttributeStub = Sinon.stub(el, 'getAttribute').returns('null');
+            QUnit.equal(instance.getPlaceholder(), '', 'calling getPlacholder() an on input field in IE that returns "null" returns an empty string');
+            getAttributeStub.restore();
+
+            instance.destroy();
+        });
+
         QUnit.test('initializing and destroying when initial value is present', function() {
             QUnit.expect(3);
             var container = Utils.createHtmlElement(html);

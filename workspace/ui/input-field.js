@@ -163,7 +163,12 @@ define([
              * @returns {string}
              */
             getPlaceholder: function () {
-                return this.getFormElement().getAttribute('placeholder');
+                var value = this.getFormElement().getAttribute('placeholder');
+                // silly IE returns "null" for inputs that dont have a placeholder attribute
+                if (value === 'null') {
+                    value = '';
+                }
+                return value;
             },
 
             /**

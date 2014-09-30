@@ -137,7 +137,7 @@ define([
             var el = Utils.createHtmlElement('<input type="text" value="" name="first_name" />');
             fixture.appendChild(el);
             var instance = new InputField({el: el});
-            var getAttributeStub = Sinon.stub(el, 'getAttribute').returns('null');
+            var getAttributeStub = Sinon.stub(el, 'getAttribute').returns(null);
             QUnit.equal(instance.getPlaceholder(), '', 'calling getPlacholder() an on input field in IE that returns "null" returns an empty string');
             getAttributeStub.restore();
 

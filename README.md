@@ -34,7 +34,7 @@ In your hosts file, add the following entry:
 
 #### AKQA Core
 
-You must first [install AKQA Core package globally](https://github.com/AKQADC/AKQA-Core#global-install).
+You must first [install AKQA Core package](https://github.com/AKQADC/AKQA-Core#installation).
 
 
 ### Installation

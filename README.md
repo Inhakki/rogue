@@ -29,7 +29,7 @@ You can install Node.js via the package provided on [their site](http://www.node
 In your hosts file, add the following entry:
 
 ```
-0.0.0.0       web-framework.dc.akqa.com
+0.0.0.0       rogue.dc.akqa.com
 ```
 
 #### AKQA Core

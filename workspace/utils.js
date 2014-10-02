@@ -1,8 +1,7 @@
 define([
-    'framework/framework',
-    'framework/libs/core-modules/akqa-core/utils'
+    'framework/framework'
 ],
-function (App, CoreUtils) {
+function (App) {
     "use strict";
 
     var Utils = function () {
@@ -132,7 +131,16 @@ function (App, CoreUtils) {
          * @param {object} fallback - The fallback if the property does not exist
          */
         getNested: function (obj, map, fallback) {
-            return CoreUtils.getNested.apply(this, arguments);
+            var mapFragments = map.split('.'),
+                val = obj;
+            for (var i = 0; i < mapFragments.length; i++) {
+                if (val[mapFragments[i]]) {
+                    val = val[mapFragments[i]];
+                } else {
+                    val = fallback;
+                }
+            }
+            return val;
         },
 
         /**
@@ -240,7 +248,17 @@ function (App, CoreUtils) {
          * @param {...object} - Additional objects who's properties will be merged in
          */
         extend: function (target) {
-            return CoreUtils.extend.apply(this, arguments);
+            var merged = target,
+                source, i;
+            for (i = 1; i < arguments.length; i++) {
+                source = arguments[i];
+                for (var prop in source) {
+                    if (source.hasOwnProperty(prop)) {
+                        merged[prop] = source[prop];
+                    }
+                }
+            }
+            return merged;
         },
 
         /**

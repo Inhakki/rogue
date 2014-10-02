@@ -103,4 +103,16 @@ define([
             QUnit.equal(wrapper.parentNode, origParent, 'new wrapper\'s parent node is the wrapped element\'s original parent');
         });
 
+        QUnit.test('removeEventListener() method when there are no events', function() {
+            QUnit.expect(2);
+            var fixture = document.getElementById('qunit-fixture');
+            var el = document.createElement('div');
+            fixture.appendChild(el);
+            var removeEventStub = Sinon.spy(el, 'removeEventListener');
+            QUnit.equal(removeEventStub.callCount, 0, 'native/modern removeEventListener method was not called');
+            Utils.removeEventListener(el, 'click', function(){});
+            QUnit.equal(removeEventStub.callCount, 0, 'native/modern removeEventListener method was not called');
+            removeEventStub.restore();
+        });
+
     });

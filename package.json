@@ -1,12 +1,11 @@
 {
-    "name": "akqa-web-framework",
-    "version": "1.4.0",
+    "name": "rogue",
+    "version": "1.4.3",
     "description": "Global framework for AKQA web sites and apps",
     "repository": {
         "type": "git",
         "url": "git://github.com/AKQADC/AKQA-Web-Framework.git"
     },
-    "private": true,
     "devDependencies": {
         "grunt": "~0.4.2",
         "phantomjs": "~1.9.7",

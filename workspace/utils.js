@@ -219,16 +219,19 @@ function (App, CoreUtils) {
          */
         removeEventListener: function (el, event, callback, useCapture) {
             var eventKey = 'e' + el + event + callback,
+                listener;
+
+            if (this.events) {
                 listener = this.events[eventKey];
+                if (this.isIE8()) {
+                    // IE 8!
+                    el.detachEvent(event, listener);
+                } else {
+                    el.removeEventListener(event, listener, useCapture);
+                }
 
-            if (this.isIE8()) {
-                // IE 8!
-                el.detachEvent(event, listener);
-            } else {
-                el.removeEventListener(event, listener, useCapture);
+                this.events[eventKey] = null;
             }
-
-            this.events[eventKey] = null;
         },
 
         /**

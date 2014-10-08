@@ -20,9 +20,9 @@ Everything built in this framework is vanilla javascript to eliminate dependenci
 
 ### Dependencies
 
-#### NodeJS
+#### NodeJS / NPM
 
-You can install Node.js via the package provided on [their site](http://www.nodejs.org).
+You can install [Node.js](http://www.nodejs.org/) via the package provided on [their site](http://www.nodejs.org). Installing node will also install the [Node Package Manager](https://github.com/npm/npm) (NPM) to download and install node modules.
 
 #### Apache
 
@@ -39,7 +39,13 @@ You must first [install AKQA Core package](https://github.com/AKQADC/AKQA-Core#i
 
 ### Installation
 
-Then download rogue by adding it to your `package.json` file:
+First, you will need set your NPM registry to download modules using our internal private node registry by typing the following:
+
+```
+npm set registry http://npm.dc.akqa.com:4873/
+```
+
+Then, declare that you want to install rogue by adding it to your `package.json` file (just as you would any other node module):
 
 ```javascript
 {
@@ -49,7 +55,7 @@ Then download rogue by adding it to your `package.json` file:
 }
 ```
 
-Then install it by running:
+Then install rogue by running:
 
 ```
 npm install

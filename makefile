@@ -4,5 +4,4 @@ test:
 	$(TESTS)
 
 server:
-	core build-deps
 	grunt connect:local

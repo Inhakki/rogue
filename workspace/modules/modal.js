@@ -1,5 +1,5 @@
 define([
-    '../utils'
+    'utils'
 ], function (Utils) {
     'use strict';
 

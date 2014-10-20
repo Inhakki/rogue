@@ -31,3 +31,5 @@ node_modules
 # Mac OS
 *\.DS_Store
 .DS_Store
+
+build/build.txt

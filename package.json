@@ -4,7 +4,7 @@
   "description": "Global framework for AKQA web sites and apps",
   "repository": {
     "type": "git",
-    "url": "git://github.com/AKQADC/AKQA-Web-Framework.git"
+    "url": "git://github.com/AKQADC/rogue.git"
   },
   "publishConfig": {
     "registry": "http://npm.dc.akqa.com:4873/"
@@ -28,7 +28,8 @@
     "grunt-contrib-connect": "~0.8.0",
     "connect-livereload": "~0.3.2",
     "grunt-npmcopy": "0.1.0",
-    "element-kit": "1.0.0"
+    "element-kit": "1.0.0",
+    "grunt-contrib-requirejs": "0.4.4"
   },
   "engines": {
     "node": ">=0.10.0"

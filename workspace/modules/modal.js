@@ -1,7 +1,6 @@
 define([
-    'framework/framework',
-    'framework/utils'
-], function (App, Utils) {
+    '../utils'
+], function (Utils) {
     'use strict';
 
     var Modal = function (options) {

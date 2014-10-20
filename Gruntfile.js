@@ -11,12 +11,8 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.loadNpmTasks('akqa-core');
-
-    // add build-clean job
-    grunt.config('build-clean', {
-            all: {
-                src: ['build/**']
-            }
-    });
+    // Default grunt
+    grunt.registerTask( "build", [
+        "npmcopy:all"
+    ]);
 };

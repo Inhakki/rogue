@@ -32,11 +32,6 @@ In your hosts file, add the following entry:
 0.0.0.0       rogue.dc.akqa.com
 ```
 
-#### AKQA Core
-
-You must first [install AKQA Core package](https://github.com/AKQADC/AKQA-Core#installation).
-
-
 ### Installation
 
 First, you will need set your NPM registry to download modules using our internal private node registry by typing the following:
@@ -61,41 +56,19 @@ Then install rogue by running:
 npm install
 ```
 
-Then, you'll want to inject the files into your project for use. You can do this using [AKQA-Core's `build-deps` command](https://github.com/AKQADC/AKQA-Core#build-deps).
+Then, you'll want to inject the files into your project for use. You can do this using [npmcopy](https://github.com/timmywil/grunt-npmcopy).
 
 <a name="usage"></a>
 ## Usage
 
 To use the javascript library of classes that Rogue provides, you will need to first make sure you're using [RequireJS](http://requirejs.org/).
 
-Then, specify where your rogue modules are located (where you've injected them using the `build-deps` command) in your `paths` configuration of your require config:
-
-```
-require.config({
-    paths: {
-            rogue: '/path/to/core-modules/rogue/module'
-        }
-    }
-);
-```
+Then, specify the location of where you've injected the files in your RequireJS configuration.
 
 Then you're free to use any javascript module provided by Rogue.
 
-__Please note that your module ID for require must be 'rogue' as we have reserved this module ID for all rogue modules.__
-
 <a name="development"></a>
 ## Development
-
-### Folder Structure
-
-The project is set up as follows:
-
-* **grunt** - Files for grunt configuration
-* **samples** - A folder that can be browsed to see all module usage
-* **tests** - Test files
-* **workspace** - Parent folder for development (This folder is what is distributed when the package is installed in other projects)
-    * **libs** - Project libraries
-    * **ui** - All ui-based modules (form fields, toggle buttons, etc.)
 
 ### Tasks
 

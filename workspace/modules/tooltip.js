@@ -1,8 +1,7 @@
 define([
-    'framework/framework',
-    'framework/utils'
+    '../utils'
 ],
-function (App, Utils) {
+function (Utils) {
     "use strict";
 
     var Tooltip = function (options) {

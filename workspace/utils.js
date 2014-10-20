@@ -1,7 +1,4 @@
-define([
-    'framework/framework'
-],
-function (App) {
+define(function () {
     "use strict";
 
     var Utils = function () {

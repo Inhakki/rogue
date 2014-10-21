@@ -13,17 +13,8 @@
     "grunt": "~0.4.2",
     "phantomjs": "~1.9.7",
     "load-grunt-config": "~0.7.1",
-    "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-cli": "~0.1.13",
-    "complexity-report": "1.0.2",
-    "karma": "~0.12.6",
-    "grunt-karma": "~0.8.0",
-    "karma-jasmine": "~0.2.2",
-    "karma-coverage": "~0.2.1",
-    "karma-phantomjs-launcher": "~0.1.4",
-    "grunt-complexity": "~0.1.51",
-    "grunt-jsdoc": "~0.5.4",
     "grunt-contrib-qunit": "~0.5.2",
     "grunt-contrib-connect": "~0.8.0",
     "connect-livereload": "~0.3.2",
@@ -31,8 +22,5 @@
     "element-kit": "1.0.0",
     "underscore": "~1.7.0",
     "grunt-contrib-requirejs": "0.4.4"
-  },
-  "engines": {
-    "node": ">=0.10.0"
   }
 }

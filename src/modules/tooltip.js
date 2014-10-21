@@ -1,8 +1,7 @@
-define([
-    'utils'
-],
-function (Utils) {
+define(function (require) {
     "use strict";
+
+    var _ = require('underscore');
 
     var Tooltip = function (options) {
         this.initialize(options);
@@ -22,7 +21,7 @@ function (Utils) {
          */
         initialize: function (options) {
 
-            this.options = Utils.extend({
+            this.options = _.extend({
                 el: null,
                 showEvent: null,
                 hideEvent: null,
@@ -35,8 +34,8 @@ function (Utils) {
             this.activeClass = this.prefix + '-active';
 
             this.el = this.options.el;
-            this.trigger = Utils.getElementsByClassName(this.prefix + '-trigger', this.el)[0];
-            this.panel = Utils.getElementsByClassName(this.prefix + '-panel', this.el)[0];
+            this.trigger = this.el.getElementsByClassName(this.prefix + '-trigger')[0];
+            this.panel = this.el.getElementsByClassName(this.prefix + '-panel')[0];
 
             this.setup();
 
@@ -68,7 +67,7 @@ function (Utils) {
             for (key in map) {
                 if (map.hasOwnProperty(key)) {
                     e = map[key];
-                    Utils.addEventListener(this.trigger, e.name, e.event);
+                    this.trigger.addEventListener(e.name, e.event);
                 }
             }
             return map;
@@ -125,7 +124,7 @@ function (Utils) {
          * Shows the tooltip.
          */
         show: function () {
-            Utils.addClass(this.el, this.activeClass);
+            this.el.classList.add(this.activeClass);
             if (this.options.onShow) {
                 this.options.onShow();
             }
@@ -135,7 +134,7 @@ function (Utils) {
          * Hides the tooltip.
          */
         hide: function () {
-            Utils.removeClass(this.el, this.activeClass);
+            this.el.classList.remove(this.activeClass);
             if (this.options.onHide) {
                 this.options.onHide();
             }
@@ -146,7 +145,7 @@ function (Utils) {
          * @returns {boolean} Returns true if showing
          */
         isActive: function () {
-            return Utils.hasClass(this.el, this.activeClass);
+            return this.el.classList.contains(this.activeClass);
         },
 
         /**
@@ -162,7 +161,7 @@ function (Utils) {
                 for (key in eventMap) {
                     if (eventMap.hasOwnProperty(key)) {
                         e = eventMap[key];
-                        Utils.removeEventListener(this.trigger, e.name, e.event);
+                        this.trigger.removeEventListener(e.name, e.event);
                     }
                 }
             }

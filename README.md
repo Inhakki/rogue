@@ -12,9 +12,12 @@
 ## Summary
 Rogue is a internal framework built to standardize development and increase velocity across all web-based, front-end AKQA apps.
 
-Everything built in this framework is vanilla javascript to eliminate dependencies which means things will process a lot faster than libraries like [jQuery](http://jquery.com/) and [Dojo](http://dojotoolkit.org/) and contain a lot less bloat. It also supports IE8+ and all modern browsers (including mobile).
+Everything built in this framework is vanilla javascript to eliminate dependencies which means things will process a lot faster than libraries like [jQuery](http://jquery.com/) and [Dojo](http://dojotoolkit.org/) and contain a lot less bloat. It also supports IE9+ and all modern browsers (including mobile).
 
-<a name="installation"></a>
+### Included Libraries
+
+* [RequireJS](http://requirejs.org/)
+* [Underscore](http://underscorejs.org/)
 
 ## Setup
 
@@ -32,6 +35,7 @@ In your hosts file, add the following entry:
 0.0.0.0       rogue.dc.akqa.com
 ```
 
+<a name="installation"></a>
 ### Installation
 
 First, you will need set your NPM registry to download modules using our internal private node registry by typing the following:
@@ -73,6 +77,14 @@ Then you're free to use any javascript module provided by Rogue.
 ### Tasks
 
 The following are tasks that are available when developing on Rogue.
+
+#### make build
+
+Builds the project into the build folder.
+
+```
+make build
+```
 
 #### make server
 

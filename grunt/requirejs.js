@@ -1,8 +1,11 @@
 module.exports = {
     compile: {
         options: {
-            mainConfigFile: "workspace/require-config.js",
-            dir: "build"
+            baseUrl: 'src/modules',
+            dir: "build",
+            keepAmdefine: true,
+            removeCombined: true,
+            useStrict: true
         }
     }
 };

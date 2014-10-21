@@ -1,7 +1,7 @@
-define([
-    'utils'
-], function (Utils) {
+define(function (require) {
     'use strict';
+
+    var _ = require('underscore');
 
     var Modal = function (options) {
         this.initialize(options);
@@ -21,7 +21,7 @@ define([
          */
         initialize: function (options) {
 
-            this.options = Utils.extend({
+            this.options = _.extend({
                 containerEl: document.getElementsByTagName('body')[0],
                 el: null,
                 onHide: null,
@@ -48,8 +48,8 @@ define([
          */
         show: function () {
             this.setup();
-            Utils.addClass(this.container, this.options.activeClass);
-            Utils.addEventListener(document, 'click', this._onDocClick.bind(this), true);
+            this.container.classList.add(this.options.activeClass);
+            document.addEventListener('click', this._onDocClick.bind(this), true);
             if (this.options.onShow) {
                 this.options.onShow();
             }
@@ -59,8 +59,8 @@ define([
          * Hides the modal.
          */
         hide: function () {
-            Utils.removeClass(this.container, this.options.activeClass);
-            Utils.removeEventListener(document, 'click', this._onDocClick.bind(this), true);
+            this.container.classList.remove(this.options.activeClass);
+            document.removeEventListener('click', this._onDocClick.bind(this), true);
             if (this.options.onHide) {
                 this.options.onHide();
             }
@@ -71,7 +71,7 @@ define([
          * @returns {boolean} Returns truthy if showing, falsy if not
          */
         isActive: function () {
-            return Utils.hasClass(this.container, this.options.activeClass);
+            return this.container.classList.contains(this.options.activeClass);
         },
 
         /**
@@ -93,11 +93,11 @@ define([
          * Destroys the modal.
          */
         destroy: function () {
-            Utils.removeClass(this.container, this.options.activeClass);
+            this.container.classList.remove(this.options.activeClass);
             if (this.container.contains(this.content)) {
                 this.container.removeChild(this.content);
             }
-            Utils.removeEventListener(document, 'click', this._onDocClick.bind(this), true);
+            document.removeEventListener('click', this._onDocClick.bind(this), true);
         }
 
     };

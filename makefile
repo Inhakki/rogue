@@ -5,3 +5,6 @@ test:
 
 server:
 	grunt connect:local
+
+build:
+	grunt build

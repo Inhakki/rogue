@@ -29,6 +29,7 @@
     "connect-livereload": "~0.3.2",
     "grunt-npmcopy": "0.1.0",
     "element-kit": "1.0.0",
+    "underscore": "~1.7.0",
     "grunt-contrib-requirejs": "0.4.4"
   },
   "engines": {

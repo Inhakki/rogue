@@ -39,14 +39,13 @@ Then install rogue by running:
 npm install
 ```
 
-Then, you'll want to inject the files into your project for use. You can do this using [npmcopy](https://github.com/timmywil/grunt-npmcopy).
-
 <a name="usage"></a>
 ## Usage
 
 To use the javascript library of classes that Rogue provides, you will need to first make sure you're using [RequireJS](http://requirejs.org/).
 
-Then, specify the location of where you've injected the files in your RequireJS configuration.
+1. inject the files from the node_modules folder into your project for use. You can do this using [npmcopy](https://github.com/timmywil/grunt-npmcopy).
+1. specify the location of where you've injected the files in your RequireJS configuration.
 
 Then you're free to use any [module provided by Rogue](https://github.com/AKQADC/rogue/blob/master/EXAMPLES.md).
 

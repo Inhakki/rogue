@@ -48,7 +48,7 @@ To use the javascript library of classes that Rogue provides, you will need to f
 
 Then, specify the location of where you've injected the files in your RequireJS configuration.
 
-Then you're free to use any javascript module provided by Rogue.
+Then you're free to use any [module provided by Rogue](https://github.com/AKQADC/rogue/blob/master/EXAMPLES.md).
 
 ## Contributing
 

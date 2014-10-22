@@ -12,6 +12,14 @@ In your hosts file, add the following entry:
 0.0.0.0       rogue.dc.akqa.com
 ```
 
+### NPM modules
+
+You'll need all of the node dependencies, to install them with the following terminal command:
+
+```shell
+npm install
+```
+
 ## Tasks
 
 The following terminal commands are available when developing on Rogue.

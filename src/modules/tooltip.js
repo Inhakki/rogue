@@ -1,7 +1,7 @@
 define(function (require) {
     "use strict";
 
-    var _ = require('underscore');
+    var ElementUtils = require('element-utils');
 
     var Tooltip = function (options) {
         this.initialize(options);
@@ -21,7 +21,7 @@ define(function (require) {
          */
         initialize: function (options) {
 
-            this.options = _.extend({
+            this.options = ElementUtils.extend({
                 el: null,
                 showEvent: null,
                 hideEvent: null,
@@ -34,8 +34,8 @@ define(function (require) {
             this.activeClass = this.prefix + '-active';
 
             this.el = this.options.el;
-            this.trigger = this.el.getElementsByClassName(this.prefix + '-trigger')[0];
-            this.panel = this.el.getElementsByClassName(this.prefix + '-panel')[0];
+            this.trigger = ElementUtils.getElementsByClassName(this.prefix + '-trigger', this.el)[0];
+            this.panel = ElementUtils.getElementsByClassName(this.prefix + '-panel', this.el)[0];
 
             this.setup();
 
@@ -67,7 +67,7 @@ define(function (require) {
             for (key in map) {
                 if (map.hasOwnProperty(key)) {
                     e = map[key];
-                    this.trigger.addEventListener(e.name, e.event);
+                    ElementUtils.addEventListener(this.trigger, e.name, e.event);
                 }
             }
             return map;
@@ -124,7 +124,7 @@ define(function (require) {
          * Shows the tooltip.
          */
         show: function () {
-            this.el.classList.add(this.activeClass);
+            ElementUtils.addClass(this.el, this.activeClass);
             if (this.options.onShow) {
                 this.options.onShow();
             }
@@ -134,7 +134,7 @@ define(function (require) {
          * Hides the tooltip.
          */
         hide: function () {
-            this.el.classList.remove(this.activeClass);
+            ElementUtils.removeClass(this.el, this.activeClass);
             if (this.options.onHide) {
                 this.options.onHide();
             }
@@ -145,7 +145,7 @@ define(function (require) {
          * @returns {boolean} Returns true if showing
          */
         isActive: function () {
-            return this.el.classList.contains(this.activeClass);
+            return ElementUtils.hasClass(this.el, this.activeClass);
         },
 
         /**
@@ -161,7 +161,7 @@ define(function (require) {
                 for (key in eventMap) {
                     if (eventMap.hasOwnProperty(key)) {
                         e = eventMap[key];
-                        this.trigger.removeEventListener(e.name, e.event);
+                        ElementUtils.removeEventListener(this.trigger, e.name, e.event);
                     }
                 }
             }

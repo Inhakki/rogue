@@ -1,7 +1,7 @@
 define(function (require) {
     'use strict';
 
-    var _ = require('underscore');
+    var ElementUtils = require('element-utils');
 
     var Modal = function (options) {
         this.initialize(options);
@@ -21,7 +21,7 @@ define(function (require) {
          */
         initialize: function (options) {
 
-            this.options = _.extend({
+            this.options = ElementUtils.extend({
                 containerEl: document.getElementsByTagName('body')[0],
                 el: null,
                 onHide: null,
@@ -48,8 +48,8 @@ define(function (require) {
          */
         show: function () {
             this.setup();
-            this.container.classList.add(this.options.activeClass);
-            document.addEventListener('click', this._onDocClick.bind(this), true);
+            ElementUtils.addClass(this.container, this.options.activeClass);
+            ElementUtils.addEventListener(document, 'click', this._onDocClick.bind(this), true);
             if (this.options.onShow) {
                 this.options.onShow();
             }
@@ -59,8 +59,8 @@ define(function (require) {
          * Hides the modal.
          */
         hide: function () {
-            this.container.classList.remove(this.options.activeClass);
-            document.removeEventListener('click', this._onDocClick.bind(this), true);
+            ElementUtils.removeClass(this.container, this.options.activeClass);
+            ElementUtils.removeEventListener(document, 'click', this._onDocClick.bind(this), true);
             if (this.options.onHide) {
                 this.options.onHide();
             }
@@ -71,7 +71,7 @@ define(function (require) {
          * @returns {boolean} Returns truthy if showing, falsy if not
          */
         isActive: function () {
-            return this.container.classList.contains(this.options.activeClass);
+            return ElementUtils.hasClass(this.container, this.options.activeClass);
         },
 
         /**
@@ -93,11 +93,11 @@ define(function (require) {
          * Destroys the modal.
          */
         destroy: function () {
-            this.container.classList.remove(this.options.activeClass);
+            ElementUtils.removeClass(this.container, this.options.activeClass);
             if (this.container.contains(this.content)) {
                 this.container.removeChild(this.content);
             }
-            document.removeEventListener('click', this._onDocClick.bind(this), true);
+            ElementUtils.removeEventListener(document, 'click', this._onDocClick.bind(this), true);
         }
 
     };

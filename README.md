@@ -52,3 +52,7 @@ Then you're free to use any [module provided by Rogue](https://github.com/AKQADC
 ## Contributing
 
 To contribute to Rogue, check out the [Contributing readme](https://github.com/AKQADC/rogue/blob/master/CONTRIBUTING.md).
+
+## Release History
+
+ * 2014-10-23   v2.0.3   Modules are now IE9 compatible.

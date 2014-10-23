@@ -3,9 +3,11 @@ module.exports = {
         options: {
             baseUrl: 'src/modules',
             dir: "build",
-            keepAmdefine: true,
             removeCombined: true,
-            useStrict: true
+            useStrict: true,
+            paths: {
+                'element-utils': '../../external/element-kit/utils'
+            }
         }
     }
 };

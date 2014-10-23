@@ -1,6 +1,7 @@
 TESTS = grunt connect:test qunit
 
 test:
+	grunt build
 	$(TESTS)
 
 server:

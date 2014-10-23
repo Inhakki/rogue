@@ -3,11 +3,10 @@
 // set config options
 require.config({
     'baseUrl': '',
-    'paths': {
+    paths: {
         qunit: 'libs/qunit-require',
         sinon: '../external/sinon/sinon',
-        underscore: '../external/underscore/underscore',
-        'element-kit': '../external/element-kit/utils'
+        'element-utils': '../external/element-kit/utils'
     },
     shim: {
         sinon: {

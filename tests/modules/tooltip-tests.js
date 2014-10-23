@@ -2,8 +2,8 @@ define([
     'sinon',
     'qunit',
     '../libs/test-utils',
-    'element-kit',
-    '../../src/modules/tooltip'
+    'element-utils',
+    '../../build/tooltip'
 ],
     function(Sinon, QUnit, TestUtils, ElementUtils, Tooltip){
         "use strict";

@@ -9,7 +9,7 @@ module.exports = {
             "external/qunit/qunit.js": "qunitjs/qunit/qunit.js",
             "external/qunit/qunit.css": "qunitjs/qunit/qunit.css",
             "external/sinon": "sinon/lib",
-            "external/element-kit/utils.js": "element-kit/build/utils.js"
+            "external/element-kit/utils.js": "element-kit/dist/utils.js"
         }
     }
 };

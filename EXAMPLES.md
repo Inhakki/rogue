@@ -20,7 +20,8 @@ Multiple instances will be injected in the same central DOM container.
 ```javascript
 var content = document.getElementByClassName('my-modal-content')[0];
 var modal = new Modal({
-    el: content
+    el: content,
+    activeClass: 'modal-active'
 });
 ```
 Instantiating the modal will cause the following to happen:

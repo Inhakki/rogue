@@ -2,7 +2,7 @@
 
 // set config options
 require.config({
-    'baseUrl': '',
+    baseUrl: './',
     paths: {
         qunit: 'libs/qunit-require',
         sinon: '../external/sinon/sinon',

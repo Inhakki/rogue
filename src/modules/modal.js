@@ -48,7 +48,7 @@ define(function (require) {
          */
         show: function () {
             this.setup();
-            ElementUtils.addClass(this.container, this.options.activeClass);
+            ElementUtils.addClass(this.content, this.options.activeClass);
             ElementUtils.addEventListener(document, 'click', this._onDocClick.bind(this), true);
             if (this.options.onShow) {
                 this.options.onShow();
@@ -59,7 +59,7 @@ define(function (require) {
          * Hides the modal.
          */
         hide: function () {
-            ElementUtils.removeClass(this.container, this.options.activeClass);
+            ElementUtils.removeClass(this.content, this.options.activeClass);
             ElementUtils.removeEventListener(document, 'click', this._onDocClick.bind(this), true);
             if (this.options.onHide) {
                 this.options.onHide();
@@ -71,7 +71,7 @@ define(function (require) {
          * @returns {boolean} Returns truthy if showing, falsy if not
          */
         isActive: function () {
-            return ElementUtils.hasClass(this.container, this.options.activeClass);
+            return ElementUtils.hasClass(this.content, this.options.activeClass);
         },
 
         /**

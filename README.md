@@ -7,7 +7,6 @@ Everything built in this framework is vanilla javascript to eliminate dependenci
 ## Included Libraries
 
 * [RequireJS](http://requirejs.org/)
-* [Underscore](http://underscorejs.org/)
 
 ## Dependencies
 

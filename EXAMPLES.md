@@ -20,10 +20,12 @@ Multiple instances will be injected in the same central DOM container.
 ```javascript
 var content = document.getElementByClassName('my-modal-content')[0];
 var modal = new Modal({
-    el: content
+    el: content,
+    activeClass: 'modal-active'
 });
+modal.setup();
 ```
-Instantiating the checkbox will cause the following to happen:
+Instantiating and calling setup() on the modal instance will cause the following to happen:
  
  1. the `el` will be injected into the modal container (either the `<body>` of the page or whatever you pass in the `containerEl` option)
   

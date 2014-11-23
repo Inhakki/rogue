@@ -2,22 +2,27 @@
 
 // set config options
 require.config({
-    baseUrl: './',
+    baseUrl: '../',
     paths: {
-        qunit: 'libs/qunit-require',
-        sinon: '../external/sinon/sinon',
-        'element-utils': '../external/element-kit/utils'
+        qunit: 'tests/libs/qunit-require',
+        sinon: 'external/sinon/sinon'
     },
     shim: {
         sinon: {
             exports: 'sinon'
+        }
+    },
+    map: {
+        '*': {
+            // re-map element-utils to relative location to prevent tests from failing in browser
+            'element-utils': 'external/element-kit/utils'
         }
     }
 });
 
 // require each test
 require([
-    'modules/tooltip-tests'
+    'tests/modules/tooltip-tests'
 ], function() {
     QUnit.config.requireExpects = true;
     QUnit.start();

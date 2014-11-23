@@ -1,7 +1,7 @@
 define(function (require) {
     "use strict";
 
-    var ElementUtils = require('./element-utils');
+    var ElementUtils = require('element-utils');
 
     var Tooltip = function (options) {
         this.initialize(options);

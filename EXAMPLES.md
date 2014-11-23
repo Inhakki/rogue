@@ -23,8 +23,9 @@ var modal = new Modal({
     el: content,
     activeClass: 'modal-active'
 });
+modal.setup();
 ```
-Instantiating the modal will cause the following to happen:
+Instantiating and calling setup() on the modal instance will cause the following to happen:
  
  1. the `el` will be injected into the modal container (either the `<body>` of the page or whatever you pass in the `containerEl` option)
   

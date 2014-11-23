@@ -22,7 +22,8 @@ require.config({
 
 // require each test
 require([
-    'tests/modules/tooltip-tests'
+    'tests/modules/tooltip-tests',
+    'tests/modules/modal-tests'
 ], function() {
     QUnit.config.requireExpects = true;
     QUnit.start();

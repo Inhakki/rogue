@@ -17,7 +17,8 @@ define(function (require) {
          * @param {Function} [options.onHide] - A function that gets fired when the modal hides.
          * @param {Function} [options.onShow] - A function that gets fired when the modal shows.
          * @param {Function} [options.onClickOutside] - When tapping outside of the modal
-         * @param {string} [options.activeClass] - The class that gets added to the modal container when the modal is showing
+         * @param {string} [options.activeClass] - The CSS class that gets added to each modal when shown
+         * @param {string} [options.containerActiveClass] - The CSS class that gets added to the modal container when there is at least one modal showing
          */
         initialize: function (options) {
 
@@ -27,7 +28,8 @@ define(function (require) {
                 onHide: null,
                 onShow: null,
                 onClickOutside: this.hide.bind(this),
-                activeClass: 'modal-active'
+                activeClass: 'modal-active',
+                containerActiveClass: 'modal-container-active'
             }, options);
 
             this.container = this.options.containerEl;
@@ -50,6 +52,7 @@ define(function (require) {
             this.setup();
             ElementUtils.addClass(this.content, this.options.activeClass);
             ElementUtils.addEventListener(document, 'click', this._onDocClick.bind(this), true);
+            ElementUtils.addClass(this.container, this.options.containerActiveClass);
             if (this.options.onShow) {
                 this.options.onShow();
             }
@@ -61,6 +64,12 @@ define(function (require) {
         hide: function () {
             ElementUtils.removeClass(this.content, this.options.activeClass);
             ElementUtils.removeEventListener(document, 'click', this._onDocClick.bind(this), true);
+
+            // do not remove container's active class if other active modals exist
+            if (!this.container.getElementsByClassName(this.options.activeClass).length) {
+                ElementUtils.removeClass(this.container, this.options.containerActiveClass);
+            }
+
             if (this.options.onHide) {
                 this.options.onHide();
             }
@@ -93,9 +102,12 @@ define(function (require) {
          * Destroys the modal.
          */
         destroy: function () {
-            ElementUtils.removeClass(this.container, this.options.activeClass);
+            ElementUtils.removeClass(this.content, this.options.activeClass);
             if (this.container.contains(this.content)) {
                 this.container.removeChild(this.content);
+            }
+            if (!this.container.getElementsByClassName(this.options.activeClass).length) {
+                ElementUtils.removeClass(this.container, this.options.containerActiveClass);
             }
             ElementUtils.removeEventListener(document, 'click', this._onDocClick.bind(this), true);
         }

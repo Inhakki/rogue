@@ -2,7 +2,7 @@ define([
     'sinon',
     'qunit',
     'tests/libs/test-utils',
-    'external/element-kit/utils',
+    'src/modules/element-utils',
     'src/modules/tooltip'
 ],
     function(Sinon, QUnit, TestUtils, ElementUtils, Tooltip){

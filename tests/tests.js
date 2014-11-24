@@ -11,12 +11,6 @@ require.config({
         sinon: {
             exports: 'sinon'
         }
-    },
-    map: {
-        '*': {
-            // re-map element-utils to relative location to prevent tests from failing in browser
-            'element-utils': 'external/element-kit/utils'
-        }
     }
 });
 

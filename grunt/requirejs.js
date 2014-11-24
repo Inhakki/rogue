@@ -4,9 +4,7 @@ module.exports = {
             baseUrl: 'src/modules',
             dir: "build",
             useStrict: true,
-            paths: {
-                'element-utils': '../../external/element-kit/utils'
-            }
+            findNestedDependencies: true
         }
     }
 };

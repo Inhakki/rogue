@@ -1,0 +1,34 @@
+{
+  "name": "rogue",
+  "version": "2.0.7",
+  "homepage": "https://github.com/mkay581/rogue",
+  "authors": [
+    "Mark Kennedy <mkay581@gmail.com>"
+  ],
+  "description": "An un-opinionated, lightweight library for super fast web apps",
+  "moduleType": [
+    "amd",
+    "es6",
+    "node"
+  ],
+  "keywords": [
+    "modal",
+    "tooltip",
+    "carousel"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "element-kit": "~0.1.1",
+    "formjs": "~0.1.0",
+    "requirejs": "~2.1.15",
+    "qunit": "~1.16.0",
+    "underscore": "~1.7.0"
+  }
+}

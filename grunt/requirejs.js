@@ -1,7 +1,7 @@
 module.exports = {
     compile: {
         options: {
-            baseUrl: 'src/modules',
+            baseUrl: 'src',
             dir: "build",
             useStrict: true,
             findNestedDependencies: true

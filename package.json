@@ -1,24 +1,25 @@
 {
   "name": "rogue",
   "version": "2.0.7",
-  "description": "Global framework for AKQA web sites and apps",
+  "description": "An un-opinionated, lightweight library for super fast web apps",
   "repository": {
     "type": "git",
-    "url": "git://github.com/AKQADC/rogue.git"
+    "url": "git://github.com/mkay581/rogue.git"
   },
-  "publishConfig": {
-    "registry": "http://npm.dc.akqa.com:4873/"
-  },
+  "private": true,
   "devDependencies": {
     "connect-livereload": "~0.3.2",
     "element-kit": "^1.2.1",
     "grunt": "~0.4.2",
     "grunt-cli": "~0.1.13",
+    "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-connect": "~0.8.0",
+    "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-contrib-qunit": "~0.5.2",
     "grunt-contrib-requirejs": "0.4.4",
     "grunt-npmcopy": "0.1.0",
+    "grunt-release": "^0.9.0",
     "load-grunt-config": "~0.7.1",
     "phantomjs": "~1.9.7",
     "qunitjs": "^1.15.0",

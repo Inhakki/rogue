@@ -13,7 +13,8 @@ module.exports = function(grunt) {
 
     // Default grunt
     grunt.registerTask( "build", [
-        "npmcopy",
+        "clean",
+        "copy",
         "requirejs"
     ]);
 };

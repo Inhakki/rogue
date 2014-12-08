@@ -4,8 +4,11 @@
 require.config({
     baseUrl: '../',
     paths: {
-        qunit: 'tests/libs/qunit/qunit-require',
-        sinon: 'tests/libs/sinon/sinon'
+        qunit: 'tests/qunit-require',
+        sinon: 'bower_components/sinonjs/sinon',
+        underscore: 'bower_components/underscore/underscore',
+        'element-kit': 'bower_components/element-kit/dist/element-kit',
+        'test-utils': 'tests/test-utils'
     },
     shim: {
         sinon: {

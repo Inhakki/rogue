@@ -1,7 +1,7 @@
 define([
     'sinon',
     'qunit',
-    'tests/libs/test-utils',
+    'test-utils',
     'src/tooltip'
 ], function(
     Sinon,

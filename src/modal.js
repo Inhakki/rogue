@@ -1,4 +1,4 @@
-define(['./libs/underscore/underscore-min', './libs/element-kit/element-kit.min'], function () {
+define(['underscore', 'element-kit'], function () {
     'use strict';
 
     var Modal = function (options) {

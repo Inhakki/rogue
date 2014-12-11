@@ -4,14 +4,6 @@ Anyone can contribute to the code base by using the following setup.
 
 ## Development Setup
 
-### Apache
-
-In your hosts file, add the following entry:
-
-```
-0.0.0.0       rogue.dc.akqa.com
-```
-
 ### NPM modules
 
 You'll need all of the node dependencies, to install them with the following terminal command:

@@ -1,12 +1,10 @@
 module.exports = {
     compile: {
         options: {
-            baseUrl: 'src/modules',
+            baseUrl: 'src',
             dir: "build",
             useStrict: true,
-            paths: {
-                'element-utils': '../../external/element-kit/utils'
-            }
+            findNestedDependencies: true
         }
     }
 };

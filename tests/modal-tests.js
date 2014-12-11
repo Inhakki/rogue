@@ -1,27 +1,31 @@
 define([
     'sinon',
     'qunit',
-    'tests/libs/test-utils',
-    'external/element-kit/utils',
-    'src/modules/modal'
+    'test-utils',
+    'src/modal'
 ], function(
     Sinon,
     QUnit,
     TestUtils,
-    ElementUtils,
     Modal
 ){
     "use strict";
 
-    QUnit.module('Modal Tests');
+    var modalsContainer;
 
-    var html = '<div class="modal-container"></div>';
+    QUnit.module('Modal Tests', {
+        setup: function () {
+            var fixture = document.getElementById('qunit-fixture');
+            modalsContainer = document.createElement('div');
+            modalsContainer.className = 'modal-container';
+        }
+    });
+
 
     QUnit.test('initialization (with a modal container)', function () {
         QUnit.expect(3);
         var fixture = document.getElementById('qunit-fixture');
-        var modalsContainer = ElementUtils.createHtmlElement(html);
-        var modalEl = ElementUtils.createHtmlElement('<div class="modal1"></div>');
+        var modalEl = document.createElement('div');
         var modalInstance = new Modal({
             containerEl: modalsContainer,
             el: modalEl
@@ -37,7 +41,7 @@ define([
         QUnit.expect(3);
         var fixture = document.getElementById('qunit-fixture');
         var bodyEl = document.getElementsByTagName('body')[0];
-        var modalEl = ElementUtils.createHtmlElement('<div class="modal1"></div>');
+        var modalEl = document.createElement('div');
         var modalInstance = new Modal({
             el: modalEl
         });
@@ -53,8 +57,7 @@ define([
         var fixture = document.getElementById('qunit-fixture');
         var defaultActiveClass = 'modal-active';
         var defaultContainerActiveClass = 'modal-container-active';
-        var modalsContainer = ElementUtils.createHtmlElement(html);
-        var modalEl = ElementUtils.createHtmlElement('<div class="modal1"></div>');
+        var modalEl = document.createElement('div');
         var modalInstance = new Modal({
             el: modalEl,
             containerEl: modalsContainer,
@@ -81,9 +84,8 @@ define([
         var fixture = document.getElementById('qunit-fixture');
         var activeClass = 'my-custom-modal-active';
         var containerActiveClass = 'my-custom-modal-container-active';
-        var modalsContainer = ElementUtils.createHtmlElement(html);
-        var firstModalEl = ElementUtils.createHtmlElement('<div class="modal1"></div>');
-        var secondModalEl = ElementUtils.createHtmlElement('<div class="modal2"></div>');
+        var firstModalEl = document.createElement('div');
+        var secondModalEl = document.createElement('div');
         var firstModalInstance = new Modal({
             el: firstModalEl,
             containerEl: modalsContainer,

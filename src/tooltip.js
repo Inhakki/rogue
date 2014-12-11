@@ -1,7 +1,5 @@
-define(function (require) {
+define(['underscore', 'element-kit'], function () {
     "use strict";
-
-    var ElementUtils = require('element-utils');
 
     var Tooltip = function (options) {
         this.initialize(options);
@@ -21,7 +19,7 @@ define(function (require) {
          */
         initialize: function (options) {
 
-            this.options = ElementUtils.extend({
+            this.options = _.extend({
                 el: null,
                 showEvent: null,
                 hideEvent: null,
@@ -34,8 +32,7 @@ define(function (require) {
             this.activeClass = this.prefix + '-active';
 
             this.el = this.options.el;
-            this.trigger = ElementUtils.getElementsByClassName(this.prefix + '-trigger', this.el)[0];
-            this.panel = ElementUtils.getElementsByClassName(this.prefix + '-panel', this.el)[0];
+            this.trigger = this.el.getElementsByClassName(this.prefix + '-trigger')[0];
 
             this.setup();
 
@@ -67,7 +64,7 @@ define(function (require) {
             for (key in map) {
                 if (map.hasOwnProperty(key)) {
                     e = map[key];
-                    ElementUtils.addEventListener(this.trigger, e.name, e.event);
+                    this.trigger.addEventListener(e.name, e.event);
                 }
             }
             return map;
@@ -124,7 +121,7 @@ define(function (require) {
          * Shows the tooltip.
          */
         show: function () {
-            ElementUtils.addClass(this.el, this.activeClass);
+            this.el.kit.classList.add(this.activeClass);
             if (this.options.onShow) {
                 this.options.onShow();
             }
@@ -134,7 +131,7 @@ define(function (require) {
          * Hides the tooltip.
          */
         hide: function () {
-            ElementUtils.removeClass(this.el, this.activeClass);
+            this.el.kit.classList.remove(this.activeClass);
             if (this.options.onHide) {
                 this.options.onHide();
             }
@@ -145,7 +142,7 @@ define(function (require) {
          * @returns {boolean} Returns true if showing
          */
         isActive: function () {
-            return ElementUtils.hasClass(this.el, this.activeClass);
+            return this.el.kit.classList.contains(this.activeClass);
         },
 
         /**
@@ -161,7 +158,7 @@ define(function (require) {
                 for (key in eventMap) {
                     if (eventMap.hasOwnProperty(key)) {
                         e = eventMap[key];
-                        ElementUtils.removeEventListener(this.trigger, e.name, e.event);
+                        this.trigger.removeEventListener(e.name, e.event);
                     }
                 }
             }

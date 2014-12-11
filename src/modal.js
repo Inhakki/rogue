@@ -1,7 +1,5 @@
-define(function (require) {
+define(['underscore', 'element-kit'], function () {
     'use strict';
-
-    var ElementUtils = require('element-utils');
 
     var Modal = function (options) {
         this.initialize(options);
@@ -22,7 +20,7 @@ define(function (require) {
          */
         initialize: function (options) {
 
-            this.options = ElementUtils.extend({
+            this.options = _.extend({
                 containerEl: document.getElementsByTagName('body')[0],
                 el: null,
                 onHide: null,
@@ -50,9 +48,9 @@ define(function (require) {
          */
         show: function () {
             this.setup();
-            ElementUtils.addClass(this.content, this.options.activeClass);
-            ElementUtils.addEventListener(document, 'click', this._onDocClick.bind(this), true);
-            ElementUtils.addClass(this.container, this.options.containerActiveClass);
+            this.content.kit.classList.add(this.options.activeClass);
+            document.addEventListener('click', this._onDocClick.bind(this), true);
+            this.container.kit.classList.add(this.options.containerActiveClass);
             if (this.options.onShow) {
                 this.options.onShow();
             }
@@ -62,12 +60,12 @@ define(function (require) {
          * Hides the modal.
          */
         hide: function () {
-            ElementUtils.removeClass(this.content, this.options.activeClass);
-            ElementUtils.removeEventListener(document, 'click', this._onDocClick.bind(this), true);
+            this.content.kit.classList.remove(this.options.activeClass);
+            document.removeEventListener('click', this._onDocClick.bind(this), true);
 
             // do not remove container's active class if other active modals exist
             if (!this.container.getElementsByClassName(this.options.activeClass).length) {
-                ElementUtils.removeClass(this.container, this.options.containerActiveClass);
+                this.container.kit.classList.remove(this.options.containerActiveClass);
             }
 
             if (this.options.onHide) {
@@ -80,7 +78,7 @@ define(function (require) {
          * @returns {boolean} Returns truthy if showing, falsy if not
          */
         isActive: function () {
-            return ElementUtils.hasClass(this.content, this.options.activeClass);
+            return this.content.classList.contains(this.options.activeClass);
         },
 
         /**
@@ -102,14 +100,14 @@ define(function (require) {
          * Destroys the modal.
          */
         destroy: function () {
-            ElementUtils.removeClass(this.content, this.options.activeClass);
+            this.content.kit.classList.remove(this.options.activeClass);
             if (this.container.contains(this.content)) {
                 this.container.removeChild(this.content);
             }
             if (!this.container.getElementsByClassName(this.options.activeClass).length) {
-                ElementUtils.removeClass(this.container, this.options.containerActiveClass);
+                this.container.kit.classList.remove(this.options.containerActiveClass);
             }
-            ElementUtils.removeEventListener(document, 'click', this._onDocClick.bind(this), true);
+            document.removeEventListener('click', this._onDocClick.bind(this), true);
         }
 
     };

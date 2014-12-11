@@ -21,7 +21,11 @@ define(function (require) {
         initialize: function (options) {
 
             this.options = ElementUtils.extend({
-                el: document.getElementsByTagName('body')[0]
+                el: document.getElementsByTagName('body')[0],
+                containerClass: '',
+                assets: [],
+                onPanelChange: null,
+                lazyLoadStep: 2
             }, options);
 
             // cache vars

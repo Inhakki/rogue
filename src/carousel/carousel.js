@@ -126,7 +126,7 @@ define(['underscore', 'element-kit'], function (_) {
         },
 
         /**
-         * Loads an asset at a given index.
+         * Manually lazy loads a resource using an element's data attribute.
          * @param {HTMLElement} el - The image element to load
          * @param {Function} [callback] - A function that fires when the asset is done loading
          * @private

@@ -15,7 +15,7 @@ define([
 
     QUnit.module('Carousel Tests');
 
-    QUnit.test('showing and hiding panels', function () {
+    QUnit.test('showing panels', function () {
         QUnit.expect(7);
         var fixture = document.getElementById('qunit-fixture');
         var carouselEl = document.createElement('div');
@@ -39,6 +39,66 @@ define([
         QUnit.ok(panels[2].classList.contains(activeClass), 'active class has been applied to second panel');
         QUnit.ok(!panels[0].classList.contains(activeClass), 'active class has been removed from first panel');
         QUnit.deepEqual(panelChangeSpy.args[0], [2], 'onPanelChange callback was fired with the second index as its first argument');
+        carouselView.destroy();
+    });
+
+    QUnit.test('showing a panel that is already showing', function () {
+        QUnit.expect(6);
+        var fixture = document.getElementById('qunit-fixture');
+        var carouselEl = document.createElement('div');
+        var activeClass = 'carousel-panel-active';
+        carouselEl.innerHTML =
+            '<div class="carousel-panel"></div>' +
+            '<div class="carousel-panel"></div>' +
+            '<div class="carousel-panel"></div>';
+
+        var panels = carouselEl.getElementsByClassName('carousel-panel');
+        var panelChangeSpy = Sinon.spy();
+        var carouselView = new Carousel({
+            panels: panels,
+            onPanelChange: panelChangeSpy
+        });
+        carouselView.goToPanel(2);
+        QUnit.deepEqual(panelChangeSpy.args[0], [2], 'after transitioning to second panel, onPanelChange callback was fired with the second index as its first argument');
+        QUnit.equal(carouselView.getCurrentIndex(), 2, 'getCurrentIndex() returns 2');
+        QUnit.ok(panels[2].classList.contains(activeClass), 'active class has been applied to second panel');
+        carouselView.goToPanel(2);
+        QUnit.equal(panelChangeSpy.callCount, 1, 'after going to the second panel again, onPanelChange callback was NOT fired twice');
+        QUnit.equal(carouselView.getCurrentIndex(), 2, 'getCurrentIndex() still returns 2');
+        QUnit.ok(panels[2].classList.contains(activeClass), 'second panel still has active class');
+        carouselView.destroy();
+    });
+
+    QUnit.test('showing a panel that doesn\'t exists', function () {
+        QUnit.expect(9);
+        var fixture = document.getElementById('qunit-fixture');
+        var carouselEl = document.createElement('div');
+        var activeClass = 'carousel-panel-active';
+        carouselEl.innerHTML =
+            '<div class="carousel-panel"></div>' +
+            '<div class="carousel-panel"></div>' +
+            '<div class="carousel-panel"></div>';
+
+        var panels = carouselEl.getElementsByClassName('carousel-panel');
+        var panelChangeSpy = Sinon.spy();
+        var carouselView = new Carousel({
+            panels: panels,
+            onPanelChange: panelChangeSpy
+        });
+        carouselView.goToPanel(2); // go to third panel
+        QUnit.equal(carouselView.getCurrentIndex(), 2, 'after transitioning to third panel, getCurrentIndex() returns index of third panel');
+        QUnit.ok(panels[2].classList.contains(activeClass), 'active class has been applied to third panel');
+        QUnit.deepEqual(panelChangeSpy.args[0], [2], 'onPanelChange callback was fired with the third panel index as its first argument');
+        carouselView.goToPanel(10); // go to panel of a index that is too high
+        var firstPanelIndex = 0;
+        QUnit.equal(carouselView.getCurrentIndex(), firstPanelIndex, 'after transitioning to a panel with an index that is too high, getCurrentIndex() returns index of first panel');
+        QUnit.ok(panels[firstPanelIndex].classList.contains(activeClass), 'active class has been applied to first panel');
+        QUnit.deepEqual(panelChangeSpy.args[1], [firstPanelIndex], 'onPanelChange callback was fired with the first panel index as its first argument');
+        carouselView.goToPanel(-3); // go to panel of a index that is too low
+        var lastPanelIndex = panels.length - 1;
+        QUnit.equal(carouselView.getCurrentIndex(), lastPanelIndex, 'after transitioning to a panel with an index that is too low, getCurrentIndex() returns index of last panel');
+        QUnit.ok(panels[lastPanelIndex].classList.contains(activeClass), 'active class has been applied to last panel');
+        QUnit.deepEqual(panelChangeSpy.args[2], [lastPanelIndex], 'onPanelChange callback was fired with the last panel index as its first argument');
         carouselView.destroy();
     });
 

@@ -78,7 +78,7 @@ define(['underscore', 'element-kit'], function () {
          * @returns {boolean} Returns truthy if showing, falsy if not
          */
         isActive: function () {
-            return this.content.classList.contains(this.options.activeClass);
+            return this.content.kit.classList.contains(this.options.activeClass);
         },
 
         /**

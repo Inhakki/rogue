@@ -22,6 +22,8 @@ module.exports = function(grunt) {
         "usebanner"
     ]);
 
+    grunt.registerTask('server', ['connect:local', 'watch']);
+
     grunt.task.registerTask('release', 'A custom release.', function(type) {
         type = type || 'patch';
         grunt.task.run([

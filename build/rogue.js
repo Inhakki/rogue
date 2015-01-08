@@ -1,5 +1,5 @@
 /** 
-* Rogue - v2.2.0.
+* Rogue - v2.2.1.
 * git://github.com/mkay581/rogue.git
 * Copyright 2015. Licensed MIT.
 */

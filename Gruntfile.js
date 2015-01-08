@@ -17,15 +17,16 @@ module.exports = function(grunt) {
     // Default grunt
     grunt.registerTask( "build", [
         "clean",
-        "requirejs"
+        "copy",
+        "uglify",
+        "usebanner"
     ]);
 
     grunt.task.registerTask('release', 'A custom release.', function(type) {
         type = type || 'patch';
         grunt.task.run([
             'bump:' + type,
-            'build',
-            "usebanner:all"
+            'build'
         ]);
     });
 };

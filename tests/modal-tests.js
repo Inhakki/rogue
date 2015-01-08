@@ -2,12 +2,12 @@ define([
     'sinon',
     'qunit',
     'test-utils',
-    'src/modal'
+    'build/rogue'
 ], function(
     Sinon,
     QUnit,
     TestUtils,
-    Modal
+    Rogue
 ){
     "use strict";
 
@@ -26,7 +26,7 @@ define([
         QUnit.expect(3);
         var fixture = document.getElementById('qunit-fixture');
         var modalEl = document.createElement('div');
-        var modalInstance = new Modal({
+        var modalInstance = new Rogue.Modal({
             containerEl: modalsContainer,
             el: modalEl
         });
@@ -42,7 +42,7 @@ define([
         var fixture = document.getElementById('qunit-fixture');
         var bodyEl = document.getElementsByTagName('body')[0];
         var modalEl = document.createElement('div');
-        var modalInstance = new Modal({
+        var modalInstance = new Rogue.Modal({
             el: modalEl
         });
         QUnit.ok(!bodyEl.contains(modalEl), 'upon instantiation, modal element has NOT yet been added as a child node of the document body because setup() has not been called');
@@ -58,7 +58,7 @@ define([
         var defaultActiveClass = 'modal-active';
         var defaultContainerActiveClass = 'modal-container-active';
         var modalEl = document.createElement('div');
-        var modalInstance = new Modal({
+        var modalInstance = new Rogue.Modal({
             el: modalEl,
             containerEl: modalsContainer,
             activeClass: defaultActiveClass,
@@ -86,13 +86,13 @@ define([
         var containerActiveClass = 'my-custom-modal-container-active';
         var firstModalEl = document.createElement('div');
         var secondModalEl = document.createElement('div');
-        var firstModalInstance = new Modal({
+        var firstModalInstance = new Rogue.Modal({
             el: firstModalEl,
             containerEl: modalsContainer,
             activeClass: activeClass,
             containerActiveClass: containerActiveClass
         });
-        var secondModalInstance = new Modal({
+        var secondModalInstance = new Rogue.Modal({
             el: secondModalEl,
             containerEl: modalsContainer,
             activeClass: activeClass,

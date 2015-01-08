@@ -2,12 +2,12 @@ define([
     'sinon',
     'qunit',
     'test-utils',
-    'src/carousel/carousel'
+    'build/rogue'
 ], function(
     Sinon,
     QUnit,
     TestUtils,
-    Carousel
+    Rogue
 ){
     "use strict";
 
@@ -27,7 +27,7 @@ define([
 
         var panels = carouselEl.getElementsByClassName('carousel-panel');
         var panelChangeSpy = Sinon.spy();
-        var carouselView = new Carousel({
+        var carouselView = new Rogue.Carousel({
             panels: panels,
             onPanelChange: panelChangeSpy
         });
@@ -54,7 +54,7 @@ define([
 
         var panels = carouselEl.getElementsByClassName('carousel-panel');
         var panelChangeSpy = Sinon.spy();
-        var carouselView = new Carousel({
+        var carouselView = new Rogue.Carousel({
             panels: panels,
             onPanelChange: panelChangeSpy
         });
@@ -81,7 +81,7 @@ define([
 
         var panels = carouselEl.getElementsByClassName('carousel-panel');
         var panelChangeSpy = Sinon.spy();
-        var carouselView = new Carousel({
+        var carouselView = new Rogue.Carousel({
             panels: panels,
             onPanelChange: panelChangeSpy
         });
@@ -120,7 +120,7 @@ define([
         var imageLoadingClass = 'carousel-asset-loading';
         var firstImageEl = {};
         window.Image.returns(firstImageEl);
-        var carouselView = new Carousel({
+        var carouselView = new Rogue.Carousel({
             panels: carouselEl.getElementsByTagName('img')
         });
         // test init (image 1)
@@ -161,7 +161,7 @@ define([
         window.Image.onCall(0).returns(firstImageEl);
         var secondImageEl = {};
         window.Image.onCall(1).returns(secondImageEl);
-        var carouselView = new Carousel({
+        var carouselView = new Rogue.Carousel({
             panels: carouselEl.getElementsByClassName('carousel-panel'),
             assetClass: 'carousel-item'
         });

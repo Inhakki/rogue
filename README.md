@@ -10,25 +10,10 @@ It also supports IE9+ and all modern browsers (including mobile).
 * [RequireJS](http://requirejs.org/) - AMD and dependency management
 * [ElementKit](https://github.com/mkay581/element-kit) - Fast DOM manipulation for Elements
 
-
-## Installation
-
-### Bower
-
-```shell
-bower install rogue
-```
-
-### NPM Module
-
-```
-npm install rogue
-```
-
-<a name="usage"></a>
 ## Usage
 
-You can use any class provided by Rogue by simply [requiring it](http://requirejs.org/). More detailed usage and specific examples can be found in the [Examples](https://github.com/mkay581/rogue/blob/master/examples).
+You can use any class provided by Rogue by simply [requiring](http://requirejs.org/) one of the [rogue.js files](https://github.com/mkay581/rogue/tree/master/build).
+More detailed usage and specific examples can be found in the [Examples](https://github.com/mkay581/rogue/blob/master/examples).
 
 ## Contributing
 

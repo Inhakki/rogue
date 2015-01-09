@@ -21,5 +21,6 @@ To contribute to Rogue, check out the [Contributing readme](https://github.com/m
 
 ## Release History
 
+ * 2014-12-29   v2.2.0   New Carousel class!
  * 2014-07-12   v2.1.0   Official release.
  * 2014-10-23   v2.0.3   Modules are now IE9 compatible.

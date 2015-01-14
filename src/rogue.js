@@ -11,6 +11,21 @@
 })((function (_) {
     'use strict';
 
+    /**
+     * Triggers a method on an html collection.
+     * @param {HTMLCollection} els - A collection of elements
+     * @param {string} method - The method to call on each of the elements
+     * @param {Array} [params] - An array of parameters in which the pass to the method
+     */
+    var triggerHtmlCollectionMethod = function (els, method, params) {
+        var count = els.length,
+            i, el;
+        for (i = 0; i < count; i++) {
+            el = els[i];
+            el.kit[method].apply(el.kit, params);
+        }
+    };
+
     var Tooltip = function (options) {
         this.initialize(options);
     };
@@ -478,6 +493,9 @@
          * @param {string} [options.panelActiveClass] - The CSS class that gets added to an panel when it becomes active
          * @param {Carousel~onPanelChange} [options.onPanelChange] - When the current panel is changed
          * @param {string} [options.lazyLoadAttr] - The attribute containing the url path to content that is to be lazy loaded
+         * @param {HTMLCollection} [options.thumbnails] - A collection of elements that are the thumbnails
+         * @param {string} [options.thumbnailActiveClass] - The CSS class that gets added to a thumbnail element when it becomes active
+         * @param {Number} [options.initialIndex] - The index of the panel to go to upon instantiation (if not declared, goToPanel must be called manually).
          */
         initialize: function (options) {
 
@@ -488,13 +506,50 @@
                 autoLoadAssets: true,
                 panelActiveClass: 'carousel-panel-active',
                 onPanelChange: null,
-                lazyLoadAttr: 'data-src'
+                lazyLoadAttr: 'data-src',
+                thumbnails: [],
+                thumbnailActiveTriggerEvent: 'click',
+                thumbnailActiveClass: 'carousel-thumbnail-active',
+                initialIndex: 0
             }, options);
 
-            // cache vars
             this._checkForInitErrors();
-            this.goToPanel(0);
 
+            this.setup();
+
+            if (typeof this.options.initialIndex === 'number') {
+                this.goToPanel(this.options.initialIndex);
+            }
+
+        },
+
+        /**
+         * Sets up the carousel instance by adding event listeners to the thumbnails.
+         */
+        setup: function () {
+            var thumbs = this.options.thumbnails;
+            if (thumbs.length) {
+                triggerHtmlCollectionMethod(thumbs, 'addEventListener', [
+                    this.options.thumbnailActiveTriggerEvent,
+                    'onThumbnailEvent',
+                    this
+                ]);
+            }
+        },
+
+        /**
+         * When a thumbnail is clicked.
+         * @param {MouseEvent} e - The click event
+         */
+        onThumbnailEvent: function (e) {
+            if (!this._thumbnailArr) {
+                // convert thumbnail HTMLCollection to real array so we can perform necessary array methods
+                this._thumbnailArr = Array.prototype.slice.call(this.options.thumbnails);
+            }
+            var index = this._thumbnailArr.indexOf(e.currentTarget);
+            if (index !== -1 && index !== this.getCurrentIndex()) {
+                this.goToPanel(index);
+            }
         },
 
         /**
@@ -502,9 +557,17 @@
          * @private
          */
         _checkForInitErrors: function () {
-            if (!this.options.panels.length) {
-                // no assets
-                console.error('carousel init error: no panels were passed in constructor');
+            var options = this.options,
+                panelCount = options.panels.length,
+                thumbnailCount = options.thumbnails.length;
+            if (!panelCount) {
+                console.error('carousel error: no panels were passed in constructor');
+            }
+
+            if (thumbnailCount && thumbnailCount !== panelCount) {
+                console.warn('carousel warning: number of thumbnails passed in constructor do not equal the number of panels' + '\n' +
+                'panels: ' + panelCount + '\n' +
+                'thumbnails: ' + thumbnailCount + '\n');
             }
         },
 
@@ -514,10 +577,10 @@
          */
         goToPanel: function (index) {
 
-            var panels = this.options.panels,
-                maxIndex = panels.length - 1,
+            var maxIndex = this.options.panels.length - 1,
                 minIndex = 0,
                 prevIndex = this.getCurrentIndex();
+
 
             if (index > maxIndex) {
                 // set to first index if too high
@@ -527,21 +590,50 @@
                 index = maxIndex;
             }
 
-            if (prevIndex !== index) {
+            if (prevIndex === undefined || prevIndex !== index) {
 
-                if (prevIndex !== undefined) {
-                    panels[prevIndex].kit.classList.remove(this.options.panelActiveClass);
-                }
+                this._updatePanels(index);
+
+                this._updateThumbnails(index);
+
                 this._currentIndex = index;
 
-                panels[index].kit.classList.add(this.options.panelActiveClass);
-
-                if (this.options.autoLoadAssets) {
-                    this.loadPanelAssets(index);
-                }
-
-                if (this.options.onPanelChange && prevIndex !== undefined) {
+                if (this.options.onPanelChange) {
                     this.options.onPanelChange(index)
+                }
+            }
+        },
+
+        /**
+         * Makes all panels inactive except for the one at the index provided.
+         * @param {Number} index - The new index
+         * @private
+         */
+        _updatePanels: function (index) {
+            var panels = this.options.panels,
+                prevIndex = this.getCurrentIndex();
+            if (prevIndex !== undefined) {
+                panels[prevIndex].kit.classList.remove(this.options.panelActiveClass);
+            }
+            panels[index].kit.classList.add(this.options.panelActiveClass);
+            if (this.options.autoLoadAssets) {
+                this.loadPanelAssets(index);
+            }
+        },
+
+        /**
+         * Makes all thumbnails inactive except for the one at the index provided.
+         * @param {Number} index - The new index
+         * @private
+         */
+        _updateThumbnails: function (index) {
+            var thumbs = this.options.thumbnails,
+                prevIndex = this.getCurrentIndex() || 0,
+                activeClass = this.options.thumbnailActiveClass;
+            if (thumbs.length) {
+                thumbs[index].kit.classList.add(activeClass);
+                if (prevIndex !== index) {
+                    thumbs[prevIndex].kit.classList.remove(activeClass);
                 }
             }
         },
@@ -601,8 +693,20 @@
          * Destroys the carousel.
          */
         destroy: function () {
-            this.options.panels[this.getCurrentIndex()].kit.classList.remove(this.options.panelActiveClass);
+            var options = this.options,
+                thumbs = options.thumbnails;
+
+            options.panels[this.getCurrentIndex()].kit.classList.remove(options.panelActiveClass);
+
             this._currentIndex = null;
+
+            if (thumbs.length) {
+                triggerHtmlCollectionMethod(thumbs, 'removeEventListener', [
+                    options.thumbnailActiveTriggerEvent,
+                    'onThumbnailEvent',
+                    this
+                ]);
+            }
         }
     };
 

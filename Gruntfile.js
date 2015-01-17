@@ -17,7 +17,7 @@ module.exports = function(grunt) {
     // Default grunt
     grunt.registerTask( "build", ["clean", "copy"]);
 
-    grunt.registerTask('server', ['connect:local', 'watch']);
+    grunt.registerTask('server', ['connect:local']);
 
     grunt.registerTask('test', ['connect:test', 'qunit']);
 

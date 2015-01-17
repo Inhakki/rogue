@@ -60,32 +60,10 @@ _Tests can also be run via browser by running `grunt server` and just browsing t
 To run releases, you must have the [Git Hubflow tools](http://datasift.github.io/gitflow/GitFlowForGitHub.html) installed
 in your directory to give you access to the release commands.
 
-There are a few commands to create releases. Which one you choose should be determined using the [semantic versioning principles](http://semver.org).
 
-#### Patches and hotfixes
-
-```shell
-grunt release:patch
-```
-
-_This command will be run by default if `grunt release` is used._
-
-#### Minors
-
-```shell
-grunt release:minor
-```
-
-#### Majors
-
-```shell
-grunt release:major
-```
-
-Running the above commands will:
-
-1. Bump up the version number in relevant package files (package.json, bower.json, etc).
-1. Build the appropriate files into the "build" folder.
-1. Add appropriate banners to the built files
-
-After packaging the release, you must finalize your release by running Hubflow's `git hf release` command.
+1. Run `grunt release:[TYPE]` -- with [TYPE] being the version type of `patch`, `minor`, or `major`. Which one you
+choose should be determined using the [semantic versioning principles](http://semver.org). This command will bump up
+ the version number in the project and build the appropriate files into the "build" folder.
+1. Commit the modified files using a message of "release 0.0.0", changing 0.0.0 to the new release version number.
+1. Finalize the release by running Hubflow's `git hf release` command, which will auto merge the release into "master" branch
+ and back-merge it all into "develop" branch.

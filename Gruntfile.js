@@ -10,14 +10,22 @@ module.exports = function(grunt) {
             pattern: ['grunt-*']
         },
         data: {
-            pkg: grunt.file.readJSON("package.json")
+            pkg: grunt.file.readJSON("package.json"),
+            'gh-pages': {
+                options: {
+                    add: true
+                },
+                src: 'api/**/*'
+            }
         }
     });
 
     // Default grunt
-    grunt.registerTask( "build", ["clean", "copy"]);
+    grunt.registerTask( "build", ["clean", "copy:all"]);
 
     grunt.registerTask('server', ['connect:local']);
+
+    grunt.registerTask('publish_api', ['jsdoc', 'copy:jsdoc', 'gh-pages']);
 
     grunt.registerTask('test', ['connect:test', 'qunit']);
 

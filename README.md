@@ -12,7 +12,7 @@ Dependencies include:
 
 ## API Documentation
 
-Documentation can be found [here](https://github.com/mkay581/rogue/blob/master/docs).
+Documentation can be found [here](http://mkay581.github.io/rogue/api/current/).
 
 ## Usage
 

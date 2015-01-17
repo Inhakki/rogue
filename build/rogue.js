@@ -1,5 +1,5 @@
 /** 
-* Rogue - v2.2.1.
+* Rogue - v2.2.2.
 * git://github.com/mkay581/rogue.git
 * Copyright 2015. Licensed MIT.
 */
@@ -492,7 +492,6 @@
          * @param {object} options - Options passed into instance
          * @param {HTMLCollection} [options.thumbnails] - A collection of elements that are the thumbnails
          * @param {string} [options.thumbnailActiveClass] - The CSS class that gets added to a thumbnail element when it becomes active
-         * @param {Number} [options.initialIndex] - The index of the panel to go to upon instantiation (if not declared, goToPanel must be called manually).
          * @param {CarouselThumbs~onChange} [options.onChange] - When a new thumbnail becomes active
          *
          */
@@ -520,6 +519,8 @@
                     'onThumbnailEvent',
                     this
                 ]);
+            } else {
+                console.error('carousel thumb error: no thumbnails were passed to constructor');
             }
         },
 
@@ -559,14 +560,20 @@
         goTo: function (index) {
             var thumbs = this.options.thumbnails,
                 prevIndex = this.getCurrentIndex() || 0,
-                activeClass = this.options.thumbnailActiveClass;
-            if (thumbs.length) {
-                thumbs[index].kit.classList.add(activeClass);
-                if (prevIndex !== index) {
-                    thumbs[prevIndex].kit.classList.remove(activeClass);
-                }
-                this._currentIndex = index;
+                activeClass = this.options.thumbnailActiveClass,
+                maxIndex = thumbs.length - 1,
+                minIndex = 0;
+
+            if (index > maxIndex || index < minIndex) {
+                console.error('carousel thumbnail error: unable to transition to a thumbnail with an index of ' + index + ', it does not exist!');
             }
+
+            thumbs[index].kit.classList.add(activeClass);
+
+            if (prevIndex !== index) {
+                thumbs[prevIndex].kit.classList.remove(activeClass);
+            }
+            this._currentIndex = index;
         },
 
         /**
@@ -597,20 +604,20 @@
     };
 
     /**
-     * Adds carousel functionality to a set up pre-determined HTML markup.
+     * Adds functionality for carousel panels.
      * @class Carousel
      */
-    var Carousel = function (options) {
+    var CarouselPanels = function (options) {
         this.initialize(options);
     };
 
     /**
      * A callback function that fires after a new active panel is set
-     * @callback Carousel~onPanelChange
+     * @callback Carousel~onChange
      * @param {Number} index - The index of the new panel
      */
 
-    Carousel.prototype = {
+    CarouselPanels.prototype = {
 
         /**
          * When the carousel is instantiated.
@@ -620,11 +627,8 @@
          * @param {string} [options.assetLoadingClass] - The CSS class that gets added to an asset when it is loading
          * @param {boolean} [options.autoLoadAssets] - Whether or not to automatically load assets when active
          * @param {string} [options.panelActiveClass] - The CSS class that gets added to an panel when it becomes active
-         * @param {Carousel~onPanelChange} [options.onPanelChange] - When the current panel is changed
+         * @param {Carousel~onChange} [options.onChange] - When the current panel is changed
          * @param {string} [options.lazyLoadAttr] - The attribute containing the url path to content that is to be lazy loaded
-         * @param {HTMLCollection} [options.thumbnails] - A collection of elements that are the thumbnails
-         * @param {string} [options.thumbnailActiveClass] - The CSS class that gets added to a thumbnail element when it becomes active
-         * @param {Number} [options.initialIndex] - The index of the panel to go to upon instantiation (if not declared, goToPanel must be called manually).
          */
         initialize: function (options) {
 
@@ -634,31 +638,11 @@
                 assetLoadingClass: 'carousel-asset-loading',
                 autoLoadAssets: true,
                 panelActiveClass: 'carousel-panel-active',
-                onPanelChange: null,
-                lazyLoadAttr: 'data-src',
-                thumbnails: [],
-                thumbnailActiveTriggerEvent: 'click',
-                thumbnailActiveClass: 'carousel-thumbnail-active',
-                initialIndex: 0
+                onChange: null,
+                lazyLoadAttr: 'data-src'
             }, options);
 
             this._checkForInitErrors();
-
-            this.setup();
-
-            if (typeof this.options.initialIndex === 'number') {
-                this.goToPanel(this.options.initialIndex);
-            }
-
-        },
-
-        /**
-         * Sets up the carousel instance by adding event listeners to the thumbnails.
-         */
-        setup: function () {
-            var thumbOptions = this.options;
-            thumbOptions.onChange = this.goToPanel.bind(this);
-            this.thumbnails = new CarouselThumbs(thumbOptions);
         },
 
         /**
@@ -667,47 +651,34 @@
          */
         _checkForInitErrors: function () {
             var options = this.options,
-                panelCount = options.panels.length,
-                thumbnailCount = options.thumbnails.length;
+                panelCount = options.panels.length;
             if (!panelCount) {
                 console.error('carousel error: no panels were passed in constructor');
-            }
-            if (thumbnailCount && thumbnailCount !== panelCount) {
-                console.warn('carousel warning: number of thumbnails passed in constructor do not equal the number of panels' + '\n' +
-                'panels: ' + panelCount + '\n' +
-                'thumbnails: ' + thumbnailCount + '\n');
             }
         },
 
         /**
-         * Transitions the carousel to a panel of an index.
+         * Transitions to a panel of an index.
          * @param {Number} index - The index number to go to
          */
-        goToPanel: function (index) {
+        goTo: function (index) {
 
             var maxIndex = this.options.panels.length - 1,
                 minIndex = 0,
                 prevIndex = this.getCurrentIndex();
 
-
-            if (index > maxIndex) {
-                // set to first index if too high
-                index = minIndex;
-            } else if (index < minIndex) {
-                // set to last index if too low
-                index = maxIndex;
+            if (index > maxIndex || index < minIndex) {
+                console.error('carousel panel error: unable to transition to an index of ' + index + 'which does not exist!');
             }
 
             if (prevIndex === undefined || prevIndex !== index) {
 
                 this._updatePanels(index);
 
-                this.thumbnails.goTo(index);
-
                 this._currentIndex = index;
 
-                if (this.options.onPanelChange) {
-                    this.options.onPanelChange(index)
+                if (this.options.onChange) {
+                    this.options.onChange(index)
                 }
             }
         },
@@ -785,12 +756,166 @@
          */
         destroy: function () {
             var options = this.options;
-
             options.panels[this.getCurrentIndex()].kit.classList.remove(options.panelActiveClass);
-
             this._currentIndex = null;
+        }
+    };
 
-            this.thumbnails.destroy();
+    /**
+     * Adds carousel functionality to a set up pre-determined HTML markup.
+     * @class Carousel
+     */
+    var Carousel = function (options) {
+        this.initialize(options);
+    };
+
+    /**
+     * A callback function that fires after a new active panel is set
+     * @callback Carousel~onPanelChange
+     * @param {Number} index - The index of the new panel
+     */
+
+    Carousel.prototype = {
+
+        /**
+         * When the carousel is instantiated.
+         * @param {object} options - Options passed into instance
+         * @param {HTMLCollection} options.panels - The panels in which to use for the carousel (an array of photos)
+         * @param {string} [options.assetClass] - The CSS class of the asset images inside of the DOM
+         * @param {string} [options.assetLoadingClass] - The CSS class that gets added to an asset when it is loading
+         * @param {boolean} [options.autoLoadAssets] - Whether or not to automatically load assets when active
+         * @param {string} [options.panelActiveClass] - The CSS class that gets added to an panel when it becomes active
+         * @param {Carousel~onPanelChange} [options.onPanelChange] - When the current panel is changed
+         * @param {string} [options.lazyLoadAttr] - The attribute containing the url path to content that is to be lazy loaded
+         * @param {HTMLCollection} [options.thumbnails] - A collection of elements that are the thumbnails
+         * @param {string} [options.thumbnailActiveClass] - The CSS class that gets added to a thumbnail element when it becomes active
+         * @param {Number} [options.initialIndex] - The index of the panel to go to upon instantiation (if not declared, goToPanel must be called manually).
+         */
+        initialize: function (options) {
+
+            this.options = _.extend({
+                panels: [],
+                assetClass: null,
+                assetLoadingClass: 'carousel-asset-loading',
+                autoLoadAssets: true,
+                panelActiveClass: 'carousel-panel-active',
+                onPanelChange: null,
+                lazyLoadAttr: 'data-src',
+                thumbnails: [],
+                thumbnailActiveTriggerEvent: 'click',
+                thumbnailActiveClass: 'carousel-thumbnail-active',
+                initialIndex: 0
+            }, options);
+
+            this._checkForInitErrors();
+            this.setup();
+        },
+
+        /**
+         * Sets up the carousel instance by adding event listeners to the thumbnails.
+         */
+        setup: function () {
+
+            this.panels = new CarouselPanels(_.extend({}, this.options, {
+                onChange: this.onPanelChange.bind(this)
+            }));
+
+            if (this.options.thumbnails.length) {
+                this.thumbnails = new CarouselThumbs(_.extend({}, this.options, {
+                    onChange: this.onThumbnailChange.bind(this)
+                }));
+            }
+
+            if (typeof this.options.initialIndex === 'number') {
+                this.goToPanel(this.options.initialIndex);
+            }
+        },
+
+        /**
+         * Checks for errors upon initialize.
+         * @private
+         */
+        _checkForInitErrors: function () {
+            var options = this.options,
+                panelCount = options.panels.length,
+                thumbnailCount = options.thumbnails.length;
+            if (thumbnailCount && thumbnailCount !== panelCount) {
+                console.warn('carousel warning: number of thumbnails passed in constructor do not equal the number of panels' + '\n' +
+                'panels: ' + panelCount + '\n' +
+                'thumbnails: ' + thumbnailCount + '\n');
+            }
+        },
+
+        /**
+         * When a panel index changes.
+         * @param {Number} index - The new index
+         */
+        onPanelChange: function (index) {
+            if (this.thumbnails) {
+                this.thumbnails.goTo(index);
+            }
+            if (this.options.onPanelChange) {
+                this.options.onPanelChange(index)
+            }
+        },
+
+        /**
+         * When the thumbnail index changes.
+         * @param {Number} index - The new index
+         */
+        onThumbnailChange: function (index) {
+            this.goToPanel(index);
+        },
+
+        /**
+         * Transition to a new panel and thumbnail.
+         * @param {Number} index - The index number to go to
+         */
+        goTo: function (index) {
+            var options = this.options,
+                maxIndex = options.panels.length - 1,
+                minIndex = 0;
+
+            if (index > maxIndex) {
+                // set to first index if too high
+                index = minIndex;
+            } else if (index < minIndex) {
+                // set to last index if too low
+                index = maxIndex;
+            }
+
+            this.panels.goTo(index);
+
+            if (this.thumbnails) {
+                this.thumbnails.goTo(index);
+            }
+        },
+
+        /**
+         * Transitions the carousel to a panel of an index.
+         * @param {Number} index - The index number to go to
+         * @deprecated since 2.2.2
+         */
+        goToPanel: function (index) {
+            this.goTo(index);
+        },
+
+        /**
+         * Gets the current index that is showing.
+         * @returns {Number} Returns the index
+         */
+        getCurrentIndex: function () {
+            return this.panels.getCurrentIndex();
+        },
+
+        /**
+         * Destroys the carousel.
+         */
+        destroy: function () {
+            this.panels.destroy();
+            if (this.thumbnails) {
+                this.thumbnails.destroy();
+            }
         }
     };
 

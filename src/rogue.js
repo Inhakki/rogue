@@ -914,7 +914,7 @@
          * @memberOf Carousel
          */
         onThumbnailChange: function (index) {
-            this.goToPanel(index);
+            this.goTo(index);
         },
 
         /**

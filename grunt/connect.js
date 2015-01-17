@@ -1,7 +1,7 @@
 module.exports = {
     local: {
         options: {
-            options: { livereload: true }
+            keepalive: true
         }
     },
     test: {

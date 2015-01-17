@@ -19,6 +19,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('server', ['connect:local', 'watch']);
 
+    grunt.registerTask('test', ['connect:test', 'qunit']);
+
     grunt.task.registerTask('release', 'A custom release.', function(type) {
         type = type || 'patch';
         grunt.task.run([

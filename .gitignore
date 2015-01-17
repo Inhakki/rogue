@@ -33,4 +33,6 @@ bower_components
 *\.DS_Store
 .DS_Store
 
+
+docs/
 build/build.txt

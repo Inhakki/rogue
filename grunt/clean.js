@@ -1,3 +1,3 @@
 module.exports = {
-    all: ['build']
+    all: ['build', 'docs']
 };

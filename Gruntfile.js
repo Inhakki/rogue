@@ -15,12 +15,7 @@ module.exports = function(grunt) {
     });
 
     // Default grunt
-    grunt.registerTask( "build", [
-        "clean",
-        "copy",
-        "uglify",
-        "usebanner"
-    ]);
+    grunt.registerTask( "build", ["clean", "copy"]);
 
     grunt.registerTask('server', ['connect:local', 'watch']);
 
@@ -28,7 +23,10 @@ module.exports = function(grunt) {
         type = type || 'patch';
         grunt.task.run([
             'bump:' + type,
-            'build'
+            'build',
+            "uglify",
+            "usebanner",
+            "jsdoc"
         ]);
     });
 };

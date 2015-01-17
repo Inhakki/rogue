@@ -1,0 +1,37 @@
+{
+	"tags": {
+		"allowUnknownTags" : true
+	},
+	"source": {
+	  "include": ["package.json", "README.md"]
+	},
+	"plugins": ["plugins/markdown"],
+	"templates": {
+		"cleverLinks": true,
+		"monospaceLinks": true,
+		"default": {
+			"outputSourceFiles" : true
+		},
+		"applicationName": "Rogue",
+		"disqus": "",
+		"googleAnalytics": "",
+		"openGraph": {
+			"title": "",
+			"type": "website",
+			"image": "",
+			"site_name": "",
+			"url": ""
+		},
+		"meta": {
+			"title": "Rogue API",
+			"description": "API for Rogue",
+			"keyword": "rogue"
+		},
+		"linenums": false
+	},
+	"markdown": {
+		"parser": "gfm",
+		"hardwrap": true,
+		"tags": ["examples"]
+	}
+}

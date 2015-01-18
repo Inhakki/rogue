@@ -2,7 +2,7 @@ define([
     'sinon',
     'qunit',
     'test-utils',
-    'build/rogue'
+    'src/rogue'
 ], function(
     Sinon,
     QUnit,

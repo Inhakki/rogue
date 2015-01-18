@@ -8,5 +8,16 @@ module.exports = {
                 src: ['rogue.js']
             }
         ]
+    },
+    // copies then-current jsdoc api folder
+    jsdoc: {
+        files: [
+            {
+                expand: true,
+                cwd: 'api/current',
+                dest: 'api/<%= pkg.version %>',
+                src: ['**/*']
+            }
+        ]
     }
 };

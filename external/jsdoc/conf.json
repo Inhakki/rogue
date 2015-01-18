@@ -3,18 +3,15 @@
 		"allowUnknownTags" : true
 	},
 	"source": {
-	  "include": ["README.md"]
+	  "include": ["README.md", "src/rogue.js"]
 	},
 	"plugins": ["plugins/markdown"],
 	"templates": {
 		"cleverLinks": true,
 		"monospaceLinks": true,
-		"default": {
-			"outputSourceFiles" : true
-		},
 		"applicationName": "Rogue",
 		"disqus": "",
-		"googleAnalytics": "",
+		"googleAnalytics": "UA-58668133-1",
 		"openGraph": {
 			"title": "",
 			"type": "website",

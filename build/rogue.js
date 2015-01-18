@@ -1,5 +1,5 @@
 /** 
-* Rogue - v2.2.2.
+* Rogue - v2.2.3.
 * git://github.com/mkay581/rogue.git
 * Copyright 2015. Licensed MIT.
 */
@@ -11,7 +11,7 @@
             return factory(_);
         });
     } else {
-        factory(window._);
+        window.Rogue = factory(window._);
     }
 })((function (_) {
     'use strict';
@@ -31,21 +31,26 @@
         }
     };
 
+    /**
+     * Tooltip.
+     * @constructor Tooltip
+     * @param {object} options - Options to pass
+     * @param {HTMLElement} options.el - The container of the tooltip
+     * @param {string} [options.showEvent] - A string indicating which event should trigger showing the tooltip
+     * @param {string} [options.hideEvent] - A string indicating which event should trigger hiding the tooltip
+     * @param {Function} [options.onShow] - A callback function that fires when tooltip panel is shown
+     * @param {Function} [options.onHide] - A callback function that fires when tooltip panel is hidden
+     * @param {string} [options.cssPrefix] - A custom css class that will be used as namespace for all css classes applied
+     */
     var Tooltip = function (options) {
         this.initialize(options);
     };
 
-    Tooltip.prototype = {
+    Tooltip.prototype = /** @lends Tooltip.prototype */{
 
         /**
-         * Initializes the Tooltip.
-         * @param {object} options - Options to pass
-         * @param {HTMLElement} options.el - The container of the tooltip
-         * @param {string} [options.showEvent] - A string indicating which event should trigger showing the tooltip
-         * @param {string} [options.hideEvent] - A string indicating which event should trigger hiding the tooltip
-         * @param {Function} [options.onShow] - A callback function that fires when tooltip panel is shown
-         * @param {Function} [options.onHide] - A callback function that fires when tooltip panel is hidden
-         * @param {string} [options.cssPrefix] - A custom css class that will be used as namespace for all css classes applied
+         * When instantiated.
+         * @param options
          */
         initialize: function (options) {
 
@@ -70,6 +75,7 @@
 
         /**
          * Sets up events for showing/hiding tooltip.
+         * @memberOf Tooltip
          */
         setup: function () {
             var options = this.options;
@@ -85,6 +91,7 @@
          * @param {string} showEvent - The event string to hide tooltip
          * @param {string} hideEvent - The event string to show tooltip
          * @returns {object} - Returns a mapping of all events to their trigger functions.
+         * @memberOf Tooltip
          * @private
          */
         _setupEvents: function (showEvent, hideEvent) {
@@ -149,6 +156,7 @@
 
         /**
          * Shows the tooltip.
+         * @memberOf Tooltip
          */
         show: function () {
             this.el.kit.classList.add(this.activeClass);
@@ -159,6 +167,7 @@
 
         /**
          * Hides the tooltip.
+         * @memberOf Tooltip
          */
         hide: function () {
             this.el.kit.classList.remove(this.activeClass);
@@ -169,6 +178,7 @@
 
         /**
          * Checks whether tooltip is showing.
+         * @memberOf Tooltip
          * @returns {boolean} Returns true if showing
          */
         isActive: function () {
@@ -177,6 +187,7 @@
 
         /**
          * Destruction of this class.
+         * @memberOf Tooltip
          */
         destroy: function () {
             var eventMap = this.eventMap,
@@ -196,6 +207,18 @@
 
     };
 
+    /**
+     * Modal.
+     * @constructor Modal
+     * @param options
+     * @param {HTMLElement} options.containerEl - The element that should be used as the modal's container
+     * @param {HTMLElement} options.el - The element that contains the modal content which gets nested inside the modal container
+     * @param {Function} [options.onHide] - A function that gets fired when the modal hides.
+     * @param {Function} [options.onShow] - A function that gets fired when the modal shows.
+     * @param {Function} [options.onClickOutside] - When tapping outside of the modal
+     * @param {string} [options.activeClass] - The CSS class that gets added to each modal when shown
+     * @param {string} [options.containerActiveClass] - The CSS class that gets added to the modal container when there is at least one modal showing
+     */
     var Modal = function (options) {
         this.initialize(options);
     };
@@ -205,13 +228,6 @@
         /**
          * Sets up the modal.
          * @param {object} options - The options
-         * @param {HTMLElement} options.containerEl - The element that should be used as the modal's container
-         * @param {HTMLElement} options.el - The element that contains the modal content which gets nested inside the modal container
-         * @param {Function} [options.onHide] - A function that gets fired when the modal hides.
-         * @param {Function} [options.onShow] - A function that gets fired when the modal shows.
-         * @param {Function} [options.onClickOutside] - When tapping outside of the modal
-         * @param {string} [options.activeClass] - The CSS class that gets added to each modal when shown
-         * @param {string} [options.containerActiveClass] - The CSS class that gets added to the modal container when there is at least one modal showing
          */
         initialize: function (options) {
 
@@ -231,6 +247,7 @@
 
         /**
          * Sets stuff up.
+         * @memberOf Modal
          */
         setup: function () {
             if (!this.container.contains(this.content)) {
@@ -240,6 +257,7 @@
 
         /**
          * Shows the modal.
+         * @memberOf Modal
          */
         show: function () {
             this.setup();
@@ -253,6 +271,7 @@
 
         /**
          * Hides the modal.
+         * @memberOf Modal
          */
         hide: function () {
             this.content.kit.classList.remove(this.options.activeClass);
@@ -271,6 +290,7 @@
         /**
          * Whether the modal is showing.
          * @returns {boolean} Returns truthy if showing, falsy if not
+         * @memberOf Modal
          */
         isActive: function () {
             return this.content.classList.contains(this.options.activeClass);
@@ -279,6 +299,7 @@
         /**
          * When the document window is clicked.
          * @param {Event} e - The event
+         * @memberOf Modal
          * @private
          */
         _onDocClick: function (e) {
@@ -293,6 +314,7 @@
 
         /**
          * Destroys the modal.
+         * @memberOf Modal
          */
         destroy: function () {
             this.content.kit.classList.remove(this.options.activeClass);
@@ -309,9 +331,9 @@
 
     /**
      * A Caching utility that uses localStorage and sessionStorage.
+     * @namespace CacheManager
      * @description Allows storing and removing data that persists beyond a page refresh and isn’t transmitted to the server.
      */
-
     var CacheManager = {
 
         /**
@@ -320,6 +342,7 @@
          * @param {*} data - Any type of data that needs to be cache
          * @param {Number} [expires] - The number of milliseconds to destroy data (defaults to forever)
          * @param {Function} [callback] - The callback fired when data is successfully stored
+         * @memberOf CacheManager
          */
         setValue: function (key, data, expires, callback) {
             callback = callback || this._getCallback(arguments);
@@ -334,6 +357,7 @@
          * @param {string} key - The unique identifier of the data that should be removed
          * @param {Function} [callback] - The callback fired when data is successfully retrieved
          * @returns {*} Returns the data that was cached
+         * @memberOf CacheManager
          */
         getValue: function (key, callback) {
             return this._delegateMethod(localStorage, 'getItem', key, null, callback);
@@ -343,6 +367,7 @@
          * Removes cached data that was previously stored.
          * @param {string} key - The unique identifier of the data that should be removed
          * @param {Function} [callback] - The callback fired when data is successfully removed
+         * @memberOf CacheManager
          */
         flushValue: function (key, callback) {
             this._delegateMethod(localStorage, 'removeItem', key, null, callback);
@@ -353,6 +378,7 @@
          * @param {string} key - A unique identifier to keep track of data
          * @param {*} data - Any type of data that needs to be cache
          * @param {Function} [callback] - The callback fired when data is successfully stored
+         * @memberOf CacheManager
          */
         setSessionValue: function (key, data, callback) {
             this._delegateMethod(sessionStorage, 'setItem', key, data, callback);
@@ -363,6 +389,7 @@
          * @param {string} key - The unique identifier of the data that should be removed
          * @param {Function} [callback] - The callback fired when data is successfully retrieved
          * @returns {*} Returns the data that was cached
+         * @memberOf CacheManager
          */
         getSessionValue: function (key, callback) {
             return this._delegateMethod(sessionStorage, 'getItem', key, null, callback);
@@ -372,6 +399,7 @@
          * Removes cached data that was previously stored.
          * @param {string} key - The unique identifier of the data that should be removed
          * @param {Function} [callback] - The callback fired when data is successfully removed
+         * @memberOf CacheManager
          */
         flushSessionValue: function (key, callback) {
             this._delegateMethod(sessionStorage, 'removeItem', key, null, callback);
@@ -381,6 +409,7 @@
          * Sets up a timer of when to destroy data.
          * @param {string} key - The key of the data to destroy when timer runs out
          * @param {Number} expires - The amount of milliseconds until the data is destroyed
+         * @memberOf CacheManager
          * @private
          */
         _setupFlushTime: function (key, expires) {
@@ -396,6 +425,7 @@
          * Detects whether a set of arguments contains a function, if so, it returns it.
          * @param {arguments} args - The arguments to the function
          * @returns {Function|null} Returns the function if found, null if not
+         * @memberOf CacheManager
          * @private
          */
         _getCallback: function (args) {
@@ -413,6 +443,7 @@
          * @param {string} key - The key for the data
          * @param {*} [data] - The data
          * @param {Function} [callback] - Function to call when operation completes
+         * @memberOf CacheManager
          * @private
          */
         _delegateMethod: function (obj, method, key, data, callback) {
@@ -435,6 +466,7 @@
          * Constructs an error message.
          * @param {string} message - The message string
          * @returns {string} - The final message
+         * @memberOf CacheManager
          * @private
          */
         _constructErrorMessage: function (message) {
@@ -446,6 +478,7 @@
          * @param {string} key - A unique identifier to keep track of data
          * @param {*} data - Any type of data that needs to be cache
          * @deprecated since 1.3.0
+         * @memberOf CacheManager
          */
         cacheData: function (key, data) {
             this.setValue(key, data);
@@ -456,6 +489,7 @@
          * @param {string} key - The unique identifier of the data that should be removed
          * @returns {*} Returns the data that was cached
          * @deprecated since 1.3.0
+         * @memberOf CacheManager
          */
         getCacheData: function (key) {
             return this.getValue(key);
@@ -465,6 +499,7 @@
          * Removes cached data that was previously stored.
          * @param {string} key - The unique identifier of the data that should be removed
          * @deprecated since 1.3.0
+         * @memberOf CacheManager
          */
         flushData: function (key) {
             this.flushValue(key);
@@ -473,27 +508,29 @@
     };
 
     /**
+     * A callback function that fires after a new active panel is set
+     * @callback CarouselThumbs~onChange
+     * @param {Number} index - The index of the new panel
+     */
+
+    /**
      * Adds thumbnails for carousel.
-     * @class Carousel
+     * @class CarouselThumbs
+     * @param {object} options - Options passed into instance
+     * @param {HTMLCollection} [options.thumbnails] - A collection of elements that are the thumbnails
+     * @param {string} [options.thumbnailActiveClass] - The CSS class that gets added to a thumbnail element when it becomes active
+     * @param {CarouselThumbs~onChange} [options.onChange] - When a new thumbnail becomes active
      */
     var CarouselThumbs = function (options) {
         this.initialize(options);
     };
 
-    /**
-     * A callback function that fires after a new active panel is set
-     * @callback CarouselThumbs~onChange
-     * @param {Number} index - The index of the new panel
-     */
     CarouselThumbs.prototype = {
 
         /**
-         * When the carousel is instantiated.
-         * @param {object} options - Options passed into instance
-         * @param {HTMLCollection} [options.thumbnails] - A collection of elements that are the thumbnails
-         * @param {string} [options.thumbnailActiveClass] - The CSS class that gets added to a thumbnail element when it becomes active
-         * @param {CarouselThumbs~onChange} [options.onChange] - When a new thumbnail becomes active
-         *
+         * When carousel is instantiated.
+         * @param options
+         * @memberOf CarouselThumbs
          */
         initialize: function (options) {
 
@@ -510,6 +547,7 @@
 
         /**
          * Sets up the carousel instance by adding event listeners to the thumbnails.
+         * @memberOf CarouselThumbs
          */
         setup: function () {
             var thumbs = this.options.thumbnails;
@@ -527,6 +565,7 @@
         /**
          * When a thumbnail is clicked.
          * @param {MouseEvent} e - The click event
+         * @memberOf CarouselThumbs
          */
         onThumbnailEvent: function (e) {
             if (!this._thumbnailArr) {
@@ -543,6 +582,7 @@
 
         /**
          * Checks for errors upon initialize.
+         * @memberOf CarouselThumbs
          * @private
          */
         _checkForInitErrors: function () {
@@ -556,6 +596,7 @@
         /**
          * Makes all thumbnails inactive except for the one at the index provided.
          * @param {Number} index - The new index
+         * @memberOf CarouselThumbs
          */
         goTo: function (index) {
             var thumbs = this.options.thumbnails,
@@ -579,6 +620,7 @@
         /**
          * Gets the current thumbnail index that is showing.
          * @returns {Number} Returns the index
+         * @memberOf CarouselThumbs
          */
         getCurrentIndex: function () {
             return this._currentIndex;
@@ -586,6 +628,7 @@
 
         /**
          * Destroys the instance.
+         * @memberOf CarouselThumbs
          */
         destroy: function () {
             var options = this.options,
@@ -604,31 +647,31 @@
     };
 
     /**
+     * A callback function that fires after a new active panel is set
+     * @callback CarouselPanels~onChange
+     * @param {Number} index - The index of the new panel
+     */
+
+    /**
      * Adds functionality for carousel panels.
-     * @class Carousel
+     * @constructor CarouselPanels
+     * @param {object} options - Options passed into instance
+     * @param {HTMLCollection} options.panels - The panels in which to use for the carousel (an array of photos)
+     * @param {string} [options.assetClass] - The CSS class of the asset images inside of the DOM
+     * @param {string} [options.assetLoadingClass] - The CSS class that gets added to an asset when it is loading
+     * @param {boolean} [options.autoLoadAssets] - Whether or not to automatically load assets when active
+     * @param {string} [options.panelActiveClass] - The CSS class that gets added to an panel when it becomes active
+     * @param {CarouselPanels~onChange} [options.onChange] - When the current panel is changed
+     * @param {string} [options.lazyLoadAttr] - The attribute containing the url path to content that is to be lazy loaded
      */
     var CarouselPanels = function (options) {
         this.initialize(options);
     };
 
-    /**
-     * A callback function that fires after a new active panel is set
-     * @callback Carousel~onChange
-     * @param {Number} index - The index of the new panel
-     */
-
     CarouselPanels.prototype = {
 
         /**
          * When the carousel is instantiated.
-         * @param {object} options - Options passed into instance
-         * @param {HTMLCollection} options.panels - The panels in which to use for the carousel (an array of photos)
-         * @param {string} [options.assetClass] - The CSS class of the asset images inside of the DOM
-         * @param {string} [options.assetLoadingClass] - The CSS class that gets added to an asset when it is loading
-         * @param {boolean} [options.autoLoadAssets] - Whether or not to automatically load assets when active
-         * @param {string} [options.panelActiveClass] - The CSS class that gets added to an panel when it becomes active
-         * @param {Carousel~onChange} [options.onChange] - When the current panel is changed
-         * @param {string} [options.lazyLoadAttr] - The attribute containing the url path to content that is to be lazy loaded
          */
         initialize: function (options) {
 
@@ -647,6 +690,7 @@
 
         /**
          * Checks for errors upon initialize.
+         * @memberOf CarouselPanels
          * @private
          */
         _checkForInitErrors: function () {
@@ -660,6 +704,7 @@
         /**
          * Transitions to a panel of an index.
          * @param {Number} index - The index number to go to
+         * @memberOf CarouselPanels
          */
         goTo: function (index) {
 
@@ -686,6 +731,7 @@
         /**
          * Makes all panels inactive except for the one at the index provided.
          * @param {Number} index - The new index
+         * @memberOf CarouselPanels
          * @private
          */
         _updatePanels: function (index) {
@@ -703,6 +749,7 @@
         /**
          * Gets the current index that is showing.
          * @returns {Number} Returns the index
+         * @memberOf CarouselPanels
          */
         getCurrentIndex: function () {
             return this._currentIndex;
@@ -711,6 +758,7 @@
         /**
          * Loads assets for a given panel.
          * @param {Number} index - The index of the panel containing the assets to load
+         * @memberOf CarouselPanels
          */
         loadPanelAssets: function (index) {
             var panel = this.options.panels[index],
@@ -735,6 +783,7 @@
          * @param {HTMLElement} el - The image element to load
          * @param {Function} [callback] - A function that fires when the asset is done loading
          * @private
+         * @memberOf CarouselPanels
          */
         _loadImageAsset: function (el, callback) {
             var img = new Image(),
@@ -752,7 +801,8 @@
         },
 
         /**
-         * Destroys the carousel.
+         * Final cleanup of instance.
+         * @memberOf CarouselPanels
          */
         destroy: function () {
             var options = this.options;
@@ -762,34 +812,35 @@
     };
 
     /**
-     * Adds carousel functionality to a set up pre-determined HTML markup.
-     * @class Carousel
-     */
-    var Carousel = function (options) {
-        this.initialize(options);
-    };
-
-    /**
      * A callback function that fires after a new active panel is set
      * @callback Carousel~onPanelChange
      * @param {Number} index - The index of the new panel
      */
 
+    /**
+     * Adds carousel functionality to a set up pre-determined HTML markup.
+     * @class Carousel
+     * @param {object} options - Options passed into instance
+     * @param {HTMLCollection} options.panels - The panels in which to use for the carousel (an array of photos)
+     * @param {string} [options.assetClass] - The CSS class of the asset images inside of the DOM
+     * @param {string} [options.assetLoadingClass] - The CSS class that gets added to an asset when it is loading
+     * @param {boolean} [options.autoLoadAssets] - Whether or not to automatically load assets when active
+     * @param {string} [options.panelActiveClass] - The CSS class that gets added to an panel when it becomes active
+     * @param {Carousel~onPanelChange} [options.onPanelChange] - When the current panel is changed
+     * @param {string} [options.lazyLoadAttr] - The attribute containing the url path to content that is to be lazy loaded
+     * @param {HTMLCollection} [options.thumbnails] - A collection of elements that are the thumbnails
+     * @param {string} [options.thumbnailActiveClass] - The CSS class that gets added to a thumbnail element when it becomes active
+     * @param {Number} [options.initialIndex] - The index of the panel to go to upon instantiation (if not declared, goTo() must be called manually).
+     */
+    var Carousel = function (options) {
+        this.initialize(options);
+    };
+
     Carousel.prototype = {
 
         /**
-         * When the carousel is instantiated.
-         * @param {object} options - Options passed into instance
-         * @param {HTMLCollection} options.panels - The panels in which to use for the carousel (an array of photos)
-         * @param {string} [options.assetClass] - The CSS class of the asset images inside of the DOM
-         * @param {string} [options.assetLoadingClass] - The CSS class that gets added to an asset when it is loading
-         * @param {boolean} [options.autoLoadAssets] - Whether or not to automatically load assets when active
-         * @param {string} [options.panelActiveClass] - The CSS class that gets added to an panel when it becomes active
-         * @param {Carousel~onPanelChange} [options.onPanelChange] - When the current panel is changed
-         * @param {string} [options.lazyLoadAttr] - The attribute containing the url path to content that is to be lazy loaded
-         * @param {HTMLCollection} [options.thumbnails] - A collection of elements that are the thumbnails
-         * @param {string} [options.thumbnailActiveClass] - The CSS class that gets added to a thumbnail element when it becomes active
-         * @param {Number} [options.initialIndex] - The index of the panel to go to upon instantiation (if not declared, goToPanel must be called manually).
+         * Sets up stuff.
+          * @param options
          */
         initialize: function (options) {
 
@@ -813,6 +864,7 @@
 
         /**
          * Sets up the carousel instance by adding event listeners to the thumbnails.
+         * @memberOf Carousel
          */
         setup: function () {
 
@@ -827,13 +879,14 @@
             }
 
             if (typeof this.options.initialIndex === 'number') {
-                this.goToPanel(this.options.initialIndex);
+                this.goTo(this.options.initialIndex);
             }
         },
 
         /**
          * Checks for errors upon initialize.
          * @private
+         * @memberOf Carousel
          */
         _checkForInitErrors: function () {
             var options = this.options,
@@ -849,6 +902,7 @@
         /**
          * When a panel index changes.
          * @param {Number} index - The new index
+         * @memberOf Carousel
          */
         onPanelChange: function (index) {
             if (this.thumbnails) {
@@ -862,14 +916,16 @@
         /**
          * When the thumbnail index changes.
          * @param {Number} index - The new index
+         * @memberOf Carousel
          */
         onThumbnailChange: function (index) {
-            this.goToPanel(index);
+            this.goTo(index);
         },
 
         /**
          * Transition to a new panel and thumbnail.
          * @param {Number} index - The index number to go to
+         * @memberOf Carousel
          */
         goTo: function (index) {
             var options = this.options,
@@ -895,6 +951,7 @@
          * Transitions the carousel to a panel of an index.
          * @param {Number} index - The index number to go to
          * @deprecated since 2.2.2
+         * @memberOf Carousel
          */
         goToPanel: function (index) {
             this.goTo(index);
@@ -903,6 +960,7 @@
         /**
          * Gets the current index that is showing.
          * @returns {Number} Returns the index
+         * @memberOf Carousel
          */
         getCurrentIndex: function () {
             return this.panels.getCurrentIndex();
@@ -910,6 +968,7 @@
 
         /**
          * Destroys the carousel.
+         * @memberOf Carousel
          */
         destroy: function () {
             this.panels.destroy();

@@ -1,6 +1,6 @@
 {
   "name": "rogue",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "An un-opinionated, lightweight library for super fast web apps",
   "repository": {
     "type": "git",

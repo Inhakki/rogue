@@ -67,3 +67,13 @@ choose should be determined using the [semantic versioning principles](http://se
 1. Commit the modified files using a message of "release 0.0.0", changing 0.0.0 to the new release version number.
 1. Finalize the release by running Hubflow's `git hf release` command, which will auto merge the release into "master" branch
  and back-merge it all into "develop" branch.
+
+
+### Publishing the API documentation
+
+When a release is packaged and ready to be used by the public, it's a good idea to update the API documentation. You
+can do this with the following command:
+
+```shell
+grunt publish_api
+```

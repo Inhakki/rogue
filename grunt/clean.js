@@ -1,3 +1,4 @@
 module.exports = {
-    all: ['build', 'docs']
+    all: ['build'],
+    jsdoc: ['api']
 };

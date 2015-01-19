@@ -27,6 +27,25 @@
     };
 
     /**
+     * Merges the contents of two or more objects.
+     * @param {object} obj - The target object
+     * @param {...object} - Additional objects who's properties will be merged in
+     */
+    function extend(target) {
+        var merged = target,
+            source, i;
+        for (i = 1; i < arguments.length; i++) {
+            source = arguments[i];
+            for (var prop in source) {
+                if (source.hasOwnProperty(prop)) {
+                    merged[prop] = source[prop];
+                }
+            }
+        }
+        return merged;
+    }
+
+    /**
      * Tooltip.
      * @constructor Tooltip
      * @param {object} options - Options to pass
@@ -49,7 +68,7 @@
          */
         initialize: function (options) {
 
-            this.options = _.extend({
+            this.options = extend({
                 el: null,
                 showEvent: null,
                 hideEvent: null,
@@ -226,7 +245,7 @@
          */
         initialize: function (options) {
 
-            this.options = _.extend({
+            this.options = extend({
                 containerEl: document.getElementsByTagName('body')[0],
                 el: null,
                 onHide: null,
@@ -529,7 +548,7 @@
          */
         initialize: function (options) {
 
-            this.options = _.extend({
+            this.options = extend({
                 thumbnails: [],
                 thumbnailActiveTriggerEvent: 'click',
                 thumbnailActiveClass: 'carousel-thumbnail-active',
@@ -670,7 +689,7 @@
          */
         initialize: function (options) {
 
-            this.options = _.extend({
+            this.options = extend({
                 panels: [],
                 assetClass: null,
                 assetLoadingClass: 'carousel-asset-loading',
@@ -839,7 +858,7 @@
          */
         initialize: function (options) {
 
-            this.options = _.extend({
+            this.options = extend({
                 panels: [],
                 assetClass: null,
                 assetLoadingClass: 'carousel-asset-loading',
@@ -863,12 +882,12 @@
          */
         setup: function () {
 
-            this.panels = new CarouselPanels(_.extend({}, this.options, {
+            this.panels = new CarouselPanels(extend({}, this.options, {
                 onChange: this.onPanelChange.bind(this)
             }));
 
             if (this.options.thumbnails.length) {
-                this.thumbnails = new CarouselThumbs(_.extend({}, this.options, {
+                this.thumbnails = new CarouselThumbs(extend({}, this.options, {
                     onChange: this.onThumbnailChange.bind(this)
                 }));
             }

@@ -273,7 +273,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="CarouselPanels.html">Class: CarouselPanels</h1>
+        <h1 class="page-title" data-filename="Modal.html">Class: Modal</h1>
         
 
 
@@ -282,7 +282,7 @@
     
 <header>
     <h2>
-    CarouselPanels
+    Modal
     </h2>
     
 </header>  
@@ -295,9 +295,9 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="CarouselPanels">
+        <h4 class="name" id="Modal">
             
-            new CarouselPanels<span class="signature">(options)</span>
+            new Modal<span class="signature">(options)</span>
         </h4>
     </div>
 
@@ -307,9 +307,7 @@
     
     
     <div class="description">
-        <p>Adds functionality for carousel panels. Not really meant to be used own its own, unless you want
-to customize the the javascript logic for the &quot;panels&quot; of the Carousel (assuming that you actually
-know what you're doing when you do so).</p>
+        <p>Modal.</p>
     </div>
     
 
@@ -345,18 +343,13 @@ know what you're doing when you do so).</p>
             
             <td class="type">
             
-                
-<span class="param-type">object</span>
-
-
-            
             </td>
             
             
             
             <td class="description last">
                 
-                <p>Options passed into instance</p>
+                
                 
 
 <table class="params">
@@ -379,13 +372,13 @@ know what you're doing when you do so).</p>
 	
         <tr>
             
-                <td class="name"><code>panels</code></td>
+                <td class="name"><code>containerEl</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">HTMLCollection</span>
+<span class="param-type">HTMLElement</span>
 
 
             
@@ -400,14 +393,132 @@ know what you're doing when you do so).</p>
                         
                     
                 
-                <p>The panels in which to use for the carousel (an array of photos)</p></td>
+                <p>The element that should be used as the modal's container</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>assetClass</code></td>
+                <td class="name"><code>el</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>The element that contains the modal content which gets nested inside the modal container</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>onHide</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>A function that gets fired when the modal hides.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>onShow</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>A function that gets fired when the modal shows.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>onClickOutside</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>When tapping outside of the modal</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>activeClass</code></td>
             
             
             <td class="type">
@@ -430,14 +541,14 @@ know what you're doing when you do so).</p>
                         
                     
                 
-                <p>The CSS class of the asset images inside of the DOM</p></td>
+                <p>The CSS class that gets added to each modal when shown</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>assetLoadingClass</code></td>
+                <td class="name"><code>containerActiveClass</code></td>
             
             
             <td class="type">
@@ -460,127 +571,7 @@ know what you're doing when you do so).</p>
                         
                     
                 
-                <p>The CSS class that gets added to an asset when it is loading</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>autoLoadAssets</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Whether or not to automatically load assets when active</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>panelActiveClass</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>The CSS class that gets added to an panel when it becomes active</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onChange</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="CarouselPanels.html#~onChange">CarouselPanels~onChange</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>When the current panel is changed</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>lazyLoadAttr</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>The attribute containing the url path to content that is to be lazy loaded</p></td>
+                <p>The CSS class that gets added to the modal container when there is at least one modal showing</p></td>
         </tr>
 	
 	
@@ -657,7 +648,7 @@ know what you're doing when you do so).</p>
     <div class="nameContainer">
         <h4 class="name" id=".destroy">
             
-            <span class="type-signature static">static</span>CarouselPanels.destroy<span class="signature">()</span>
+            <span class="type-signature static">static</span>Modal.destroy<span class="signature">()</span>
         </h4>
     </div>
 
@@ -667,7 +658,7 @@ know what you're doing when you do so).</p>
     
     
     <div class="description">
-        <p>Final cleanup of instance.</p>
+        <p>Destroys the modal.</p>
     </div>
     
 
@@ -720,9 +711,9 @@ know what you're doing when you do so).</p>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".getCurrentIndex">
+        <h4 class="name" id=".hide">
             
-            <span class="type-signature static">static</span>CarouselPanels.getCurrentIndex<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+            <span class="type-signature static">static</span>Modal.hide<span class="signature">()</span>
         </h4>
     </div>
 
@@ -732,7 +723,72 @@ know what you're doing when you do so).</p>
     
     
     <div class="description">
-        <p>Gets the current index that is showing.</p>
+        <p>Hides the modal.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".isActive">
+            
+            <span class="type-signature static">static</span>Modal.isActive<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
+        </h4>
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Whether the modal is showing.</p>
     </div>
     
 
@@ -782,7 +838,7 @@ know what you're doing when you do so).</p>
 
 
 <h5>Returns:</h5>
-the index
+truthy if showing, falsy if not
 <br />
 
     
@@ -794,9 +850,9 @@ the index
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".goTo">
+        <h4 class="name" id=".setup">
             
-            <span class="type-signature static">static</span>CarouselPanels.goTo<span class="signature">(index)</span>
+            <span class="type-signature static">static</span>Modal.setup<span class="signature">()</span>
         </h4>
     </div>
 
@@ -806,7 +862,7 @@ the index
     
     
     <div class="description">
-        <p>Transitions to a panel of an index.</p>
+        <p>Sets stuff up.</p>
     </div>
     
 
@@ -814,51 +870,6 @@ the index
     
     
     
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>index</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>The index number to go to</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -904,9 +915,9 @@ the index
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".loadPanelAssets">
+        <h4 class="name" id=".show">
             
-            <span class="type-signature static">static</span>CarouselPanels.loadPanelAssets<span class="signature">(index)</span>
+            <span class="type-signature static">static</span>Modal.show<span class="signature">()</span>
         </h4>
     </div>
 
@@ -916,7 +927,7 @@ the index
     
     
     <div class="description">
-        <p>Loads assets for a given panel.</p>
+        <p>Shows the modal.</p>
     </div>
     
 
@@ -924,51 +935,6 @@ the index
     
     
     
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>index</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>The index of the panel containing the assets to load</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -1013,120 +979,6 @@ the index
         </dl>
     
     
-    
-        <h3 class="subsection-title">Type Definitions</h3>
-        
-        <dl>
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="~onChange">
-            
-            onChange<span class="signature">(index)</span>
-        </h4>
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>A callback function that fires after a new active panel is set</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>index</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>The index of the new panel</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-            </dl>
     
     
     

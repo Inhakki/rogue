@@ -8,7 +8,8 @@ It also supports IE9+ and all modern browsers (including mobile).
 Dependencies include:
 
 * [RequireJS](http://requirejs.org/) - AMD and dependency management
-* [ElementKit](https://github.com/mkay581/element-kit) - Fast DOM manipulation for Elements
+* [Underscore](http://underscorejs.org/) - Helpful utilities
+* [ElementKit](https://github.com/mkay581/element-kit) - Fast DOM Element manipulation
 
 ## API Documentation
 

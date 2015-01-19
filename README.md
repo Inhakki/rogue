@@ -42,8 +42,9 @@ var modal = new Rogue.Modal({
     activeClass: 'modal-active'
 });
 
-modal.setup(); // inject the html element into the modal container in the DOM
+modal.setup(); // inject the modal's html into the modal container
 modal.show(); // show the modal
+modal.hide(); // hide the modal
 
 ```
 A more advanced example of how to create a modal can be found [here](examples/modal.html).

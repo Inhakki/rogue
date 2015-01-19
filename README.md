@@ -18,7 +18,8 @@ Detailed usage and specific examples can be found in the [Examples](https://gith
 
 ## Carousels
 
-Create a carousel based off of a set of predetermined markup. Assuming, you have your html in the DOM. You can do:
+Create a carousel based off of a set of predetermined markup. Assuming, you have your html in the DOM and CSS
+set up correctly. You can do:
 
 ```javascript
 var carousel = new Rogue.Carousel({
@@ -37,8 +38,8 @@ Create one or more modals with a few lines of javascript. With your html and css
 
 ```javascript
 var modal = new Rogue.Modal({
-    el: modalEl,
-    containerEl: document.getElementsByClassName('modals-container')[0],
+    el: $('<div class="my-modal">My Modal Content</div>')[0],
+    containerEl: $('modals-container')[0], // you can even use jquery
     activeClass: 'modal-active'
 });
 

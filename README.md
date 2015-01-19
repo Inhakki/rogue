@@ -5,11 +5,9 @@ Rogue is a lightweight, un-opinionated library that provides helpful javascript 
 This library is built using native vanilla javascript. This means things will process a lot faster than other front-end libraries like jQuery and Dojo and contain a lot less bloat.
 It also supports IE9+ and all modern browsers (including mobile).
 
-## Components
+## Carousels
 
-Some of the components included in Rogue are:
-
-### Carousels
+Create a carousel based off of a set of predetermined markup. Assuming, you have your html in the DOM. You can do:
 
 ```javascript
 var carousel = new Rogue.Carousel({
@@ -20,9 +18,11 @@ var carousel = new Rogue.Carousel({
 carousel.goTo(1); // go to second carousel item
 ```
 
-A working example of how to create a carousel can be found [here](examples/carousel.html).
+A details on how to create a carousel can be found [here](examples/carousel.html).
 
-### Modals
+## Modals
+
+Create one or more modals with a few lines of javascript. With your html and css setup correctly, you can do:
 
 ```javascript
 var modal = new Rogue.Modal({
@@ -35,7 +35,7 @@ modal.setup(); // inject the html element into the modal container in the DOM
 modal.show(); // show the modal
 
 ```
-A working example of how to create a modal can be found [here](examples/modal.html).
+A more advanced example of how to create a modal can be found [here](examples/modal.html).
 
 ## Dependencies
 

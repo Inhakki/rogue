@@ -1,6 +1,6 @@
 # Rogue
 
-Rogue is a lightweight, un-opinionated library that provides helpful javascript classes to create super fast web-based, single-page apps.
+Rogue is a lightweight, un-opinionated library that contains reusable, super fast web modules.
 
 This library is built using native vanilla javascript. This means things will process a lot faster than other front-end libraries like jQuery and Dojo and contain a lot less bloat.
 It also supports IE9+ and all modern browsers (including mobile).

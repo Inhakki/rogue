@@ -39,7 +39,7 @@ Create one or more modals with a few lines of javascript. With your html and css
 ```javascript
 var modal = new Rogue.Modal({
     el: $('<div class="my-modal">My Modal Content</div>')[0],
-    containerEl: $('modals-container')[0], // you can even use jquery
+    containerEl: $('modals-container')[0],
     activeClass: 'modal-active'
 });
 

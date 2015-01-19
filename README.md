@@ -5,11 +5,9 @@ Rogue is a lightweight, un-opinionated library that provides helpful javascript 
 This library is built using native vanilla javascript. This means things will process a lot faster than other front-end libraries like jQuery and Dojo and contain a lot less bloat.
 It also supports IE9+ and all modern browsers (including mobile).
 
-Dependencies include:
+## Dependencies
 
-* [RequireJS](http://requirejs.org/) - AMD and dependency management
-* [Underscore](http://underscorejs.org/) - Helpful utilities
-* [ElementKit](https://github.com/mkay581/element-kit) - Fast DOM Element manipulation
+Only dependency is [ElementKit](https://github.com/mkay581/element-kit), used for fast, cross-browser DOM manipulation for HTML Elements.
 
 ## API Documentation
 

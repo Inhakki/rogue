@@ -1,11 +1,11 @@
 define([
     'sinon',
     'qunit',
-    'src/cache-manager'
+    'src/rogue'
 ], function(
     Sinon,
     QUnit,
-    CacheManager
+    Rogue
 ){
     "use strict";
 
@@ -18,11 +18,11 @@ define([
         var localStorageGetStub = Sinon.stub(localStorage, 'getItem');
         var localStorageSetStub = Sinon.stub(localStorage, 'setItem');
         var localStorageRemoveStub = Sinon.stub(localStorage, 'removeItem');
-        CacheManager.setValue(dataKey, mockData, null, function () {
+        Rogue.CacheManager.setValue(dataKey, mockData, null, function () {
             QUnit.deepEqual(localStorageSetStub.args[0], [dataKey, mockData], 'calling the setter method calls correct localStorage method with correct args');
-            CacheManager.getValue(dataKey, function () {
+            Rogue.CacheManager.getValue(dataKey, function () {
                 QUnit.deepEqual(localStorageGetStub.args[0], [dataKey], 'calling the getter method calls correct localStorage method with correct args');
-                CacheManager.flushValue(dataKey, function () {
+                Rogue.CacheManager.flushValue(dataKey, function () {
                     QUnit.deepEqual(localStorageRemoveStub.args[0], [dataKey], 'calling the remove method calls correct localStorage method with correct args when localStorage contains the value');
                     localStorageGetStub.restore();
                     localStorageSetStub.restore();
@@ -40,11 +40,11 @@ define([
         var sessionStorageGetStub = Sinon.stub(sessionStorage, 'getItem');
         var sessionStorageSetStub = Sinon.stub(sessionStorage, 'setItem');
         var sessionStorageRemoveStub = Sinon.stub(sessionStorage, 'removeItem');
-        CacheManager.setSessionValue(dataKey, mockData, function () {
+        Rogue.CacheManager.setSessionValue(dataKey, mockData, function () {
             QUnit.deepEqual(sessionStorageSetStub.args[0], [dataKey, mockData], 'calling the setter method calls correct sessionStorage method with correct args');
-            CacheManager.getSessionValue(dataKey, function () {
+            Rogue.CacheManager.getSessionValue(dataKey, function () {
                 QUnit.deepEqual(sessionStorageGetStub.args[0], [dataKey], 'calling the getter method calls correct sessionStorage method with correct args');
-                CacheManager.flushSessionValue(dataKey, function () {
+                Rogue.CacheManager.flushSessionValue(dataKey, function () {
                     QUnit.deepEqual(sessionStorageRemoveStub.args[0], [dataKey], 'calling the remove method calls correct sessionStorage method with correct args when sessionStorage contains the value');
                     sessionStorageGetStub.restore();
                     sessionStorageSetStub.restore();
@@ -64,7 +64,7 @@ define([
         var localStorageRemoveStub = Sinon.stub(localStorage, 'removeItem');
         var flushExpiration = 400;
         var timed;
-        CacheManager.setValue(dataKey, mockData, flushExpiration, function () {
+        Rogue.CacheManager.setValue(dataKey, mockData, flushExpiration, function () {
             QUnit.equal(localStorageRemoveStub.callCount, 0, 'localStorage remove method was NOT called because timer did not run out yet');
             timed = setTimeout(function () {
                 QUnit.deepEqual(localStorageRemoveStub.args[0], [dataKey], 'after timer runs out, localStorage method was called with correct args');
@@ -85,11 +85,11 @@ define([
         var localStorageGetStub = Sinon.stub(localStorage, 'getItem');
         var localStorageSetStub = Sinon.stub(localStorage, 'setItem');
         var localStorageRemoveStub = Sinon.stub(localStorage, 'removeItem');
-        CacheManager.cacheData(dataKey, mockData, secretKey);
+        Rogue.CacheManager.cacheData(dataKey, mockData, secretKey);
         QUnit.deepEqual(localStorageSetStub.args[0], [dataKey, mockData], 'calling deprecated cacheData() method calls setValue() with correct args');
-        CacheManager.getCacheData(dataKey, secretKey);
+        Rogue.CacheManager.getCacheData(dataKey, secretKey);
         QUnit.deepEqual(localStorageGetStub.args[0], [dataKey], 'calling deprecated getCacheData() method calls getValue() with correct args');
-        CacheManager.flushData(dataKey, secretKey);
+        Rogue.CacheManager.flushData(dataKey, secretKey);
         QUnit.deepEqual(localStorageRemoveStub.args[0], [dataKey], 'calling deprecated flushData() method calls flushValue() with correct args');
         localStorageGetStub.restore();
         localStorageSetStub.restore();

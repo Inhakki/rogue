@@ -1,0 +1,34 @@
+{
+	"tags": {
+		"allowUnknownTags" : true
+	},
+	"source": {
+	  "include": ["README.md", "src/rogue.js"]
+	},
+	"plugins": ["plugins/markdown"],
+	"templates": {
+		"cleverLinks": true,
+		"monospaceLinks": true,
+		"applicationName": "Rogue",
+		"disqus": "",
+		"googleAnalytics": "UA-58668133-1",
+		"openGraph": {
+			"title": "",
+			"type": "website",
+			"image": "",
+			"site_name": "",
+			"url": ""
+		},
+		"meta": {
+			"title": "Rogue API",
+			"description": "API for Rogue",
+			"keyword": "rogue"
+		},
+		"linenums": false
+	},
+	"markdown": {
+		"parser": "gfm",
+		"hardwrap": true,
+		"tags": ["examples"]
+	}
+}

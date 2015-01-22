@@ -2,12 +2,12 @@ define([
     'sinon',
     'qunit',
     'test-utils',
-    'src/carousel/carousel'
+    'src/rogue'
 ], function(
     Sinon,
     QUnit,
     TestUtils,
-    Carousel
+    Rogue
 ){
     "use strict";
 
@@ -27,18 +27,18 @@ define([
 
         var panels = carouselEl.getElementsByClassName('carousel-panel');
         var panelChangeSpy = Sinon.spy();
-        var carouselView = new Carousel({
+        var carouselView = new Rogue.Carousel({
             panels: panels,
             onPanelChange: panelChangeSpy
         });
         QUnit.equal(carouselView.getCurrentIndex(), 0, 'getCurrentIndex() returns 0 on initialize');
         QUnit.ok(panels[0].classList.contains(activeClass), 'active class has been applied to first panel');
-        QUnit.equal(panelChangeSpy.callCount, 0, 'onPanelChange callback was not fired since the first panel is assumed on init');
-        carouselView.goToPanel(2); // go to second index
+        QUnit.equal(panelChangeSpy.callCount, 1, 'onPanelChange callback was fired since init auto-navigates to first panel');
+        carouselView.goTo(2); // go to second index
         QUnit.equal(carouselView.getCurrentIndex(), 2, 'after transitioning to second panel, getCurrentIndex() returns 2');
         QUnit.ok(panels[2].classList.contains(activeClass), 'active class has been applied to second panel');
         QUnit.ok(!panels[0].classList.contains(activeClass), 'active class has been removed from first panel');
-        QUnit.deepEqual(panelChangeSpy.args[0], [2], 'onPanelChange callback was fired with the second index as its first argument');
+        QUnit.deepEqual(panelChangeSpy.args[1], [2], 'onPanelChange callback was fired with the second index as its first argument');
         carouselView.destroy();
     });
 
@@ -54,16 +54,19 @@ define([
 
         var panels = carouselEl.getElementsByClassName('carousel-panel');
         var panelChangeSpy = Sinon.spy();
-        var carouselView = new Carousel({
+        var panelChangeCallCount = 0;
+        var carouselView = new Rogue.Carousel({
             panels: panels,
             onPanelChange: panelChangeSpy
         });
-        carouselView.goToPanel(2);
-        QUnit.deepEqual(panelChangeSpy.args[0], [2], 'after transitioning to second panel, onPanelChange callback was fired with the second index as its first argument');
+        panelChangeCallCount++;
+        carouselView.goTo(2);
+        panelChangeCallCount++;
+        QUnit.deepEqual(panelChangeSpy.args[panelChangeCallCount - 1], [2], 'after transitioning to second panel, onPanelChange callback was fired with the second index as its first argument');
         QUnit.equal(carouselView.getCurrentIndex(), 2, 'getCurrentIndex() returns 2');
         QUnit.ok(panels[2].classList.contains(activeClass), 'active class has been applied to second panel');
-        carouselView.goToPanel(2);
-        QUnit.equal(panelChangeSpy.callCount, 1, 'after going to the second panel again, onPanelChange callback was NOT fired twice');
+        carouselView.goTo(2);
+        QUnit.equal(panelChangeSpy.callCount, panelChangeCallCount, 'after going to the second panel again, onPanelChange callback was NOT fired twice');
         QUnit.equal(carouselView.getCurrentIndex(), 2, 'getCurrentIndex() still returns 2');
         QUnit.ok(panels[2].classList.contains(activeClass), 'second panel still has active class');
         carouselView.destroy();
@@ -81,24 +84,29 @@ define([
 
         var panels = carouselEl.getElementsByClassName('carousel-panel');
         var panelChangeSpy = Sinon.spy();
-        var carouselView = new Carousel({
+        var panelChangeCallCount = 0;
+        var carouselView = new Rogue.Carousel({
             panels: panels,
             onPanelChange: panelChangeSpy
         });
-        carouselView.goToPanel(2); // go to third panel
+        panelChangeCallCount++;
+        carouselView.goTo(2); // go to third panel
+        panelChangeCallCount++;
         QUnit.equal(carouselView.getCurrentIndex(), 2, 'after transitioning to third panel, getCurrentIndex() returns index of third panel');
         QUnit.ok(panels[2].classList.contains(activeClass), 'active class has been applied to third panel');
-        QUnit.deepEqual(panelChangeSpy.args[0], [2], 'onPanelChange callback was fired with the third panel index as its first argument');
-        carouselView.goToPanel(10); // go to panel of a index that is too high
+        QUnit.deepEqual(panelChangeSpy.args[panelChangeCallCount - 1], [2], 'onPanelChange callback was fired with the third panel index as its first argument');
+        carouselView.goTo(10); // go to panel of a index that is too high
+        panelChangeCallCount++;
         var firstPanelIndex = 0;
         QUnit.equal(carouselView.getCurrentIndex(), firstPanelIndex, 'after transitioning to a panel with an index that is too high, getCurrentIndex() returns index of first panel');
         QUnit.ok(panels[firstPanelIndex].classList.contains(activeClass), 'active class has been applied to first panel');
-        QUnit.deepEqual(panelChangeSpy.args[1], [firstPanelIndex], 'onPanelChange callback was fired with the first panel index as its first argument');
-        carouselView.goToPanel(-3); // go to panel of a index that is too low
+        QUnit.deepEqual(panelChangeSpy.args[panelChangeCallCount - 1], [firstPanelIndex], 'onPanelChange callback was fired with the first panel index as its first argument');
+        carouselView.goTo(-3); // go to panel of a index that is too low
+        panelChangeCallCount++;
         var lastPanelIndex = panels.length - 1;
         QUnit.equal(carouselView.getCurrentIndex(), lastPanelIndex, 'after transitioning to a panel with an index that is too low, getCurrentIndex() returns index of last panel');
         QUnit.ok(panels[lastPanelIndex].classList.contains(activeClass), 'active class has been applied to last panel');
-        QUnit.deepEqual(panelChangeSpy.args[2], [lastPanelIndex], 'onPanelChange callback was fired with the last panel index as its first argument');
+        QUnit.deepEqual(panelChangeSpy.args[panelChangeCallCount - 1], [lastPanelIndex], 'onPanelChange callback was fired with the last panel index as its first argument');
         carouselView.destroy();
     });
 
@@ -120,7 +128,7 @@ define([
         var imageLoadingClass = 'carousel-asset-loading';
         var firstImageEl = {};
         window.Image.returns(firstImageEl);
-        var carouselView = new Carousel({
+        var carouselView = new Rogue.Carousel({
             panels: carouselEl.getElementsByTagName('img')
         });
         // test init (image 1)
@@ -131,7 +139,7 @@ define([
         // test image 3
         var thirdImageEl = {};
         window.Image.returns(thirdImageEl);
-        carouselView.goToPanel(2);
+        carouselView.goTo(2);
         QUnit.ok(images[2].classList.contains(imageLoadingClass), 'going to third panel adds loading class');
         QUnit.equal(thirdImageEl.src, 'c3.jpg', 'third panel\'s src attribute is replaced with the value of its lazy loading attribute');
         thirdImageEl.onload(); // trigger third image load
@@ -161,7 +169,7 @@ define([
         window.Image.onCall(0).returns(firstImageEl);
         var secondImageEl = {};
         window.Image.onCall(1).returns(secondImageEl);
-        var carouselView = new Carousel({
+        var carouselView = new Rogue.Carousel({
             panels: carouselEl.getElementsByClassName('carousel-panel'),
             assetClass: 'carousel-item'
         });
@@ -178,6 +186,70 @@ define([
         QUnit.ok(!images[1].classList.contains(imageLoadingClass), 'once second asset loads, its loading class is removed');
         carouselView.destroy();
         window.Image = origImage;
+    });
+
+    QUnit.test('clicking on thumbnails', function () {
+        QUnit.expect(17);
+        var fixture = document.getElementById('qunit-fixture');
+        var carouselEl = document.createElement('div');
+        var goToSpy = Sinon.spy(Rogue.Carousel.prototype, 'goTo');
+        var goToCallCount = 0;
+        carouselEl.innerHTML =
+            '<div class="carousel-container">' +
+                '<img class="carousel-item" src="blank.jpg" data-src="c1.jpg" />' +
+            '</div>' +
+            '<div class="carousel-container">' +
+                '<img class="carousel-item" src="blank.jpg" data-src="c2.jpg" />' +
+            '</div>' +
+            '<div class="carousel-container">' +
+                '<img class="carousel-item" src="blank.jpg" data-src="c3.jpg" />' +
+            '</div>' +
+            '<div>' +
+                '<button>Thumb 1</button>' +
+                '<button>Thumb 2</button>' +
+            '</div>' +
+            '<div>' +
+                '<button>Thumb 3</button>' +
+            '</div>';
+        var thumbActiveClass = 'thumb-active';
+        var thumbEls = carouselEl.getElementsByTagName('button');
+        var carouselView = new Rogue.Carousel({
+            panels: carouselEl.getElementsByClassName('carousel-container'),
+            assetClass: 'carousel-item',
+            thumbnails: thumbEls,
+            thumbnailActiveClass: thumbActiveClass
+        });
+        goToCallCount++; // first panel is shown initially
+        QUnit.ok(thumbEls[0].classList.contains(thumbActiveClass), 'on init, first thumb has active class because first panel is automatically shown');
+        // click second thumbnail
+        thumbEls[1].dispatchEvent(TestUtils.createEvent('click'));
+        goToCallCount++;
+        QUnit.ok(thumbEls[1].classList.contains(thumbActiveClass), 'after clicking on second thumbnail, second thumbnail has active class');
+        QUnit.ok(!thumbEls[0].classList.contains(thumbActiveClass), 'first thumbnail no longer has active class');
+        QUnit.ok(!thumbEls[2].classList.contains(thumbActiveClass), 'third thumbnail no longer has active class');
+        QUnit.deepEqual(goToSpy.args[goToCallCount - 1], [1], 'goTo was called with index of second panel');
+        // click first thumbnail
+        thumbEls[0].dispatchEvent(TestUtils.createEvent('click'));
+        goToCallCount++;
+        QUnit.ok(thumbEls[0].classList.contains(thumbActiveClass), 'after clicking on first thumbnail, first thumbnail has active class');
+        QUnit.ok(!thumbEls[1].classList.contains(thumbActiveClass), 'second thumbnail no longer has active class');
+        QUnit.ok(!thumbEls[2].classList.contains(thumbActiveClass), 'third thumbnail no longer has active class');
+        QUnit.deepEqual(goToSpy.args[goToCallCount - 1], [0], 'goTo was called with index of first panel');
+        // click third thumbnail
+        thumbEls[2].dispatchEvent(TestUtils.createEvent('click'));
+        goToCallCount++;
+        QUnit.ok(thumbEls[2].classList.contains(thumbActiveClass), 'after clicking on third thumbnail, third thumbnail has active class');
+        QUnit.ok(!thumbEls[0].classList.contains(thumbActiveClass), 'first thumbnail no longer has active class');
+        QUnit.ok(!thumbEls[1].classList.contains(thumbActiveClass), 'second thumbnail no longer has active class');
+        QUnit.deepEqual(goToSpy.args[goToCallCount - 1], [2], 'goTo was called with index of third panel');
+        // click on third panel AGAIN
+        thumbEls[2].dispatchEvent(TestUtils.createEvent('click'));
+        QUnit.ok(thumbEls[2].classList.contains(thumbActiveClass), 'after clicking on third thumbnail AGAIN, third thumbnail still has active class');
+        QUnit.ok(!thumbEls[0].classList.contains(thumbActiveClass), 'first thumbnail does not have active class');
+        QUnit.ok(!thumbEls[1].classList.contains(thumbActiveClass), 'second thumbnail does not have active class');
+        QUnit.equal(goToSpy.callCount, goToCallCount, 'goTo was NOT called again because third panel is already active');
+        carouselView.destroy();
+        goToSpy.restore();
     });
 
 });

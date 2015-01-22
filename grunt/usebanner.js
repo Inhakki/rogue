@@ -11,11 +11,7 @@ module.exports = function (grunt) {
                 '*/\n'
             },
             files: {
-                src: [
-                    'build/modal.js',
-                    'build/tooltip.js',
-                    'build/cache-manager.js'
-                ]
+                src: ['build/rogue.js']
             }
         }
     }

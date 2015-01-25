@@ -22,7 +22,8 @@ require([
     'tests/tooltip-tests',
     'tests/modal-tests',
     'tests/cache-manager-tests',
-    'tests/carousel-tests'
+    'tests/carousel-tests',
+    'tests/resource-manager-tests'
 ], function() {
     QUnit.config.requireExpects = true;
     QUnit.start();

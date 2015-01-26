@@ -1,11 +1,15 @@
 # Rogue
 
-Rogue is a lightweight, un-opinionated library that contains reusable, super fast web modules.
+Rogue is a lightweight library of fast, un-opinionated modules. The javascript in this library does NOT make any assumptions about CSS styling.
+In fact, the CSS for each module is totally up to you.  The library only provides the javascript logic that is necessary for your module
+ and gets out of your way, making it lightweight, scalable and flexible when implementing.
 
 This library is built using native vanilla javascript. This means things will process a lot faster than other front-end libraries like jQuery and Dojo and contain a lot less bloat.
 It also supports IE9+ and all modern browsers (including mobile).
 
-Only dependency is [ElementKit](https://github.com/mkay581/element-kit), used for fast, cross-browser DOM manipulation for HTML Elements.
+## Dependencies
+
+Only dependency is [ElementKit](https://github.com/mkay581/element-kit), used for fast, cross-browser DOM manipulation for HTML Elements and IE support.
 
 ## API Documentation
 

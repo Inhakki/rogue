@@ -1,7 +1,7 @@
 {
   "name": "rogue",
-  "version": "2.2.4",
-  "description": "A lightweight library of super fast web modules",
+  "version": "2.3.0",
+  "description": "An un-opinionated, lightweight library for super fast web apps",
   "repository": {
     "type": "git",
     "url": "git://github.com/mkay581/rogue.git"

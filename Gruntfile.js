@@ -10,7 +10,7 @@ module.exports = function(grunt) {
             pattern: ['grunt-*']
         },
         data: {
-            pkg: grunt.file.readJSON("package.json"),
+            pkg: grunt.file.readJSON('package.json'),
             'gh-pages': {
                 options: {
                     add: true
@@ -21,7 +21,7 @@ module.exports = function(grunt) {
     });
 
     // Default grunt
-    grunt.registerTask( "build", ["clean:all", "copy:all"]);
+    grunt.registerTask('build', ['clean:all', 'copy:all']);
 
     grunt.registerTask('server', ['connect:local']);
 
@@ -34,8 +34,8 @@ module.exports = function(grunt) {
         grunt.task.run([
             'bump:' + type,
             'build',
-            "uglify",
-            "usebanner"
+            'uglify',
+            'usebanner'
         ]);
     });
 };

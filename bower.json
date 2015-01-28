@@ -1,11 +1,11 @@
 {
   "name": "rogue",
-  "version": "2.2.4",
+  "version": "2.3.0",
   "homepage": "https://github.com/mkay581/rogue",
   "authors": [
     "Mark Kennedy <mkay581@gmail.com>"
   ],
-  "description": "An un-opinionated, lightweight library for super fast web apps",
+  "description": "A lightweight library of super fast web modules",
   "moduleType": [
     "amd",
     "es6",
@@ -14,7 +14,9 @@
   "keywords": [
     "modal",
     "tooltip",
-    "carousel"
+    "carousel",
+    "modules",
+    "components"
   ],
   "license": "MIT",
   "ignore": [

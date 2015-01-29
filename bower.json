@@ -1,6 +1,6 @@
 {
   "name": "rogue",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "homepage": "https://github.com/mkay581/rogue",
   "authors": [
     "Mark Kennedy <mkay581@gmail.com>"
@@ -26,11 +26,13 @@
     "test",
     "tests"
   ],
-  "devDependencies": {
+  "dependencies": {
     "element-kit": "~0.1.1",
+    "underscore": "~1.7.0"
+  },
+  "devDependencies": {
     "formjs": "~0.1.1",
     "requirejs": "~2.1.15",
-    "qunit": "~1.16.0",
-    "underscore": "~1.7.0"
+    "qunit": "~1.16.0"
   }
 }

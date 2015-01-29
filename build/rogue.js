@@ -1,3 +1,8 @@
+/** 
+* Rogue - v2.3.1.
+* git://github.com/mkay581/rogue.git
+* Copyright 2015. Licensed MIT.
+*/
 (function (factory) {
     'use strict';
     // support both AMD and non-AMD
@@ -528,7 +533,9 @@
      */
 
     /**
-     * Adds thumbnails for carousel.
+     * Adds thumbnails for carousel. Not really meant to be used own its own, unless you
+     * want to customize the javascript logic for the "thumbnails" of your Carousel instance (assuming that you actually
+     * know what you're doing when you do so).
      * @class CarouselThumbs
      * @param {object} options - Options passed into instance
      * @param {HTMLCollection} [options.thumbnails] - A collection of elements that are the thumbnails
@@ -667,7 +674,9 @@
      */
 
     /**
-     * Adds functionality for carousel panels.
+     * Adds functionality for carousel panels. Not really meant to be used own its own, unless you want
+     * to customize the the javascript logic for the "panels" of the Carousel (assuming that you actually
+     * know what you're doing when you do so).
      * @constructor CarouselPanels
      * @param {object} options - Options passed into instance
      * @param {HTMLCollection} options.panels - The panels in which to use for the carousel (an array of photos)

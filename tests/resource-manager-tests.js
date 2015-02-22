@@ -1,15 +1,9 @@
-define([
-    'sinon',
-    'qunit',
-    'src/rogue'
-], function (
-    Sinon,
-    QUnit,
-    Rogue
-) {
-    'use strict';
+var Sinon = require('sinon');
+var QUnit = require('qunit');
+var TestUtils = require('test-utils');
+var ResourceManager = require('../src/resource-manager');
 
-    var ResourceManager = Rogue.ResourceManager;
+module.exports = (function () {
 
     QUnit.module('Resource Manager Tests');
 
@@ -101,4 +95,4 @@ define([
         QUnit.equal(callbackSpy.callCount, 5, 'callback was fired');
         ResourceManager.flush();
     });
-});
+})();

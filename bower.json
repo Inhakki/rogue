@@ -27,12 +27,6 @@
     "tests"
   ],
   "dependencies": {
-    "element-kit": "~0.1.1",
-    "underscore": "~1.7.0"
-  },
-  "devDependencies": {
-    "formjs": "~0.1.1",
-    "requirejs": "~2.1.15",
-    "qunit": "~1.16.0"
+    "element-kit": "~0.3.0"
   }
 }

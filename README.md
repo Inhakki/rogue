@@ -9,7 +9,13 @@ It also supports IE9+ and all modern browsers (including mobile).
 
 ## Dependencies
 
-Only dependency is [ElementKit](https://github.com/mkay581/element-kit), used for fast, cross-browser DOM manipulation for HTML Elements and IE support.
+To use Rogue, you'll need:
+
+* [RequireJS](http://requirejs.org/) - AMD and dependency management
+* [ElementKit](https://github.com/mkay581/element-kit) - Fast, cross-browser DOM manipulation and IE9+ support
+* [Underscore](http://underscorejs.org/) - For programming goodies
+
+Of course, if you use [Bower's](http://bower.io/) `bower install` to install this project, it will automatically inject all of the above dependencies for you.
 
 ## API Documentation
 

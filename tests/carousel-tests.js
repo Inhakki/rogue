@@ -1,15 +1,9 @@
-define([
-    'sinon',
-    'qunit',
-    'test-utils',
-    'src/rogue'
-], function(
-    Sinon,
-    QUnit,
-    TestUtils,
-    Rogue
-){
-    "use strict";
+var Sinon = require('sinon');
+var QUnit = require('qunit');
+var TestUtils = require('test-utils');
+var Carousel = require('../src/carousel');
+
+module.exports = (function () {
 
     var fixture;
 
@@ -27,7 +21,7 @@ define([
 
         var panels = carouselEl.getElementsByClassName('carousel-panel');
         var panelChangeSpy = Sinon.spy();
-        var carouselView = new Rogue.Carousel({
+        var carouselView = new Carousel({
             panels: panels,
             onPanelChange: panelChangeSpy
         });
@@ -55,7 +49,7 @@ define([
         var panels = carouselEl.getElementsByClassName('carousel-panel');
         var panelChangeSpy = Sinon.spy();
         var panelChangeCallCount = 0;
-        var carouselView = new Rogue.Carousel({
+        var carouselView = new Carousel({
             panels: panels,
             onPanelChange: panelChangeSpy
         });
@@ -85,7 +79,7 @@ define([
         var panels = carouselEl.getElementsByClassName('carousel-panel');
         var panelChangeSpy = Sinon.spy();
         var panelChangeCallCount = 0;
-        var carouselView = new Rogue.Carousel({
+        var carouselView = new Carousel({
             panels: panels,
             onPanelChange: panelChangeSpy
         });
@@ -128,7 +122,7 @@ define([
         var imageLoadingClass = 'carousel-asset-loading';
         var firstImageEl = {};
         window.Image.returns(firstImageEl);
-        var carouselView = new Rogue.Carousel({
+        var carouselView = new Carousel({
             panels: carouselEl.getElementsByTagName('img')
         });
         // test init (image 1)
@@ -169,7 +163,7 @@ define([
         window.Image.onCall(0).returns(firstImageEl);
         var secondImageEl = {};
         window.Image.onCall(1).returns(secondImageEl);
-        var carouselView = new Rogue.Carousel({
+        var carouselView = new Carousel({
             panels: carouselEl.getElementsByClassName('carousel-panel'),
             assetClass: 'carousel-item'
         });
@@ -192,7 +186,7 @@ define([
         QUnit.expect(17);
         var fixture = document.getElementById('qunit-fixture');
         var carouselEl = document.createElement('div');
-        var goToSpy = Sinon.spy(Rogue.Carousel.prototype, 'goTo');
+        var goToSpy = Sinon.spy(Carousel.prototype, 'goTo');
         var goToCallCount = 0;
         carouselEl.innerHTML =
             '<div class="carousel-container">' +
@@ -213,7 +207,7 @@ define([
             '</div>';
         var thumbActiveClass = 'thumb-active';
         var thumbEls = carouselEl.getElementsByTagName('button');
-        var carouselView = new Rogue.Carousel({
+        var carouselView = new Carousel({
             panels: carouselEl.getElementsByClassName('carousel-container'),
             assetClass: 'carousel-item',
             thumbnails: thumbEls,
@@ -252,4 +246,4 @@ define([
         goToSpy.restore();
     });
 
-});
+})();

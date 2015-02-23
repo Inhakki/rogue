@@ -3,11 +3,5 @@ module.exports = {
         options: {
             keepalive: true
         }
-    },
-    test: {
-        options: {
-            hostname: 'localhost',
-            port: 7000
-        }
     }
 };

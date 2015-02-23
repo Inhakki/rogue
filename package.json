@@ -1,33 +1,28 @@
 {
   "name": "rogue",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "An un-opinionated, lightweight library for super fast web apps",
   "repository": {
     "type": "git",
     "url": "git://github.com/mkay581/rogue.git"
   },
+  "author": {
+    "name": "Mark Kennedy",
+    "url": "http://heyimmark.com"
+  },
   "private": true,
   "devDependencies": {
     "connect-livereload": "~0.3.2",
-    "element-kit": "^1.2.1",
     "grunt": "~0.4.2",
-    "grunt-banner": "^0.2.3",
-    "grunt-bump": "0.0.16",
+    "grunt-build-tools": "^0.3.10",
     "grunt-cli": "~0.1.13",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-connect": "~0.8.0",
     "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-jshint": "~0.8.0",
-    "grunt-contrib-qunit": "~0.5.2",
-    "grunt-contrib-requirejs": "0.4.4",
-    "grunt-contrib-uglify": "^0.7.0",
     "grunt-gh-pages": "^0.9.1",
     "grunt-jsdoc": "^0.6.2",
-    "grunt-npmcopy": "0.1.0",
-    "grunt-release": "^0.9.0",
     "load-grunt-config": "~0.16.0",
-    "phantomjs": "~1.9.7",
-    "qunitjs": "^1.15.0",
     "sinon": "^1.10.2",
     "underscore": "~1.7.0"
   }

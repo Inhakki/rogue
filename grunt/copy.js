@@ -1,11 +1,11 @@
 module.exports = {
-    all: {
+    external: {
         files: [
             {
                 expand: true,
-                cwd: 'src',
-                dest: 'build',
-                src: ['rogue.js']
+                cwd: 'bower_components/element-kit/src',
+                src: '**/*',
+                dest: 'external/element-kit'
             }
         ]
     },

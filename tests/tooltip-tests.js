@@ -1,15 +1,9 @@
-define([
-    'sinon',
-    'qunit',
-    'test-utils',
-    'src/rogue'
-], function(
-    Sinon,
-    QUnit,
-    TestUtils,
-    Rogue
-){
-    "use strict";
+var Sinon = require('sinon');
+var QUnit = require('qunit');
+var TestUtils = require('test-utils');
+var Tooltip = require('../src/tooltip');
+
+module.exports = (function () {
 
     var el;
 
@@ -29,7 +23,7 @@ define([
     QUnit.test('showing and hiding tooltip', function() {
         QUnit.expect(6);
         var fixture = document.getElementById('qunit-fixture');
-        var tooltip = new Rogue.Tooltip({el: el});
+        var tooltip = new Tooltip({el: el});
         var activeClass = 'ui-tooltip-active';
         QUnit.ok(!el.kit.classList.contains(activeClass), 'tooltip active class does not exist initially');
         QUnit.ok(!tooltip.isActive(), 'isActive() is falsy');
@@ -45,11 +39,11 @@ define([
     QUnit.test('showing and hiding tooltip from click', function() {
         QUnit.expect(8);
         var fixture = document.getElementById('qunit-fixture');
-        var showSpy = Sinon.spy(Rogue.Tooltip.prototype, 'show');
+        var showSpy = Sinon.spy(Tooltip.prototype, 'show');
         var showCallCount = 0;
-        var hideSpy = Sinon.spy(Rogue.Tooltip.prototype, 'hide');
+        var hideSpy = Sinon.spy(Tooltip.prototype, 'hide');
         var hideCallCount = 0;
-        var tooltip = new Rogue.Tooltip({el: el, showEvent: 'click', hideEvent: 'click'});
+        var tooltip = new Tooltip({el: el, showEvent: 'click', hideEvent: 'click'});
         var trigger = el.getElementsByClassName('ui-tooltip-trigger')[0];
         var panel = el.getElementsByClassName('ui-tooltip-panel')[0];
         QUnit.equal(showSpy.callCount, showCallCount, 'show method was NOT fired on init');
@@ -77,9 +71,9 @@ define([
     QUnit.test('clicking to show/hide tooltip when no event options are specified', function() {
         QUnit.expect(2);
         var fixture = document.getElementById('qunit-fixture');
-        var showSpy = Sinon.spy(Rogue.Tooltip.prototype, 'show');
-        var hideSpy = Sinon.spy(Rogue.Tooltip.prototype, 'hide');
-        var tooltip = new Rogue.Tooltip({el: el});
+        var showSpy = Sinon.spy(Tooltip.prototype, 'show');
+        var hideSpy = Sinon.spy(Tooltip.prototype, 'hide');
+        var tooltip = new Tooltip({el: el});
         var trigger = el.getElementsByClassName('ui-tooltip-trigger')[0];
         var panel = el.getElementsByClassName('ui-tooltip-panel')[0];
         var clickEvent = TestUtils.createEvent('click');
@@ -95,7 +89,7 @@ define([
         QUnit.expect(2);
         var onShowSpy = Sinon.spy();
         var onHideSpy = Sinon.spy();
-        var tooltip = new Rogue.Tooltip({el: el, onShow: onShowSpy, onHide: onHideSpy});
+        var tooltip = new Tooltip({el: el, onShow: onShowSpy, onHide: onHideSpy});
         var trigger = el.getElementsByClassName('ui-tooltip-trigger')[0];
         tooltip.show();
         QUnit.equal(onShowSpy.callCount, 1, 'onShow callback is fired when tooltip shows');
@@ -107,11 +101,11 @@ define([
     QUnit.test('showing and hiding tooltip from hover', function() {
         QUnit.expect(6);
         var fixture = document.getElementById('qunit-fixture');
-        var showSpy = Sinon.spy(Rogue.Tooltip.prototype, 'show');
+        var showSpy = Sinon.spy(Tooltip.prototype, 'show');
         var showCallCount = 0;
-        var hideSpy = Sinon.spy(Rogue.Tooltip.prototype, 'hide');
+        var hideSpy = Sinon.spy(Tooltip.prototype, 'hide');
         var hideCallCount = 0;
-        var tooltip = new Rogue.Tooltip({el: el, showEvent: 'mouseenter', hideEvent: 'mouseleave'});
+        var tooltip = new Tooltip({el: el, showEvent: 'mouseenter', hideEvent: 'mouseleave'});
         var trigger = el.getElementsByClassName('ui-tooltip-trigger')[0];
         var panel = el.getElementsByClassName('ui-tooltip-panel')[0];
         QUnit.equal(showSpy.callCount, showCallCount, 'show method was NOT fired on init');
@@ -131,4 +125,4 @@ define([
         hideSpy.restore();
     });
 
-});
+})();

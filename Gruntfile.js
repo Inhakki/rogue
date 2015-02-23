@@ -4,6 +4,10 @@
 
 module.exports = function(grunt) {
 
+    grunt.initConfig({
+
+    });
+
     require('load-grunt-config')(grunt, {
         init: true,
         loadGruntTasks: {
@@ -21,21 +25,18 @@ module.exports = function(grunt) {
     });
 
     // Default grunt
-    grunt.registerTask('build', ['clean:all', 'copy:all']);
+    grunt.registerTask('build', ['clean:all', 'copy:all', 'bt:build']);
 
     grunt.registerTask('server', ['connect:local']);
 
     grunt.registerTask('publish_api', ['jsdoc', 'copy:jsdoc', 'gh-pages', 'clean:jsdoc']);
 
-    grunt.registerTask('test', ['connect:test', 'qunit']);
+    grunt.registerTask('test', ['bt:test']);
 
     grunt.task.registerTask('release', 'A custom release.', function(type) {
         type = type || 'patch';
         grunt.task.run([
-            'bump:' + type,
-            'build',
-            'uglify',
-            'usebanner'
+            'bt:release' + type
         ]);
     });
 };

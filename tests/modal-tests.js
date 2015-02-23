@@ -1,15 +1,9 @@
-define([
-    'sinon',
-    'qunit',
-    'test-utils',
-    'src/rogue'
-], function(
-    Sinon,
-    QUnit,
-    TestUtils,
-    Rogue
-){
-    "use strict";
+var Sinon = require('sinon');
+var QUnit = require('qunit');
+var TestUtils = require('test-utils');
+var Modal = require('../src/modal');
+
+module.exports = (function () {
 
     var modalsContainer;
 
@@ -26,7 +20,7 @@ define([
         QUnit.expect(3);
         var fixture = document.getElementById('qunit-fixture');
         var modalEl = document.createElement('div');
-        var modalInstance = new Rogue.Modal({
+        var modalInstance = new Modal({
             containerEl: modalsContainer,
             el: modalEl
         });
@@ -42,7 +36,7 @@ define([
         var fixture = document.getElementById('qunit-fixture');
         var bodyEl = document.getElementsByTagName('body')[0];
         var modalEl = document.createElement('div');
-        var modalInstance = new Rogue.Modal({
+        var modalInstance = new Modal({
             el: modalEl
         });
         QUnit.ok(!bodyEl.contains(modalEl), 'upon instantiation, modal element has NOT yet been added as a child node of the document body because setup() has not been called');
@@ -58,7 +52,7 @@ define([
         var defaultActiveClass = 'modal-active';
         var defaultContainerActiveClass = 'modal-container-active';
         var modalEl = document.createElement('div');
-        var modalInstance = new Rogue.Modal({
+        var modalInstance = new Modal({
             el: modalEl,
             containerEl: modalsContainer,
             activeClass: defaultActiveClass,
@@ -86,13 +80,13 @@ define([
         var containerActiveClass = 'my-custom-modal-container-active';
         var firstModalEl = document.createElement('div');
         var secondModalEl = document.createElement('div');
-        var firstModalInstance = new Rogue.Modal({
+        var firstModalInstance = new Modal({
             el: firstModalEl,
             containerEl: modalsContainer,
             activeClass: activeClass,
             containerActiveClass: containerActiveClass
         });
-        var secondModalInstance = new Rogue.Modal({
+        var secondModalInstance = new Modal({
             el: secondModalEl,
             containerEl: modalsContainer,
             activeClass: activeClass,
@@ -120,4 +114,4 @@ define([
         secondModalInstance.destroy();
     });
 
-});
+})();

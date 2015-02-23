@@ -2,8 +2,10 @@ module.exports = {
     external: {
         files: [
             {
-                src: 'bower_components/element-kit/dist/element-kit.js',
-                dest: 'external/element-kit/element-kit.js'
+                expand: true,
+                cwd: 'bower_components/element-kit/src',
+                src: '**/*',
+                dest: 'external/element-kit'
             }
         ]
     },

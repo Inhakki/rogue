@@ -27,6 +27,6 @@
     "tests"
   ],
   "devDependencies": {
-    "element-kit": "~0.3.1"
+    "element-kit": "~0.3.2"
   }
 }

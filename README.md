@@ -7,15 +7,9 @@ In fact, the CSS for each module is totally up to you.  The library only provide
 This library is built using native vanilla javascript. This means things will process a lot faster than other front-end libraries like jQuery and Dojo and contain a lot less bloat.
 It also supports IE9+ and all modern browsers (including mobile).
 
-## Dependencies
+## Installation
 
-To use Rogue, you'll need:
-
-* [RequireJS](http://requirejs.org/) - AMD and dependency management
-* [ElementKit](https://github.com/mkay581/element-kit) - Fast, cross-browser DOM manipulation and IE9+ support
-* [Underscore](http://underscorejs.org/) - For programming goodies
-
-Of course, if you use [Bower's](http://bower.io/) `bower install` to install this project, it will automatically inject all of the above dependencies for you.
+You can use [Bower's](http://bower.io/) `bower install` to install this project or use [the built files](build) directly with any module loader of your choosing.
 
 ## API Documentation
 
@@ -32,7 +26,7 @@ Create a carousel based off of a set of predetermined markup. Assuming, you have
 set up correctly. You can do:
 
 ```javascript
-var carousel = new Rogue.Carousel({
+var carousel = new Carousel({
     panels: document.getElementsByClassName('carousel-panel'),
     thumbnails: document.getElementsByClassName('carousel-thumbnail')
 });
@@ -47,7 +41,7 @@ A details on how to create a carousel can be found [here](examples/carousel.html
 Create one or more modals with a few lines of javascript. With your html and css setup correctly, you can do:
 
 ```javascript
-var modal = new Rogue.Modal({
+var modal = new Modal({
     el: $('<div class="my-modal">My Modal Content</div>')[0],
     containerEl: $('modals-container')[0],
     activeClass: 'modal-active'

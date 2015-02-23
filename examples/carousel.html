@@ -1,9 +1,6 @@
 <html>
 <head>
 
-    <script src="path/to/element-kit.js"></script>
-    <script src="path/to/rogue.js"></script>
-
     <style>
         .carousel-image {
             width: 400px;
@@ -37,8 +34,9 @@
     </div>
 
 </div>
+<script src="path/to/rogue/carousel.js"></script>
 <script>
-    var carousel = new Rogue.Carousel({
+    var carousel = new Carousel({
         panels: document.getElementsByClassName('carousel-image'),
         thumbnails: document.getElementsByClassName('carousel-thumb'),
         panelActiveClass: 'carousel-image-active'

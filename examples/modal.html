@@ -32,14 +32,14 @@
 <script src="path/to/require.js"></script>
 
 <script>
-    require(['path/to/rogue'], function (Rogue) {
+    require(['path/to/rogue/modal'], function (Modal) {
 
         // build your modal content
         var modalEl = document.createElement('div');
         modalEl.innerHTML = '<p>The world\'s simplest modal</p>';
 
         // start your modal instance
-        var modal = new Rogue.Modal({
+        var modal = new Modal({
             el: modalEl,
             containerEl: document.getElementsByClassName('modals-container')[0],
             activeClass: 'modal-active'

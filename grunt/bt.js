@@ -20,7 +20,7 @@ module.exports = {
         }
     },
     tests: {
-        qunit: {
+        mocha: {
             src: ['tests/*.js']
         }
     }

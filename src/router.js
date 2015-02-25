@@ -1,28 +1,36 @@
 'use strict';
 
 var ResourceManager = require('resource-manager');
-var Request = require('request');
+var request = require('request');
 var Promise = require('promise');
+var path = require('path');
+
+
+var _currentRoutePromise;
 
 /**
  * Router class.
  * @description Represents a manager that handles all routes throughout the app.
  * @constructor
  */
-var Router = function (){
-    this.start();
+/**
+ * Starts managing routes based on a supplied config.
+ * @param {Object} options - The options
+ * @param {String|Object} options.config - Configuration data or url to file that has it
+ * @param {HTMLElement} options.el - The element to apply loading class to when loading a page
+ */
+var Router = function (options){
+    this.options = options || {};
+    return this;
 };
+
 Router.prototype = /** @lends Router */{
 
     /**
-     * Starts managing routes based on a supplied config.
-     * @param {Object} options - The options
-     * @param {String|Object} options.config - Configuration data or url to file that has it
-     * @param {HTMLElement} options.el - The element to apply loading class to when loading a page
+     * Starts managing routes.
      */
-    start: function (options) {
+    start: function () {
 
-        this.options = options || {};
         this._pages = {};
         this._history = [];
 
@@ -45,7 +53,7 @@ Router.prototype = /** @lends Router */{
         }
         return new Promise(function (resolve) {
             if (typeof data === 'string') {
-                return Request(data);
+                return request(data);
             } else {
                 resolve(data);
             }
@@ -87,6 +95,8 @@ Router.prototype = /** @lends Router */{
      */
     triggerRoute: function (url, options) {
         history.pushState({path: url}, document.title, url);
+        _currentRoutePromise = new Promise();
+        return _currentRoutePromise;
     },
 
     /**
@@ -159,13 +169,10 @@ Router.prototype = /** @lends Router */{
             return;
         }
 
-        this.options.el.classList.add('page-loading');
-        this._loadPage(path).then(function (page) {
-            page.show().then(function () {
-                this.options.el.classList.remove('page-loading');
-            }.bind(this));
-        }.bind(this));
-
+        this._loadPage(path)
+            .then(function (page) {
+                return page.show().then(_currentRoutePromise.resolve);
+            }).catch(_currentRoutePromise.reject);
     },
 
     /**
@@ -175,7 +182,7 @@ Router.prototype = /** @lends Router */{
      */
     _loadPage: function (path) {
         var origPath = this._currentPath,
-            config = this._config(path),
+            config = this.options.config[path],
             cssFilePaths = config.css || [];
 
         // hide previous view if there is one
@@ -187,13 +194,13 @@ Router.prototype = /** @lends Router */{
 
         return ResourceManager.loadCss(cssFilePaths).then(function () {
             return ResourceManager.loadTemplate(config.template).then(function () {
-                return ResourceManager.loadScript(config.script).then(function (page) {
-                    this._pages[config.url] = page;
-                }.bind(this));
+                this._pages[config.url] = require(config.script);
             }.bind(this));
         }.bind(this));
     }
 
 };
 
-module.exports = new Router();
+module.exports = function (options) {
+    return new Router(options);
+};

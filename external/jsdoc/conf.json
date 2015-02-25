@@ -3,7 +3,7 @@
 		"allowUnknownTags" : true
 	},
 	"source": {
-	  "include": ["README.md", "src/rogue.js"]
+	  "include": ["README.md", "src/carousel.js", "src/modal.js", "src/tooltip.js"]
 	},
 	"plugins": ["plugins/markdown"],
 	"templates": {

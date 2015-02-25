@@ -2,7 +2,7 @@
 var utils = require('./utils');
 var CarouselPanels = require('./carousel-panels');
 var CarouselThumbs = require('./carousel-thumbs');
-var ElementKit = require('./../external/element-kit/element-kit');
+var ElementKit = require('element-kit');
 /**
  * A callback function that fires after a new active panel is set
  * @callback Carousel~onPanelChange

@@ -1,6 +1,6 @@
 'use strict';
 
-var ElementKit = require('./../external/element-kit/element-kit');
+var ElementKit = require('element-kit');
 
 module.exports = {
     /**

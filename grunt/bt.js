@@ -1,16 +1,9 @@
-var moduleNames = [
-    'carousel',
-    'modal',
-    'tooltip',
-    'router',
-    'request',
-    'resource-manager'
-];
+var config = require('./../config');
 
 var compileFiles = function (suffix) {
     var files = {};
     suffix = suffix || '';
-    moduleNames.forEach(function (name) {
+    config.sources.forEach(function (name) {
         files['build/' + name + suffix + '.js'] = ['src/' + name + '.js']
     });
     return files;

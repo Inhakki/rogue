@@ -11,13 +11,11 @@ var _currentRoutePromise;
 /**
  * Router class.
  * @description Represents a manager that handles all routes throughout the app.
- * @constructor
- */
-/**
- * Starts managing routes based on a supplied config.
- * @param {Object} options - The options
+ * @class Router
+ * @param options
  * @param {String|Object} options.config - Configuration data or url to file that has it
  * @param {HTMLElement} options.el - The element to apply loading class to when loading a page
+ * @return {Router}
  */
 var Router = function (options){
     this.options = options || {};
@@ -46,6 +44,9 @@ Router.prototype = /** @lends Router */{
 
     /**
      * Fetches the config.
+     * @param data
+     * @return {Promise}
+     * @private
      */
     _fetchConfig: function (data) {
         if (!data) {

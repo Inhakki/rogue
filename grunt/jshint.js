@@ -21,4 +21,4 @@ module.exports = {
         "nonstandard" : true,
         "devel" : true
     }
-}
+};

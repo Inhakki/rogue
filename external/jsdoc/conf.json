@@ -2,9 +2,6 @@
 	"tags": {
 		"allowUnknownTags" : true
 	},
-	"source": {
-	  "include": ["README.md", "src/carousel.js", "src/modal.js", "src/tooltip.js"]
-	},
 	"plugins": ["plugins/markdown"],
 	"templates": {
 		"cleverLinks": true,

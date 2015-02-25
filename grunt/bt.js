@@ -1,3 +1,22 @@
+var moduleNames = [
+    'carousel',
+    'modal',
+    'tooltip',
+    'router',
+    'request',
+    'resource-manager'
+];
+
+var compileFiles = function (suffix) {
+    var files = {};
+    suffix = suffix || '';
+    moduleNames.forEach(function (name) {
+        files['build/' + name + suffix + '.js'] = ['src/' + name + '.js']
+    });
+    return files;
+};
+
+
 module.exports = {
     dist: 'build',
     browserify: {
@@ -6,18 +25,10 @@ module.exports = {
                 standalone: 'Rogue'
             }
         },
-        files: {
-            'build/carousel.js': ['src/carousel.js'],
-            'build/modal.js': ['src/modal.js'],
-            'build/tooltip.js': ['src/tooltip.js']
-        }
+        files: compileFiles()
     },
     uglify: {
-        files: {
-            'build/carousel-min.js': ['build/carousel.js'],
-            'build/modal-min.js': ['build/modal.js'],
-            'build/tooltip-min.js': ['build/tooltip.js']
-        }
+        files: compileFiles('-min')
     },
     tests: {
         mocha: {

@@ -1,5 +1,5 @@
 /** 
-* rogue - v2.4.0.
+* rogue - v2.5.0.
 * git://github.com/mkay581/rogue.git
 * Copyright 2015 Mark Kennedy. Licensed MIT.
 */
@@ -659,8 +659,8 @@ module.exports = {
 };
 },{}],5:[function(require,module,exports){
 'use strict';
-var utils = require('./utils');
-var ElementKit = require('./../external/element-kit/element-kit');
+var utils = require('utils');
+var ElementKit = require('element-kit');
 /**
  * A callback function that fires after a new active panel is set
  * @callback CarouselPanels~onChange
@@ -829,10 +829,10 @@ CarouselPanels.prototype = {
 };
 
 module.exports = CarouselPanels;
-},{"./../external/element-kit/element-kit":1,"./utils":8}],6:[function(require,module,exports){
+},{"element-kit":1,"utils":8}],6:[function(require,module,exports){
 'use strict';
-var utils = require('./utils');
-var ElementKit = require('./../external/element-kit/element-kit');
+var utils = require('utils');
+var ElementKit = require('element-kit');
 
 /**
  * A callback function that fires after a new active panel is set
@@ -976,12 +976,12 @@ CarouselThumbs.prototype = {
 };
 
 module.exports = CarouselThumbs;
-},{"./../external/element-kit/element-kit":1,"./utils":8}],7:[function(require,module,exports){
+},{"element-kit":1,"utils":8}],7:[function(require,module,exports){
 'use strict';
 var utils = require('./utils');
 var CarouselPanels = require('./carousel-panels');
 var CarouselThumbs = require('./carousel-thumbs');
-var ElementKit = require('./../external/element-kit/element-kit');
+var ElementKit = require('element-kit');
 /**
  * A callback function that fires after a new active panel is set
  * @callback Carousel~onPanelChange
@@ -1150,10 +1150,10 @@ Carousel.prototype = {
 };
 
 module.exports = Carousel;
-},{"./../external/element-kit/element-kit":1,"./carousel-panels":5,"./carousel-thumbs":6,"./utils":8}],8:[function(require,module,exports){
+},{"./carousel-panels":5,"./carousel-thumbs":6,"./utils":8,"element-kit":1}],8:[function(require,module,exports){
 'use strict';
 
-var ElementKit = require('./../external/element-kit/element-kit');
+var ElementKit = require('element-kit');
 
 module.exports = {
     /**
@@ -1192,5 +1192,5 @@ module.exports = {
 };
 
 
-},{"./../external/element-kit/element-kit":1}]},{},[7])(7)
+},{"element-kit":1}]},{},[7])(7)
 });

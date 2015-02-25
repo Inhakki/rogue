@@ -1,5 +1,5 @@
 /** 
-* rogue - v2.4.0.
+* rogue - v2.5.0.
 * git://github.com/mkay581/rogue.git
 * Copyright 2015 Mark Kennedy. Licensed MIT.
 */
@@ -659,8 +659,8 @@ module.exports = {
 };
 },{}],5:[function(require,module,exports){
 'use strict';
-var utils = require('./utils');
-var ElementKit = require('./../external/element-kit/element-kit');
+var utils = require('utils');
+var ElementKit = require('element-kit');
 
 /**
  * Modal.
@@ -785,10 +785,10 @@ Modal.prototype = {
 };
 
 module.exports = Modal;
-},{"./../external/element-kit/element-kit":1,"./utils":6}],6:[function(require,module,exports){
+},{"element-kit":1,"utils":6}],6:[function(require,module,exports){
 'use strict';
 
-var ElementKit = require('./../external/element-kit/element-kit');
+var ElementKit = require('element-kit');
 
 module.exports = {
     /**
@@ -827,5 +827,5 @@ module.exports = {
 };
 
 
-},{"./../external/element-kit/element-kit":1}]},{},[5])(5)
+},{"element-kit":1}]},{},[5])(5)
 });

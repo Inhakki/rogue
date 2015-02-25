@@ -15,7 +15,6 @@ describe('Tooltip Tests', function () {
 
     after(function () {
         el = null;
-
     });
 
     it('showing and hiding tooltip', function() {
@@ -118,4 +117,4 @@ describe('Tooltip Tests', function () {
         hideSpy.restore();
     });
 
-})();
+});

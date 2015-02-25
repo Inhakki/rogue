@@ -96,4 +96,4 @@ describe('Router Tests', function () {
     //    window.location.hash = origHash;
     //});
 
-})();
+});

@@ -32,6 +32,8 @@
   "browser": {
     "resource-manager": "./src/resource-manager.js",
     "router": "./src/router.js",
-    "request": "./src/request.js"
+    "request": "./src/request.js",
+    "utils": "./src/utils.js",
+    "element-kit": "./external/element-kit/element-kit.js"
   }
 }

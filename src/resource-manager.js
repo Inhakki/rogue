@@ -31,15 +31,24 @@ ResourceManager.prototype = {
      */
     loadScript: function (paths) {
         var script;
-        return new Promise(function (resolve) {
-            paths.forEach(function (path) {
-                if (!this._scriptPaths[path]) {
-                    this._scriptPaths[path] = path;
-                    resolve(require(path));
-                }
+        if (!this._loadScriptPromise) {
+            this._loadScriptPromise = new Promise(function (resolve) {
+                paths = this._ensurePathArray(paths);
+                paths.forEach(function (path) {
+                    if (!this._scriptPaths[path]) {
+                        this._scriptPaths[path] = path;
+                        script = this.createScriptElement();
+                        script.setAttribute('type','text/javascript');
+                        script.src = path;
+                        script.addEventListener('load', resolve);
+                        this._head.appendChild(script);
+                    }
+                }.bind(this));
             }.bind(this));
-            resolve();
-        }.bind(this));
+        } else {
+            this._loadScriptPromise = Promise.resolve();
+        }
+        return this._loadScriptPromise;
     },
 
     /**
@@ -50,7 +59,7 @@ ResourceManager.prototype = {
     unloadScript: function (paths) {
         var file;
         return new Promise(function (resolve) {
-            this._ensurePathArray(paths);
+            paths = this._ensurePathArray(paths);
             paths.forEach(function (path) {
                 file = this._head.querySelectorAll('script[src="' + path + '"]')[0];
                 if (file) {
@@ -60,6 +69,14 @@ ResourceManager.prototype = {
             }.bind(this));
             resolve();
         }.bind(this));
+    },
+
+    /**
+     * Creates a new script element.
+     * @returns {HTMLElement}
+     */
+    createScriptElement: function () {
+        return document.createElement('script');
     },
 
     /**
@@ -144,7 +161,10 @@ ResourceManager.prototype = {
      */
     flush: function () {
         this.unloadCss(Object.getOwnPropertyNames(this._cssPaths));
+        this._cssPaths = {};
         this.unloadScript(Object.getOwnPropertyNames(this._scriptPaths));
+        this._scriptPaths = {};
+        this._loadScriptPromise = null;
     }
 
 };

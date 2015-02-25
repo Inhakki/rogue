@@ -58,7 +58,10 @@ describe('Resource Manager Tests', function () {
     it('loading a javascript file', function (done) {
         var path = 'path/to/my.js';
         var head = document.getElementsByTagName('head')[0];
+        var scriptEl = document.createElement('script');
         var ResourceManager = require('resource-manager');
+        var createScriptElementStub = sinon.stub(ResourceManager, 'createScriptElement').returns(scriptEl);
+        sinon.stub(scriptEl, 'addEventListener').callsArg(1);
         ResourceManager.loadScript(path).then(function () {
             assert.equal(head.querySelectorAll('script[src="' + path + '"]').length, 1, 'on first loadScript() call, file gets added to the head of the document once');
             ResourceManager.loadScript(path).then(function () {
@@ -66,6 +69,7 @@ describe('Resource Manager Tests', function () {
                 ResourceManager.unloadScript(path).then(function () {
                     assert.equal(head.querySelectorAll('script[src="' + path + '"]').length, 0, 'calling unloadScript() removes the path from the document head');
                     ResourceManager.flush();
+                    createScriptElementStub.restore();
                     done();
                 });
             });
@@ -75,7 +79,14 @@ describe('Resource Manager Tests', function () {
     it('loading multiple javascript files', function (done) {
         var paths = ['path/to/my/first/file.js', 'path/to/my/second/file.js'];
         var head = document.getElementsByTagName('head')[0];
+        var firstScriptEl = document.createElement('script');
+        var secondScriptEl = document.createElement('script');
         var ResourceManager = require('resource-manager');
+        var createScriptElementStub = sinon.stub(ResourceManager, 'createScriptElement');
+        createScriptElementStub.onFirstCall().returns(firstScriptEl);
+        createScriptElementStub.onSecondCall().returns(secondScriptEl);
+        sinon.stub(firstScriptEl, 'addEventListener').callsArg(1);
+        sinon.stub(secondScriptEl, 'addEventListener').callsArg(1);
         ResourceManager.loadScript(paths).then(function () {
             assert.equal(head.querySelectorAll('script[src="' + paths[0] + '"]').length, 1, 'on first loadScript() call, first file gets added to the head of the document once');
             assert.equal(head.querySelectorAll('script[src="' + paths[1] + '"]').length, 1, 'second file gets added to the head of the document once');
@@ -90,6 +101,7 @@ describe('Resource Manager Tests', function () {
                             assert.equal(head.querySelectorAll('script[src="' + paths[0] + '"]').length, 0, 'calling unloadScript() removes the first file from the document head');
                             assert.equal(head.querySelectorAll('script[src="' + paths[1] + '"]').length, 0, 'second file is removed from the document head');
                             ResourceManager.flush();
+                            createScriptElementStub.restore();
                             done();
                         });
                     });

@@ -1,6 +1,6 @@
 'use strict';
-var utils = require('./utils');
-var ElementKit = require('./../external/element-kit/element-kit');
+var utils = require('utils');
+var ElementKit = require('element-kit');
 /**
  * A callback function that fires after a new active panel is set
  * @callback CarouselPanels~onChange

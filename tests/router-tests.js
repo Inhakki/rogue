@@ -4,7 +4,7 @@ var ResourceManager = require('resource-manager');
 var Router = require('router');
 var assert = require('assert');
 
-describe('Router Tests', function () {
+describe('Router', function () {
     'use strict';
 
     it('triggering a route that has css', function () {

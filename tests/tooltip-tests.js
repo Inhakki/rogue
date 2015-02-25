@@ -3,7 +3,7 @@ var TestUtils = require('test-utils');
 var Tooltip = require('../src/tooltip');
 var assert = require('assert');
 
-describe('Tooltip Tests', function () {
+describe('Tooltip', function () {
 
     var el;
 
@@ -17,7 +17,7 @@ describe('Tooltip Tests', function () {
         el = null;
     });
 
-    it('showing and hiding tooltip', function() {
+    it('should show and hide programmatically', function() {
         var fixture = document.getElementById('qunit-fixture');
         var tooltip = new Tooltip({el: el});
         var activeClass = 'ui-tooltip-active';
@@ -32,7 +32,7 @@ describe('Tooltip Tests', function () {
         tooltip.destroy();
     });
 
-    it('showing and hiding tooltip from click', function() {
+    it('should show and hide when clicked', function() {
         var fixture = document.getElementById('qunit-fixture');
         var showSpy = sinon.spy(Tooltip.prototype, 'show');
         var showCallCount = 0;
@@ -63,7 +63,7 @@ describe('Tooltip Tests', function () {
         hideSpy.restore();
     });
 
-    it('clicking to show/hide tooltip when no event options are specified', function() {
+    it('should NOT show and hide when no event options are specified', function() {
         var fixture = document.getElementById('qunit-fixture');
         var showSpy = sinon.spy(Tooltip.prototype, 'show');
         var hideSpy = sinon.spy(Tooltip.prototype, 'hide');
@@ -79,7 +79,7 @@ describe('Tooltip Tests', function () {
         hideSpy.restore();
     });
 
-    it('showing and hiding tooltip with onShow and onHide callback options', function() {
+    it('should fire callback functions when showing and hiding', function() {
         var onShowSpy = sinon.spy();
         var onHideSpy = sinon.spy();
         var tooltip = new Tooltip({el: el, onShow: onShowSpy, onHide: onHideSpy});
@@ -91,7 +91,7 @@ describe('Tooltip Tests', function () {
         tooltip.destroy();
     });
 
-    it('showing and hiding tooltip from hover', function() {
+    it('should show and hide on hover', function() {
         var fixture = document.getElementById('qunit-fixture');
         var showSpy = sinon.spy(Tooltip.prototype, 'show');
         var showCallCount = 0;

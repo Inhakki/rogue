@@ -3,7 +3,7 @@ var TestUtils = require('test-utils');
 var assert = require('assert');
 
 
-describe('Resource Manager Tests', function () {
+describe('Resource Manager', function () {
 
     it('should load and unload multiple css files', function (done) {
         var ResourceManager = require('resource-manager');
@@ -22,7 +22,7 @@ describe('Resource Manager Tests', function () {
         });
     });
 
-    it('loading a single css file', function (done) {
+    it('should add and remove css file from DOM appropriately', function (done) {
         var path = 'test/path/to/css/single.css';
         var ResourceManager = require('resource-manager');
         ResourceManager.loadCss(path).then(function () {
@@ -36,7 +36,7 @@ describe('Resource Manager Tests', function () {
         });
     });
 
-    it('loading css files that have already been loaded', function (done) {
+    it('should NOT load css files that have already been loaded', function (done) {
         var cssPaths = ['test/path/to/css/one', 'test/path/to/second/css'];
         var head = document.getElementsByTagName('head')[0];
         var ResourceManager = require('resource-manager');
@@ -55,7 +55,7 @@ describe('Resource Manager Tests', function () {
         });
     });
 
-    it('loading a javascript file', function (done) {
+    it('should inject a javascript file correctly into the DOM when loaded and remove when unloaded', function (done) {
         var path = 'path/to/my.js';
         var head = document.getElementsByTagName('head')[0];
         var scriptEl = document.createElement('script');
@@ -76,7 +76,7 @@ describe('Resource Manager Tests', function () {
         });
     });
 
-    it('loading multiple javascript files', function (done) {
+    it('should inject multiple javascript files into the DOM when loaded via same load call', function (done) {
         var paths = ['path/to/my/first/file.js', 'path/to/my/second/file.js'];
         var head = document.getElementsByTagName('head')[0];
         var firstScriptEl = document.createElement('script');

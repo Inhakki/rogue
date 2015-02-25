@@ -3,10 +3,10 @@ var TestUtils = require('test-utils');
 var Carousel = require('../src/carousel');
 var assert = require('assert');
 
-describe('Carousel Tests', function () {
+describe('Carousel', function () {
     var fixture;
 
-    it('showing panels', function () {
+    it('should reflect correct index when transitioning through panels', function () {
         var fixture = document.getElementById('qunit-fixture');
         var carouselEl = document.createElement('div');
         var activeClass = 'carousel-panel-active';
@@ -32,7 +32,7 @@ describe('Carousel Tests', function () {
         carouselView.destroy();
     });
 
-    it('showing a panel that is already showing', function () {
+    it('should not cause unexpected behavior when trying to transition to a panel that is already showing', function () {
         var fixture = document.getElementById('qunit-fixture');
         var carouselEl = document.createElement('div');
         var activeClass = 'carousel-panel-active';
@@ -61,7 +61,7 @@ describe('Carousel Tests', function () {
         carouselView.destroy();
     });
 
-    it('showing a panel that doesn\'t exists', function () {
+    it('should not crash when showing a panel that doesn\'t exists', function () {
         var fixture = document.getElementById('qunit-fixture');
         var carouselEl = document.createElement('div');
         var activeClass = 'carousel-panel-active';
@@ -98,7 +98,7 @@ describe('Carousel Tests', function () {
         carouselView.destroy();
     });
 
-    it('lazy loading single assets with NO panel', function () {
+    it('should add and remove classes and lazy load single assets with NO panel', function () {
         var fixture = document.getElementById('qunit-fixture');
         var carouselEl = document.createElement('div');
         carouselEl.innerHTML =
@@ -135,7 +135,7 @@ describe('Carousel Tests', function () {
         window.Image = origImage;
     });
 
-    it('lazy loading multiple assets contained inside a single panel', function () {
+    it('should lazy load multiple assets contained inside a single panel', function () {
         var origImage = window.Image;
         window.Image = sinon.stub();
         var fixture = document.getElementById('qunit-fixture');
@@ -174,7 +174,7 @@ describe('Carousel Tests', function () {
         window.Image = origImage;
     });
 
-    it('clicking on thumbnails', function () {
+    it('should add and remove appropriate classes and handle goTo() calls properly when clicking on thumbnails', function () {
         var fixture = document.getElementById('qunit-fixture');
         var carouselEl = document.createElement('div');
         var goToSpy = sinon.spy(Carousel.prototype, 'goTo');

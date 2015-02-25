@@ -4,7 +4,7 @@ var assert = require('assert');
 
 var modalsContainer;
 
-describe('Modal Tests', function () {
+describe('Modals', function () {
 
     before(function () {
         var fixture = document.getElementById('qunit-fixture');
@@ -12,7 +12,7 @@ describe('Modal Tests', function () {
         modalsContainer.className = 'modal-container';
     });
 
-    it('initialization (with a modal container)', function () {
+    it('should be added and removed from DOM correctly on setup and destroy when a modal container is passed to instantiation', function () {
         var fixture = document.getElementById('qunit-fixture');
         var modalEl = document.createElement('div');
         var modalInstance = new Modal({
@@ -26,7 +26,7 @@ describe('Modal Tests', function () {
         assert.ok(!modalsContainer.contains(modalEl), 'upon destruction, modal element has been removed as a child node of modal container');
     });
 
-    it('initialization (with NO modal container)', function () {
+    it('should be added and removed from DOM correctly on setup and destroy when NO modal container is passed to instantiation', function () {
         var fixture = document.getElementById('qunit-fixture');
         var bodyEl = document.getElementsByTagName('body')[0];
         var modalEl = document.createElement('div');
@@ -40,7 +40,7 @@ describe('Modal Tests', function () {
         assert.ok(!bodyEl.contains(modalEl), 'upon destruction, modal element has been removed as a child node of document body');
     });
 
-    it('showing and hiding a modal', function () {
+    it('should add and remove appropriate classes when showing and hiding a modal', function () {
         var fixture = document.getElementById('qunit-fixture');
         var defaultActiveClass = 'modal-active';
         var defaultContainerActiveClass = 'modal-container-active';
@@ -66,7 +66,7 @@ describe('Modal Tests', function () {
         assert.ok(!modalsContainer.classList.contains(defaultContainerActiveClass), 'default active class was removed from modal container');
     });
 
-    it('showing and hiding multiple modals with custom active classes', function () {
+    it('custom classes should be added and removed appropriately when showing and hiding multiple modals with custom active classes', function () {
         var fixture = document.getElementById('qunit-fixture');
         var activeClass = 'my-custom-modal-active';
         var containerActiveClass = 'my-custom-modal-container-active';

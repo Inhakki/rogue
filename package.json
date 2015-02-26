@@ -1,6 +1,6 @@
 {
   "name": "rogue",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "An un-opinionated, lightweight library for super fast web apps",
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
     "router": "./src/router.js",
     "request": "./src/request.js",
     "utils": "./src/utils.js",
+    "eval": "./node_modules/eval/eval.js",
     "element-kit": "./external/element-kit/element-kit.js"
   },
   "dependencies": {

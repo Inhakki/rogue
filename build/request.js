@@ -1,5 +1,5 @@
 /** 
-* rogue - v2.5.0.
+* rogue - v2.5.1.
 * git://github.com/mkay581/rogue.git
 * Copyright 2015 Mark Kennedy. Licensed MIT.
 */
@@ -489,9 +489,14 @@ var Promise = require('promise');
 
 /**
  * A ES6-Promisified XHR request class to make ajax calls.
- * @param url
- * @param options
- * @returns {XMLHttpRequest}
+ * @module request
+ * @type {exports}
+ * @param {String} url - The url to be requested
+ * @param {Object} [options] - The options
+ * @param {String} [options.method] - The method (i.e. "GET", "POST"), defaults to GET
+ * @param {Object} [options.headers] - Any headers to send with request
+ * @param {Boolean} [options.async] - Whether this is an asynchronous call (default to true)
+ * @returns {Promise}
  * @TODO: make this return a promise that follows ES6 Promise syntax
  */
 module.exports = function (url, options) {

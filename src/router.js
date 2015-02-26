@@ -4,20 +4,16 @@ var ResourceManager = require('resource-manager');
 var request = require('request');
 var Promise = require('promise');
 var path = require('path');
-
-
-var _currentRoutePromise;
+var _eval = require('eval');
 
 /**
  * Router class.
  * @description Represents a manager that handles all routes throughout the app.
- * @constructor
- */
-/**
- * Starts managing routes based on a supplied config.
- * @param {Object} options - The options
+ * @class Router
+ * @param options
  * @param {String|Object} options.config - Configuration data or url to file that has it
- * @param {HTMLElement} options.el - The element to apply loading class to when loading a page
+ * @param {Function} options.onUrlChange - When the url changes
+ * @return {Router}
  */
 var Router = function (options){
     this.options = options || {};
@@ -46,6 +42,9 @@ Router.prototype = /** @lends Router */{
 
     /**
      * Fetches the config.
+     * @param data
+     * @return {Promise}
+     * @private
      */
     _fetchConfig: function (data) {
         if (!data) {
@@ -53,7 +52,10 @@ Router.prototype = /** @lends Router */{
         }
         return new Promise(function (resolve) {
             if (typeof data === 'string') {
-                return request(data);
+                request(data).then(function (contents) {
+                    contents = _eval(contents);
+                    resolve(contents);
+                });
             } else {
                 resolve(data);
             }
@@ -66,8 +68,9 @@ Router.prototype = /** @lends Router */{
      * @private
      */
     _getRouteRequestListener: function () {
+        var self = this;
         return function (event) {
-            return this._onRouteRequest.bind(this);
+            return self._onRouteRequest.bind(self);
         }
     },
 
@@ -95,8 +98,7 @@ Router.prototype = /** @lends Router */{
      */
     triggerRoute: function (url, options) {
         history.pushState({path: url}, document.title, url);
-        _currentRoutePromise = new Promise();
-        return _currentRoutePromise;
+        return this._onRouteRequest(url);
     },
 
     /**
@@ -162,41 +164,18 @@ Router.prototype = /** @lends Router */{
      * When a route is requested.
      * @param {string} path - The path that is
      * @private
+     * @return {Promise}
      */
     _onRouteRequest: function (path) {
         // do not navigate if already at the url being requested
         if (path === this._currentPath) {
             return;
         }
-
-        this._loadPage(path)
-            .then(function (page) {
-                return page.show().then(_currentRoutePromise.resolve);
-            }).catch(_currentRoutePromise.reject);
-    },
-
-    /**
-     * Loads a page's css, template, and script.
-     * @param {Object} path - The path of the url associated with the page
-     * @private
-     */
-    _loadPage: function (path) {
-        var origPath = this._currentPath,
-            config = this.options.config[path],
-            cssFilePaths = config.css || [];
-
-        // hide previous view if there is one
-        if (origPath && this._pages[origPath]) {
-            this._pages[origPath].hide();
-        }
-
         this._currentPath = path;
 
-        return ResourceManager.loadCss(cssFilePaths).then(function () {
-            return ResourceManager.loadTemplate(config.template).then(function () {
-                this._pages[config.url] = require(config.script);
-            }.bind(this));
-        }.bind(this));
+        if (this.options.onUrlChange) {
+            this.options.onUrlChange(path);
+        }
     }
 
 };

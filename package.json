@@ -34,5 +34,8 @@
     "request": "./src/request.js",
     "utils": "./src/utils.js",
     "element-kit": "./external/element-kit/element-kit.js"
+  },
+  "dependencies": {
+    "eval": "^0.1.0"
   }
 }

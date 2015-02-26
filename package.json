@@ -33,7 +33,6 @@
     "router": "./src/router.js",
     "request": "./src/request.js",
     "utils": "./src/utils.js",
-    "eval": "./node_modules/eval/eval.js",
     "element-kit": "./external/element-kit/element-kit.js"
   },
   "dependencies": {

@@ -29,6 +29,7 @@
     "underscore": "~1.7.0"
   },
   "browser": {
+    "event-manager": "./src/event-manager.js",
     "resource-manager": "./src/resource-manager.js",
     "router": "./src/router.js",
     "request": "./src/request.js",

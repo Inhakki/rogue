@@ -1,5 +1,6 @@
 var Promise = require('promise');
 var request = require('request');
+var utils = require('utils');
 
 'use strict';
 /**
@@ -20,20 +21,17 @@ var EventManager = {
         target.addEventListener = this._getEventMethod(target, '_addEvent').bind(this);
         target.removeEventListener = this._getEventMethod(target, '_removeEvent').bind(this);
         target.dispatchEvent = this._getEventMethod(target, '_dispatchEvent').bind(this);
-
-        this._targets[target] = target;
     },
 
     /**
      * Registers a callback to be fired when the url changes.
      * @param {Object|Function} target
-     * @param {String} event
+     * @param {String} eventName
      * @param {Function} listener
      * @param {boolean} useCapture
      * @param {Object} [context]
      */
-    _addEvent: function (target, event, listener, useCapture, context) {
-        var targetObj = this._targets[target] || {};
+    _addEvent: function (target, eventName, listener, useCapture, context) {
 
         if (typeof useCapture !== 'boolean') {
             context = useCapture;
@@ -43,16 +41,18 @@ var EventManager = {
         // replicating native JS default useCapture option
         useCapture = useCapture || false;
 
-        targetObj[event] = targetObj[event] || {};
+        this._targets[target] = this._targets[target] || {};
 
         // dont add event listener if target already has it
-        if (!targetObj[event][listener]) {
-            targetObj[event][listener] = targetObj[event][listener] || [];
-            targetObj[event][listener].push({
-                context: context,
-                useCapture: useCapture
-            });
-            this._targets[target] = targetObj;
+        var existingListeners = utils.getNested(this._targets[target], eventName, []);
+        var listenerObj = {
+            listener: listener,
+            context: context,
+            useCapture: useCapture
+        };
+        if (existingListeners.indexOf(listenerObj) === -1) {
+            var listenerArr = utils.setNested(this._targets[target], eventName, []);
+            listenerArr.push(listenerObj);
         }
     },
 
@@ -64,61 +64,54 @@ var EventManager = {
      * @returns {*|function(this:EventManager)}
      */
     _getEventMethod: function (target, method) {
-        var args = Array.prototype.slice.call(arguments, 0);
-        args.unshift(target);
-         return function () {
+        return function () {
+            var args = Array.prototype.slice.call(arguments, 0);
+            args.unshift(target);
             this[method].apply(this, args);
-         }.bind(this);
+        }.bind(this);
     },
 
     /**
      * Removes an event listener from the target.
      * @private
      * @param target
-     * @param event
+     * @param eventName
      * @param listener
      */
-    _removeEvent: function (target, event, listener) {
-        var targetObj = this._targets[target] || {};
-        if (targetObj) {
-            if (targetObj[event] && targetObj[event][listener]) {
-                delete targetObj[event][listener];
-                // clean up parent
-                if (!targetObj[event]) {
-                    delete targetObj[event];
-                    if (!this._targets[target]) {
-                        delete this._targets[target];
-                    }
-                }
+    _removeEvent: function (target, eventName, listener) {
+        var existingListeners = utils.getNested(this._targets[target], eventName, []);
+        existingListeners.forEach(function (listenerObj, idx) {
+            if (listenerObj.listener === listener) {
+                existingListeners.splice(idx, 1);
             }
-        }
+        });
     },
 
     /**
      * Triggers all event listeners on a target.
      * @private
      * @param {Object|Function} target - The target
-     * @param event
+     * @param {String} eventName - The event name
      */
-    _dispatchEvent: function (target, event) {
+    _dispatchEvent: function (target, eventName) {
         var targetObj = this._targets[target] || {};
-        if (targetObj && targetObj[event]) {
-            targetObj[event].listeners.forEach(function (listener) {
-                listener.call(listener.context || target, this._createEvent(event));
+        if (targetObj[eventName]) {
+            targetObj[eventName].forEach(function (listenerObj) {
+                listenerObj.listener.call(listenerObj.context || target, this._createEvent(eventName));
             }.bind(this));
         }
     },
 
     /**
      * Creates an event.
-     * @param {string} event - The event name
+     * @param {string} eventName - The event name
      * @private
      */
-    _createEvent: function (event) {
+    _createEvent: function (eventName) {
         // For IE 9+ compatibility, we must use document.createEvent() for our CustomEvent.
         var evt = document.createEvent('CustomEvent');
-        evt.initCustomEvent(event, false, false, {});
-        return event;
+        evt.initCustomEvent(eventName, false, false, {});
+        return evt;
     },
 
     /**

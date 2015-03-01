@@ -208,9 +208,9 @@ Router.prototype = /** @lends Router */{
         this._currentPath = path;
 
         this.showPage(path).then(function () {
-            if (this._loaded) {
-                this.dispatchEvent('page:load');
+            if (!this._loaded) {
                 this._loaded = true;
+                this.dispatchEvent('page:load');
             }
         }.bind(this));
 
@@ -223,7 +223,7 @@ Router.prototype = /** @lends Router */{
      * @returns {Promise}
      */
     showPage: function (url) {
-        var config = routes[url],
+        var config = this._config[url],
             map = {}, page;
         if (!this._pageMaps[url]) {
             this._pageMaps[url] = map;

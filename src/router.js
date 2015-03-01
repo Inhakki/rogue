@@ -1,7 +1,7 @@
 'use strict';
 var ResourceManager = require('resource-manager');
 var request = require('request');
-var Promise = require('promise');
+var promise = require('promise');
 var path = require('path');
 var _eval = require('eval');
 var EventManager = require('event-manager');

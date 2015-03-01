@@ -1,4 +1,3 @@
-var Promise = require('promise');
 var request = require('request');
 var utils = require('utils');
 

@@ -26,6 +26,7 @@ var EventManager = {
 
     /**
      * Registers a callback to be fired when the url changes.
+     * @private
      * @param {Object|Function} target
      * @param {String} eventName
      * @param {Function} listener

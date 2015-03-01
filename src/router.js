@@ -1,7 +1,7 @@
 'use strict';
 var ResourceManager = require('resource-manager');
 var request = require('request');
-var promise = require('promise');
+var Promise = require('Promise');
 var path = require('path');
 var _eval = require('eval');
 var EventManager = require('event-manager');
@@ -31,6 +31,8 @@ Router.prototype = /** @lends Router */{
         EventManager.createTarget(this);
 
         this._pageMaps = {};
+        this._history = [];
+
         this._setupHelpers(options);
 
     },
@@ -57,13 +59,6 @@ Router.prototype = /** @lends Router */{
      * Starts managing routes.
      */
     start: function () {
-
-        this._pages = {};
-        this._history = [];
-
-        // allow event listeners
-        EventManager.createTarget(this);
-
         this._fetchConfig(this.options.config)
             .then(function (config) {
                 this._config = config;
@@ -113,7 +108,7 @@ Router.prototype = /** @lends Router */{
      */
     reset: function () {
         this._history = [];
-        this._pages = {};
+        this._pageMaps = {};
     },
 
     /**
@@ -129,10 +124,15 @@ Router.prototype = /** @lends Router */{
      * @param {Object} [options] - Set of navigation options
      * @param {boolean} [options.trigger] - True if the route function should be called (defaults to true)
      * @param {boolean} [options.replace] - True to update the URL without creating an entry in the browser's history
+     * @returns {Promise} Returns a Promise when the page of the route has loaded
      */
     triggerRoute: function (url, options) {
-        history.pushState({path: url}, document.title, url);
-        return this._onRouteRequest(url);
+        if (url !== this._currentPath) {
+            history.pushState({path: url}, document.title, url);
+            return this._onRouteRequest(url);
+        } else {
+            return Promise.resolve();
+        }
     },
 
     /**
@@ -202,19 +202,23 @@ Router.prototype = /** @lends Router */{
      */
     _onRouteRequest: function (path) {
         // do not navigate if already at the url being requested
-        if (path === this._currentPath) {
-            return;
-        }
-        this._currentPath = path;
+        return new Promise(function (resolve) {
+            if (path !== this._currentPath) {
+                this._currentPath = path;
 
-        this.showPage(path).then(function () {
-            if (!this._loaded) {
-                this._loaded = true;
-                this.dispatchEvent('page:load');
+                this.showPage(path).then(function () {
+                    if (!this._loaded) {
+                        this._loaded = true;
+                        resolve();
+                        this.dispatchEvent('page:load');
+                    }
+                }.bind(this));
+
+                this.dispatchEvent('url:change');
+            } else {
+                resolve();
             }
         }.bind(this));
-
-        this.dispatchEvent('url:change');
     },
 
     /**
@@ -227,16 +231,16 @@ Router.prototype = /** @lends Router */{
             map = {}, page;
         if (!this._pageMaps[url]) {
             this._pageMaps[url] = map;
-            map.promise = ResourceManager.loadTemplate(config.template).then(function (content) {
+            map.Promise = ResourceManager.loadTemplate(config.template).then(function (content) {
                 page = map.page = require(config.script);
-                map.promise = this._compileTemplate(content, config.data).then(function (result) {
+                return this._compileTemplate(content, config.data).then(function (result) {
                     return page.load({template: result});
                 }.bind(this));
             }.bind(this));
-            return map.promise;
+            return map.Promise;
         } else {
             this._pageMaps[url].show();
-            return promise.resolve();
+            return Promise.resolve();
         }
     },
 
@@ -244,13 +248,13 @@ Router.prototype = /** @lends Router */{
      * Parses handlebar template using data from a supplied url.
      * @param {String} content - The raw, uncompiled content
      * @param {String} dataUrl - The url where data lives
-     * @return {Promise} Returns a promise that will contain compiled template content
+     * @return {Promise} Returns a Promise that will contain compiled template content
      * @private
      */
     _compileTemplate: function (content, dataUrl) {
         return request(dataUrl).then(function (data) {
             data = JSON.parse(data);
-            return promise.resolve(Handlebars.compile(content)(data));
+            return Promise.resolve(Handlebars.compile(content)(data));
         });
     }
 

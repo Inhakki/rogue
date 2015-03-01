@@ -16,11 +16,13 @@ var EventManager = {
      * @param {Object|Function} target - The target
      */
     createTarget: function (target) {
-        this._targets = this._targets = {};
-
-        target.addEventListener = this._getEventMethod(target, '_addEvent').bind(this);
-        target.removeEventListener = this._getEventMethod(target, '_removeEvent').bind(this);
-        target.dispatchEvent = this._getEventMethod(target, '_dispatchEvent').bind(this);
+        this._targets = this._targets || {};
+        if (!this._targets[target]) {
+            target.addEventListener = this._getEventMethod(target, '_addEvent').bind(this);
+            target.removeEventListener = this._getEventMethod(target, '_removeEvent').bind(this);
+            target.dispatchEvent = this._getEventMethod(target, '_dispatchEvent').bind(this);
+            this._targets[target] = {};
+        }
     },
 
     /**
@@ -40,8 +42,6 @@ var EventManager = {
 
         // replicating native JS default useCapture option
         useCapture = useCapture || false;
-
-        this._targets[target] = this._targets[target] || {};
 
         // dont add event listener if target already has it
         var existingListeners = utils.getNested(this._targets[target], eventName, []);

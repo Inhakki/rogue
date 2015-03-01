@@ -1,0 +1,6 @@
+/** 
+* rogue - v2.6.0.
+* git://github.com/mkay581/rogue.git
+* Copyright 2015 Mark Kennedy. Licensed MIT.
+*/
+var request=require("request"),utils=require("utils"),EventManager={createTarget:function(a){this._targets=this._targets||{},this._targets[a]||(a.addEventListener=this._getEventMethod(a,"_addEvent").bind(this),a.removeEventListener=this._getEventMethod(a,"_removeEvent").bind(this),a.dispatchEvent=this._getEventMethod(a,"_dispatchEvent").bind(this),this._targets[a]={})},_addEvent:function(a,b,c,d,e){"boolean"!=typeof d&&(e=d,d=null),d=d||!1;var f=utils.getNested(this._targets[a],b,[]),g={listener:c,context:e,useCapture:d};if(-1===f.indexOf(g)){var h=utils.setNested(this._targets[a],b,[]);h.push(g)}},_getEventMethod:function(a,b){return function(){var c=Array.prototype.slice.call(arguments,0);c.unshift(a),this[b].apply(this,c)}.bind(this)},_removeEvent:function(a,b,c){var d=utils.getNested(this._targets[a],b,[]);d.forEach(function(a,b){a.listener===c&&d.splice(b,1)})},_dispatchEvent:function(a,b){var c=this._targets[a]||{};c[b]&&c[b].forEach(function(c){c.listener.call(c.context||a,this._createEvent(b))}.bind(this))},_createEvent:function(a){var b=document.createEvent("CustomEvent");return b.initCustomEvent(a,!1,!1,{}),b},destroyTarget:function(a){delete this._targets[a]}};module.exports=EventManager;

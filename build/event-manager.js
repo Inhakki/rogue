@@ -658,189 +658,661 @@ module.exports = {
     }
 };
 },{}],5:[function(require,module,exports){
-'use strict';
+// shim for using process in browser
 
-var utils = require('utils');
-var ElementKit = require('element-kit');
+var process = module.exports = {};
+var queue = [];
+var draining = false;
 
-/**
- * Tooltip.
- * @constructor Tooltip
- * @param {object} options - Options to pass
- * @param {HTMLElement} options.el - The container of the tooltip
- * @param {string} [options.showEvent] - A string indicating which event should trigger showing the tooltip
- * @param {string} [options.hideEvent] - A string indicating which event should trigger hiding the tooltip
- * @param {Function} [options.onShow] - A callback function that fires when tooltip panel is shown
- * @param {Function} [options.onHide] - A callback function that fires when tooltip panel is hidden
- * @param {string} [options.cssPrefix] - A custom css class that will be used as namespace for all css classes applied
- */
-var Tooltip = function (options) {
-    this.initialize(options);
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    draining = true;
+    var currentQueue;
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        var i = -1;
+        while (++i < len) {
+            currentQueue[i]();
+        }
+        len = queue.length;
+    }
+    draining = false;
+}
+process.nextTick = function (fun) {
+    queue.push(fun);
+    if (!draining) {
+        setTimeout(drainQueue, 0);
+    }
 };
 
-Tooltip.prototype = /** @lends Tooltip.prototype */{
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
 
-    /**
-     * When instantiated.
-     * @param options
-     */
-    initialize: function (options) {
+function noop() {}
 
-        this.options = utils.extend({
-            el: null,
-            showEvent: null,
-            hideEvent: null,
-            onShow: null,
-            onHide: null,
-            cssPrefix: 'ui-tooltip'
-        }, options);
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
 
-        this.prefix = this.options.cssPrefix;
-        this.activeClass = this.prefix + '-active';
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
 
-        this.el = this.options.el;
-        this.trigger = this.el.getElementsByClassName(this.prefix + '-trigger')[0];
+// TODO(shtylman)
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
 
-        this.setup();
+},{}],6:[function(require,module,exports){
+'use strict';
 
-    },
+module.exports = require('./lib/core.js')
+require('./lib/done.js')
+require('./lib/es6-extensions.js')
+require('./lib/node-extensions.js')
+},{"./lib/core.js":7,"./lib/done.js":8,"./lib/es6-extensions.js":9,"./lib/node-extensions.js":10}],7:[function(require,module,exports){
+'use strict';
 
-    /**
-     * Sets up events for showing/hiding tooltip.
-     * @memberOf Tooltip
-     */
-    setup: function () {
-        var options = this.options;
+var asap = require('asap')
 
-        // setup events if needed
-        if (options.showEvent) {
-            this.eventMap = this._setupEvents(options.showEvent, options.hideEvent);
+module.exports = Promise;
+function Promise(fn) {
+  if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new')
+  if (typeof fn !== 'function') throw new TypeError('not a function')
+  var state = null
+  var value = null
+  var deferreds = []
+  var self = this
+
+  this.then = function(onFulfilled, onRejected) {
+    return new self.constructor(function(resolve, reject) {
+      handle(new Handler(onFulfilled, onRejected, resolve, reject))
+    })
+  }
+
+  function handle(deferred) {
+    if (state === null) {
+      deferreds.push(deferred)
+      return
+    }
+    asap(function() {
+      var cb = state ? deferred.onFulfilled : deferred.onRejected
+      if (cb === null) {
+        (state ? deferred.resolve : deferred.reject)(value)
+        return
+      }
+      var ret
+      try {
+        ret = cb(value)
+      }
+      catch (e) {
+        deferred.reject(e)
+        return
+      }
+      deferred.resolve(ret)
+    })
+  }
+
+  function resolve(newValue) {
+    try { //Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+      if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.')
+      if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
+        var then = newValue.then
+        if (typeof then === 'function') {
+          doResolve(then.bind(newValue), resolve, reject)
+          return
         }
-    },
+      }
+      state = true
+      value = newValue
+      finale()
+    } catch (e) { reject(e) }
+  }
 
-    /**
-     * Sets up events.
-     * @param {string} showEvent - The event string to hide tooltip
-     * @param {string} hideEvent - The event string to show tooltip
-     * @returns {object} - Returns a mapping of all events to their trigger functions.
-     * @memberOf Tooltip
-     * @private
-     */
-    _setupEvents: function (showEvent, hideEvent) {
-        var map = this._buildEventMap(showEvent, hideEvent),
-            key,
-            e;
-        for (key in map) {
-            if (map.hasOwnProperty(key)) {
-                e = map[key];
-                this.trigger.addEventListener(e.name, e.event);
-            }
+  function reject(newValue) {
+    state = false
+    value = newValue
+    finale()
+  }
+
+  function finale() {
+    for (var i = 0, len = deferreds.length; i < len; i++)
+      handle(deferreds[i])
+    deferreds = null
+  }
+
+  doResolve(fn, resolve, reject)
+}
+
+
+function Handler(onFulfilled, onRejected, resolve, reject){
+  this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null
+  this.onRejected = typeof onRejected === 'function' ? onRejected : null
+  this.resolve = resolve
+  this.reject = reject
+}
+
+/**
+ * Take a potentially misbehaving resolver function and make sure
+ * onFulfilled and onRejected are only called once.
+ *
+ * Makes no guarantees about asynchrony.
+ */
+function doResolve(fn, onFulfilled, onRejected) {
+  var done = false;
+  try {
+    fn(function (value) {
+      if (done) return
+      done = true
+      onFulfilled(value)
+    }, function (reason) {
+      if (done) return
+      done = true
+      onRejected(reason)
+    })
+  } catch (ex) {
+    if (done) return
+    done = true
+    onRejected(ex)
+  }
+}
+
+},{"asap":11}],8:[function(require,module,exports){
+'use strict';
+
+var Promise = require('./core.js')
+var asap = require('asap')
+
+module.exports = Promise
+Promise.prototype.done = function (onFulfilled, onRejected) {
+  var self = arguments.length ? this.then.apply(this, arguments) : this
+  self.then(null, function (err) {
+    asap(function () {
+      throw err
+    })
+  })
+}
+},{"./core.js":7,"asap":11}],9:[function(require,module,exports){
+'use strict';
+
+//This file contains the ES6 extensions to the core Promises/A+ API
+
+var Promise = require('./core.js')
+var asap = require('asap')
+
+module.exports = Promise
+
+/* Static Functions */
+
+function ValuePromise(value) {
+  this.then = function (onFulfilled) {
+    if (typeof onFulfilled !== 'function') return this
+    return new Promise(function (resolve, reject) {
+      asap(function () {
+        try {
+          resolve(onFulfilled(value))
+        } catch (ex) {
+          reject(ex);
         }
-        return map;
-    },
+      })
+    })
+  }
+}
+ValuePromise.prototype = Promise.prototype
 
-    /**
-     * Fires when the show and hide events are the same and we need to determine whether to show or hide.
-     * @private
-     */
-    _onDuplicateEvent: function () {
-        if (this.isActive()) {
-            this.hide();
-        } else {
-            this.show();
+var TRUE = new ValuePromise(true)
+var FALSE = new ValuePromise(false)
+var NULL = new ValuePromise(null)
+var UNDEFINED = new ValuePromise(undefined)
+var ZERO = new ValuePromise(0)
+var EMPTYSTRING = new ValuePromise('')
+
+Promise.resolve = function (value) {
+  if (value instanceof Promise) return value
+
+  if (value === null) return NULL
+  if (value === undefined) return UNDEFINED
+  if (value === true) return TRUE
+  if (value === false) return FALSE
+  if (value === 0) return ZERO
+  if (value === '') return EMPTYSTRING
+
+  if (typeof value === 'object' || typeof value === 'function') {
+    try {
+      var then = value.then
+      if (typeof then === 'function') {
+        return new Promise(then.bind(value))
+      }
+    } catch (ex) {
+      return new Promise(function (resolve, reject) {
+        reject(ex)
+      })
+    }
+  }
+
+  return new ValuePromise(value)
+}
+
+Promise.all = function (arr) {
+  var args = Array.prototype.slice.call(arr)
+
+  return new Promise(function (resolve, reject) {
+    if (args.length === 0) return resolve([])
+    var remaining = args.length
+    function res(i, val) {
+      try {
+        if (val && (typeof val === 'object' || typeof val === 'function')) {
+          var then = val.then
+          if (typeof then === 'function') {
+            then.call(val, function (val) { res(i, val) }, reject)
+            return
+          }
         }
-    },
+        args[i] = val
+        if (--remaining === 0) {
+          resolve(args);
+        }
+      } catch (ex) {
+        reject(ex)
+      }
+    }
+    for (var i = 0; i < args.length; i++) {
+      res(i, args[i])
+    }
+  })
+}
 
+Promise.reject = function (value) {
+  return new Promise(function (resolve, reject) { 
+    reject(value);
+  });
+}
 
-    /**
-     * Builds the event map.
-     * @param {string} showEvent - The event string to hide tooltip
-     * @param {string} hideEvent - The event string to show tooltip
-     * @returns {object} - Returns a mapping of all events to their trigger functions.
-     * @private
-     */
-    _buildEventMap: function (showEvent, hideEvent) {
-        var map = {};
+Promise.race = function (values) {
+  return new Promise(function (resolve, reject) { 
+    values.forEach(function(value){
+      Promise.resolve(value).then(resolve, reject);
+    })
+  });
+}
 
-        if (showEvent === hideEvent) {
-            // show event and hide events are the same
-            map['showEvent'] = {
-                name: showEvent,
-                event: this._onDuplicateEvent.bind(this)
-            };
-            return map;
+/* Prototype Methods */
+
+Promise.prototype['catch'] = function (onRejected) {
+  return this.then(null, onRejected);
+}
+
+},{"./core.js":7,"asap":11}],10:[function(require,module,exports){
+'use strict';
+
+//This file contains then/promise specific extensions that are only useful for node.js interop
+
+var Promise = require('./core.js')
+var asap = require('asap')
+
+module.exports = Promise
+
+/* Static Functions */
+
+Promise.denodeify = function (fn, argumentCount) {
+  argumentCount = argumentCount || Infinity
+  return function () {
+    var self = this
+    var args = Array.prototype.slice.call(arguments)
+    return new Promise(function (resolve, reject) {
+      while (args.length && args.length > argumentCount) {
+        args.pop()
+      }
+      args.push(function (err, res) {
+        if (err) reject(err)
+        else resolve(res)
+      })
+      var res = fn.apply(self, args)
+      if (res && (typeof res === 'object' || typeof res === 'function') && typeof res.then === 'function') {
+        resolve(res)
+      }
+    })
+  }
+}
+Promise.nodeify = function (fn) {
+  return function () {
+    var args = Array.prototype.slice.call(arguments)
+    var callback = typeof args[args.length - 1] === 'function' ? args.pop() : null
+    var ctx = this
+    try {
+      return fn.apply(this, arguments).nodeify(callback, ctx)
+    } catch (ex) {
+      if (callback === null || typeof callback == 'undefined') {
+        return new Promise(function (resolve, reject) { reject(ex) })
+      } else {
+        asap(function () {
+          callback.call(ctx, ex)
+        })
+      }
+    }
+  }
+}
+
+Promise.prototype.nodeify = function (callback, ctx) {
+  if (typeof callback != 'function') return this
+
+  this.then(function (value) {
+    asap(function () {
+      callback.call(ctx, null, value)
+    })
+  }, function (err) {
+    asap(function () {
+      callback.call(ctx, err)
+    })
+  })
+}
+
+},{"./core.js":7,"asap":11}],11:[function(require,module,exports){
+(function (process){
+
+// Use the fastest possible means to execute a task in a future turn
+// of the event loop.
+
+// linked list of tasks (single, with head node)
+var head = {task: void 0, next: null};
+var tail = head;
+var flushing = false;
+var requestFlush = void 0;
+var isNodeJS = false;
+
+function flush() {
+    /* jshint loopfunc: true */
+
+    while (head.next) {
+        head = head.next;
+        var task = head.task;
+        head.task = void 0;
+        var domain = head.domain;
+
+        if (domain) {
+            head.domain = void 0;
+            domain.enter();
         }
 
-        if (showEvent) {
-            map['showEvent'] = {
-                name: showEvent,
-                event: this.show.bind(this)
-            }
-        }
-        if (hideEvent) {
-            map['hideEvent'] = {
-                name: hideEvent,
-                event: this.hide.bind(this)
-            }
-        }
-        return map;
-    },
+        try {
+            task();
 
-    /**
-     * Shows the tooltip.
-     * @memberOf Tooltip
-     */
-    show: function () {
-        this.el.kit.classList.add(this.activeClass);
-        if (this.options.onShow) {
-            this.options.onShow();
-        }
-    },
+        } catch (e) {
+            if (isNodeJS) {
+                // In node, uncaught exceptions are considered fatal errors.
+                // Re-throw them synchronously to interrupt flushing!
 
-    /**
-     * Hides the tooltip.
-     * @memberOf Tooltip
-     */
-    hide: function () {
-        this.el.kit.classList.remove(this.activeClass);
-        if (this.options.onHide) {
-            this.options.onHide();
-        }
-    },
-
-    /**
-     * Checks whether tooltip is showing.
-     * @memberOf Tooltip
-     * @returns {boolean} Returns true if showing
-     */
-    isActive: function () {
-        return this.el.kit.classList.contains(this.activeClass);
-    },
-
-    /**
-     * Destruction of this class.
-     * @memberOf Tooltip
-     */
-    destroy: function () {
-        var eventMap = this.eventMap,
-            key,
-            e;
-
-        // destroy events
-        if (eventMap) {
-            for (key in eventMap) {
-                if (eventMap.hasOwnProperty(key)) {
-                    e = eventMap[key];
-                    this.trigger.removeEventListener(e.name, e.event);
+                // Ensure continuation if the uncaught exception is suppressed
+                // listening "uncaughtException" events (as domains does).
+                // Continue in next event to avoid tick recursion.
+                if (domain) {
+                    domain.exit();
                 }
+                setTimeout(flush, 0);
+                if (domain) {
+                    domain.enter();
+                }
+
+                throw e;
+
+            } else {
+                // In browsers, uncaught exceptions are not fatal.
+                // Re-throw them asynchronously to avoid slow-downs.
+                setTimeout(function() {
+                   throw e;
+                }, 0);
             }
+        }
+
+        if (domain) {
+            domain.exit();
         }
     }
 
+    flushing = false;
+}
+
+if (typeof process !== "undefined" && process.nextTick) {
+    // Node.js before 0.9. Note that some fake-Node environments, like the
+    // Mocha test runner, introduce a `process` global without a `nextTick`.
+    isNodeJS = true;
+
+    requestFlush = function () {
+        process.nextTick(flush);
+    };
+
+} else if (typeof setImmediate === "function") {
+    // In IE10, Node.js 0.9+, or https://github.com/NobleJS/setImmediate
+    if (typeof window !== "undefined") {
+        requestFlush = setImmediate.bind(window, flush);
+    } else {
+        requestFlush = function () {
+            setImmediate(flush);
+        };
+    }
+
+} else if (typeof MessageChannel !== "undefined") {
+    // modern browsers
+    // http://www.nonblocking.io/2011/06/windownexttick.html
+    var channel = new MessageChannel();
+    channel.port1.onmessage = flush;
+    requestFlush = function () {
+        channel.port2.postMessage(0);
+    };
+
+} else {
+    // old browsers
+    requestFlush = function () {
+        setTimeout(flush, 0);
+    };
+}
+
+function asap(task) {
+    tail = tail.next = {
+        task: task,
+        domain: isNodeJS && process.domain,
+        next: null
+    };
+
+    if (!flushing) {
+        flushing = true;
+        requestFlush();
+    }
 };
 
-module.exports = Tooltip;
-},{"element-kit":1,"utils":6}],6:[function(require,module,exports){
+module.exports = asap;
+
+
+}).call(this,require('_process'))
+},{"_process":5}],12:[function(require,module,exports){
+var request = require('request');
+var utils = require('utils');
+
+'use strict';
+/**
+ A class to add a simple EventTarget (https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) API
+ around any object or function, so that it can begin to receive and trigger event listeners.
+ @class EventManager
+ */
+
+var EventManager = {
+
+    /**
+     * Registers a target to begin receiving and triggering events.
+     * @param {Object|Function} target - The target
+     */
+    createTarget: function (target) {
+        this._targets = this._targets || {};
+        if (!this._targets[target]) {
+            target.addEventListener = this._getEventMethod(target, '_addEvent').bind(this);
+            target.removeEventListener = this._getEventMethod(target, '_removeEvent').bind(this);
+            target.dispatchEvent = this._getEventMethod(target, '_dispatchEvent').bind(this);
+            this._targets[target] = {};
+        }
+    },
+
+    /**
+     * Registers a callback to be fired when the url changes.
+     * @param {Object|Function} target
+     * @param {String} eventName
+     * @param {Function} listener
+     * @param {boolean} useCapture
+     * @param {Object} [context]
+     */
+    _addEvent: function (target, eventName, listener, useCapture, context) {
+
+        if (typeof useCapture !== 'boolean') {
+            context = useCapture;
+            useCapture = null;
+        }
+
+        // replicating native JS default useCapture option
+        useCapture = useCapture || false;
+
+        // dont add event listener if target already has it
+        var existingListeners = utils.getNested(this._targets[target], eventName, []);
+        var listenerObj = {
+            listener: listener,
+            context: context,
+            useCapture: useCapture
+        };
+        if (existingListeners.indexOf(listenerObj) === -1) {
+            var listenerArr = utils.setNested(this._targets[target], eventName, []);
+            listenerArr.push(listenerObj);
+        }
+    },
+
+    /**
+     * Returns our internal method for a target.
+     * @private
+     * @param target
+     * @param method
+     * @returns {*|function(this:EventManager)}
+     */
+    _getEventMethod: function (target, method) {
+        return function () {
+            var args = Array.prototype.slice.call(arguments, 0);
+            args.unshift(target);
+            this[method].apply(this, args);
+        }.bind(this);
+    },
+
+    /**
+     * Removes an event listener from the target.
+     * @private
+     * @param target
+     * @param eventName
+     * @param listener
+     */
+    _removeEvent: function (target, eventName, listener) {
+        var existingListeners = utils.getNested(this._targets[target], eventName, []);
+        existingListeners.forEach(function (listenerObj, idx) {
+            if (listenerObj.listener === listener) {
+                existingListeners.splice(idx, 1);
+            }
+        });
+    },
+
+    /**
+     * Triggers all event listeners on a target.
+     * @private
+     * @param {Object|Function} target - The target
+     * @param {String} eventName - The event name
+     */
+    _dispatchEvent: function (target, eventName) {
+        var targetObj = this._targets[target] || {};
+        if (targetObj[eventName]) {
+            targetObj[eventName].forEach(function (listenerObj) {
+                listenerObj.listener.call(listenerObj.context || target, this._createEvent(eventName));
+            }.bind(this));
+        }
+    },
+
+    /**
+     * Creates an event.
+     * @param {string} eventName - The event name
+     * @private
+     */
+    _createEvent: function (eventName) {
+        // For IE 9+ compatibility, we must use document.createEvent() for our CustomEvent.
+        var evt = document.createEvent('CustomEvent');
+        evt.initCustomEvent(eventName, false, false, {});
+        return evt;
+    },
+
+    /**
+     * Removes all event listeners from target.
+     * @param target
+     */
+    destroyTarget: function (target) {
+        delete this._targets[target];
+    }
+};
+
+module.exports = EventManager;
+},{"request":13,"utils":14}],13:[function(require,module,exports){
+'use strict';
+var Promise = require('promise');
+
+/**
+ * A ES6-Promisified XHR request class to make ajax calls.
+ * @module request
+ * @type {exports}
+ * @param {String} url - The url to be requested
+ * @param {Object} [options] - The options
+ * @param {String} [options.method] - The method (i.e. "GET", "POST"), defaults to GET
+ * @param {Object} [options.headers] - Any headers to send with request
+ * @param {Boolean} [options.async] - Whether this is an asynchronous call (default to true)
+ * @returns {Promise}
+ * @TODO: make this return a promise that follows ES6 Promise syntax
+ */
+module.exports = function (url, options) {
+    var client = new XMLHttpRequest();
+
+    options = options || {};
+    options.method = options.method || 'GET';
+    options.headers = options.headers || {};
+    options.async = typeof options.async === 'undefined' ? true : options.async;
+
+
+    return new Promise(
+        function (resolve, reject) {
+            // open connection
+            client.open(options.method, url);
+
+            // deal with headers
+            for (var i in options.headers) {
+                if (options.headers.hasOwnProperty(i)) {
+                    client.setRequestHeader(i, options.headers[i]);
+                }
+            }
+            // listener
+            client.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    resolve.call(this, this.responseText);
+                } else if (this.readyState == 4) {
+                    reject.call(this, this.status, this.statusText);
+                }
+            };
+            // send off
+            client.send(options.data);
+        });
+
+};
+},{"promise":6}],14:[function(require,module,exports){
 'use strict';
 
 var ElementKit = require('element-kit');
@@ -924,5 +1396,5 @@ module.exports = {
 };
 
 
-},{"element-kit":1}]},{},[5])(5)
+},{"element-kit":1}]},{},[12])(12)
 });

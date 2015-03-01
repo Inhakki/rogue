@@ -1,10 +1,11 @@
 'use strict';
-
 var ResourceManager = require('resource-manager');
 var request = require('request');
-var Promise = require('promise');
+var promise = require('promise');
 var path = require('path');
 var _eval = require('eval');
+var EventManager = require('event-manager');
+var Handlebars = require('handlebars');
 
 /**
  * Router class.
@@ -16,11 +17,41 @@ var _eval = require('eval');
  * @return {Router}
  */
 var Router = function (options){
-    this.options = options || {};
+    this.initialize(options);
     return this;
 };
 
 Router.prototype = /** @lends Router */{
+
+    initialize: function (options) {
+
+        this.options = options || {};
+
+        // allow event listeners
+        EventManager.createTarget(this);
+
+        this._pageMaps = {};
+        this._setupHelpers(options);
+
+    },
+
+    /**
+     * Registers helpers for templates that are lazy-loaded.
+     * @param {Object} options
+     * @private
+     */
+    _setupHelpers: function (options) {
+        options.handlebars = options.handlebars || {};
+        var helpers = options.handlebars.helpers,
+            key;
+        if (helpers) {
+            for (key in helpers) {
+                if (helpers.hasOwnProperty(key)) {
+                    Handlebars.registerHelper(key, helpers[key]);
+                }
+            }
+        }
+    },
 
     /**
      * Starts managing routes.
@@ -29,6 +60,9 @@ Router.prototype = /** @lends Router */{
 
         this._pages = {};
         this._history = [];
+
+        // allow event listeners
+        EventManager.createTarget(this);
 
         this._fetchConfig(this.options.config)
             .then(function (config) {
@@ -173,9 +207,51 @@ Router.prototype = /** @lends Router */{
         }
         this._currentPath = path;
 
-        if (this.options.onUrlChange) {
-            this.options.onUrlChange(path);
+        this.showPage(path).then(function () {
+            if (!this._loaded) {
+                this._loaded = true;
+                this.dispatchEvent('page:load');
+            }
+        }.bind(this));
+
+        this.dispatchEvent('url:change');
+    },
+
+    /**
+     * Shows a page based on a url.
+     * @param {String} url - The url
+     * @returns {Promise}
+     */
+    showPage: function (url) {
+        var config = this._config[url],
+            map = {}, page;
+        if (!this._pageMaps[url]) {
+            this._pageMaps[url] = map;
+            map.promise = ResourceManager.loadTemplate(config.template).then(function (content) {
+                page = map.page = require(config.script);
+                map.promise = this._compileTemplate(content, config.data).then(function (result) {
+                    return page.load({template: result});
+                }.bind(this));
+            }.bind(this));
+            return map.promise;
+        } else {
+            this._pageMaps[url].show();
+            return promise.resolve();
         }
+    },
+
+    /**
+     * Parses handlebar template using data from a supplied url.
+     * @param {String} content - The raw, uncompiled content
+     * @param {String} dataUrl - The url where data lives
+     * @return {Promise} Returns a promise that will contain compiled template content
+     * @private
+     */
+    _compileTemplate: function (content, dataUrl) {
+        return request(dataUrl).then(function (data) {
+            data = JSON.parse(data);
+            return promise.resolve(Handlebars.compile(content)(data));
+        });
     }
 
 };

@@ -1,5 +1,5 @@
 /** 
-* rogue - v2.5.3.
+* rogue - v2.6.0.
 * git://github.com/mkay581/rogue.git
 * Copyright 2015 Mark Kennedy. Licensed MIT.
 */
@@ -1188,6 +1188,48 @@ module.exports = {
             }
         }
         return merged;
+    },
+
+    /**
+     * Gets a deeply nested property of an object.
+     * @param {object} obj - The object to evaluate
+     * @param {string} map - A string denoting where the property that should be extracted exists
+     * @param {object} [fallback] - The fallback if the property does not exist
+     */
+    getNested: function (obj, map, fallback) {
+        var mapFragments = map.split('.'),
+            val = obj;
+        for (var i = 0; i < mapFragments.length; i++) {
+            if (val[mapFragments[i]]) {
+                val = val[mapFragments[i]];
+            } else {
+                val = fallback;
+                break;
+            }
+        }
+        return val;
+    },
+
+    /**
+     * Sets a nested property on an object, creating empty objects as needed to avoid undefined errors.
+     * @param {object} obj - The initial object
+     * @param {string} map - A string denoting where the property that should be set exists
+     * @param {*} value - New value to set
+     * @example utils.setNested(obj, 'path.to.value.to.set', 'newValue');
+     */
+    setNested: function (obj, map, value) {
+        var mapFragments = map.split('.'),
+            val = obj;
+        for (var i = 0; i < mapFragments.length; i++) {
+            var isLast = i === (mapFragments.length - 1);
+            if (!isLast) {
+                val[mapFragments[i]] = val[mapFragments[i]] || {};
+                val = val[mapFragments[i]];
+            } else {
+                val[mapFragments[i]] = value;
+            }
+        }
+        return value;
     }
 };
 

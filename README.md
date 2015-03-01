@@ -88,5 +88,6 @@ To contribute to Rogue, check out the [Contributing readme](https://github.com/m
 
 ## Release History
 
- * 2014-12-29   v2.2.0   New Carousel class!
+ * 2015-03-01   v2.6.0   New Event Manager.
+ * 2014-12-29   v2.2.0   New Carousel.
  * 2014-07-12   v2.1.0   Official release.

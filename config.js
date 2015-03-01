@@ -5,7 +5,8 @@ module.exports = {
         'tooltip',
         'router',
         'request',
-        'resource-manager'
+        'resource-manager',
+        'event-manager'
     ],
     srcDir: 'src'
 };

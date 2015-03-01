@@ -1,15 +1,42 @@
 # Rogue
 
-Rogue is a lightweight library of fast, un-opinionated modules. The javascript in this library does NOT make any assumptions about CSS styling.
-In fact, the CSS for each module is totally up to you.  The library only provides the javascript logic that is necessary for your module
- and gets out of your way, making it lightweight, scalable and flexible when implementing.
+Rogue is a an extremely flexible and lightweight library of fast, un-opinionated modules that make building web apps a breeze.
+The modules and tools in this library do NOT make any assumptions about how you want to use them and only provides javascript
+logic that is necessary to save you time and then gets out of your way.
 
-This library is built using native vanilla javascript. This means things will process a lot faster than other front-end libraries like jQuery and Dojo and contain a lot less bloat.
-It also supports IE9+ and all modern browsers (including mobile).
+This library is built using native vanilla javascript. This means things will process a lot faster than other
+front-end libraries like jQuery and Dojo and contain a lot less bloat. It also supports IE9+ and all modern
+browsers (including mobile).
 
 ## Installation
 
-You can use [Bower's](http://bower.io/) `bower install` to install this project or use [the built files](build) directly with any module loader of your choosing.
+You can use [NPM's](https://www.npmjs.com/) `npm install`, [Bower's](http://bower.io/) `bower install` to install this project,
+ or use [the built files](build) directly with any module loader of your choosing.
+
+## Usage
+
+### Browserify
+
+The [source files](src) all use [Browserify](http://browserify.org/) and the CommonJS format, so feel free to add to your browserify bundle.
+
+
+### RequireJS
+
+RequireJS can be used by simple requiring any of the [the built modules](build) in your require definition, like so:
+
+```javascript
+require(['path/to/built/rogue/module/file'], function (Module) {
+    // use Module variable here
+});
+```
+
+### Script tag
+
+You can also use any of the [the built modules](build) in a script tag:
+
+```html
+<script src="path/to/built/rogue/module.js" async="true" />
+```
 
 ## API Documentation
 

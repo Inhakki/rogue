@@ -1,11 +1,12 @@
 # Rogue
 
-Rogue is a lightweight library of fast, un-opinionated modules. The javascript in this library does NOT make any assumptions about CSS styling.
-In fact, the CSS for each module is totally up to you.  The library only provides the javascript logic that is necessary for your module
- and gets out of your way, making it lightweight, scalable and flexible when implementing.
+Rogue is a an extremely flexible and lightweight library of fast, un-opinionated modules that make building web apps a breeze.
+The modules and tools in this library do NOT make any assumptions about how you want to use them and only provides javascript
+logic that is necessary to save you time and then gets out of your way.
 
-This library is built using native vanilla javascript. This means things will process a lot faster than other front-end libraries like jQuery and Dojo and contain a lot less bloat.
-It also supports IE9+ and all modern browsers (including mobile).
+This library is built using native vanilla javascript. This means things will process a lot faster than other
+front-end libraries like jQuery and Dojo and contain a lot less bloat. It also supports IE9+ and all modern
+browsers (including mobile).
 
 ## Installation
 

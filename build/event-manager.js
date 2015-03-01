@@ -1,5 +1,5 @@
 /** 
-* rogue - v2.6.0.
+* rogue - v2.6.1.
 * git://github.com/mkay581/rogue.git
 * Copyright 2015 Mark Kennedy. Licensed MIT.
 */
@@ -1166,6 +1166,7 @@ var EventManager = {
 
     /**
      * Registers a callback to be fired when the url changes.
+     * @private
      * @param {Object|Function} target
      * @param {String} eventName
      * @param {Function} listener

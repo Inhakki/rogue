@@ -1,5 +1,5 @@
 /** 
-* rogue - v2.6.2.
+* rogue - v2.6.3.
 * git://github.com/mkay581/rogue.git
 * Copyright 2015 Mark Kennedy. Licensed MIT.
 */
@@ -2766,6 +2766,62 @@ module.exports = function(arr, obj){
   return -1;
 };
 },{}],16:[function(require,module,exports){
+/*
+ * Copyright (c) 2014 Jon Schlinkert
+ * Licensed under the MIT license.
+ *
+ * The code for slugifying was sourced from underscore.string:
+ * https://github.com/epeli/underscore.string
+ */
+
+
+var nativeTrim = String.prototype.trim;
+
+var escapeRegExp = function (str) {
+  if (str == null) {
+    return '';
+  }
+  return String(str).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+};
+
+var defaultToWhiteSpace = function (characters) {
+  if (characters == null) {
+    return '\\s';
+  } else if (characters.source) {
+    return characters.source;
+  } else {
+    return '[' + escapeRegExp(characters) + ']';
+  }
+};
+
+var trim = function (str, characters) {
+  if (str == null) {return ''; }
+  if (!characters && nativeTrim) {
+    return nativeTrim.call(str);
+  }
+  characters = defaultToWhiteSpace(characters);
+  return String(str).replace(new RegExp('^' + characters + '+|' + characters + '+$', 'g'), '');
+};
+
+var dasherize = function(str){
+  return trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
+};
+
+
+module.exports = function (str) {
+  if (str == null) {
+    return '';
+  }
+  var from = "ąàáäâãåæăćęèéëêìíïîłńòóöôõøśșțùúüûñçżź";
+  var to = "aaaaaaaaaceeeeeiiiilnoooooosstuuuunczz";
+  var regex = new RegExp(defaultToWhiteSpace(from), 'g');
+  str = String(str).toLowerCase().replace(regex, function (c) {
+    var index = from.indexOf(c);
+    return to.charAt(index) || '-';
+  });
+  return dasherize(str.replace(/[^\w\s-]/g, '')).replace(/^\W|\W$/g, '');
+};
+},{}],17:[function(require,module,exports){
 (function (global){
 "use strict";
 /*globals Handlebars: true */
@@ -2818,7 +2874,7 @@ Handlebars['default'] = Handlebars;
 
 exports["default"] = Handlebars;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./handlebars.runtime":17,"./handlebars/compiler/ast":19,"./handlebars/compiler/base":20,"./handlebars/compiler/compiler":22,"./handlebars/compiler/javascript-compiler":24}],17:[function(require,module,exports){
+},{"./handlebars.runtime":18,"./handlebars/compiler/ast":20,"./handlebars/compiler/base":21,"./handlebars/compiler/compiler":23,"./handlebars/compiler/javascript-compiler":25}],18:[function(require,module,exports){
 (function (global){
 "use strict";
 /*globals Handlebars: true */
@@ -2867,7 +2923,7 @@ Handlebars['default'] = Handlebars;
 
 exports["default"] = Handlebars;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./handlebars/base":18,"./handlebars/exception":29,"./handlebars/runtime":30,"./handlebars/safe-string":31,"./handlebars/utils":32}],18:[function(require,module,exports){
+},{"./handlebars/base":19,"./handlebars/exception":30,"./handlebars/runtime":31,"./handlebars/safe-string":32,"./handlebars/utils":33}],19:[function(require,module,exports){
 "use strict";
 var Utils = require("./utils");
 var Exception = require("./exception")["default"];
@@ -3111,7 +3167,7 @@ var createFrame = function(object) {
   return frame;
 };
 exports.createFrame = createFrame;
-},{"./exception":29,"./utils":32}],19:[function(require,module,exports){
+},{"./exception":30,"./utils":33}],20:[function(require,module,exports){
 "use strict";
 var AST = {
   Program: function(statements, blockParams, strip, locInfo) {
@@ -3254,7 +3310,7 @@ var AST = {
 // Must be exported as an object rather than the root of the module as the jison lexer
 // must modify the object to operate properly.
 exports["default"] = AST;
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 var parser = require("./parser")["default"];
 var AST = require("./ast")["default"];
@@ -3283,7 +3339,7 @@ function parse(input, options) {
 }
 
 exports.parse = parse;
-},{"../utils":32,"./ast":19,"./helpers":23,"./parser":25,"./whitespace-control":28}],21:[function(require,module,exports){
+},{"../utils":33,"./ast":20,"./helpers":24,"./parser":26,"./whitespace-control":29}],22:[function(require,module,exports){
 "use strict";
 var isArray = require("../utils").isArray;
 
@@ -3438,7 +3494,7 @@ CodeGen.prototype = {
 };
 
 exports["default"] = CodeGen;
-},{"../utils":32,"source-map":34}],22:[function(require,module,exports){
+},{"../utils":33,"source-map":35}],23:[function(require,module,exports){
 "use strict";
 var Exception = require("../exception")["default"];
 var isArray = require("../utils").isArray;
@@ -3940,7 +3996,7 @@ function transformLiteralToPath(sexpr) {
     sexpr.path = new AST.PathExpression(false, 0, [literal.original+''], literal.original+'', literal.log);
   }
 }
-},{"../exception":29,"../utils":32,"./ast":19}],23:[function(require,module,exports){
+},{"../exception":30,"../utils":33,"./ast":20}],24:[function(require,module,exports){
 "use strict";
 var Exception = require("../exception")["default"];
 
@@ -4060,7 +4116,7 @@ exports.prepareRawBlock = prepareRawBlock;function prepareBlock(openBlock, progr
 }
 
 exports.prepareBlock = prepareBlock;
-},{"../exception":29}],24:[function(require,module,exports){
+},{"../exception":30}],25:[function(require,module,exports){
 "use strict";
 var COMPILER_REVISION = require("../base").COMPILER_REVISION;
 var REVISION_CHANGES = require("../base").REVISION_CHANGES;
@@ -5134,7 +5190,7 @@ function strictLookup(requireTerminal, compiler, parts, type) {
 }
 
 exports["default"] = JavaScriptCompiler;
-},{"../base":18,"../exception":29,"../utils":32,"./code-gen":21}],25:[function(require,module,exports){
+},{"../base":19,"../exception":30,"../utils":33,"./code-gen":22}],26:[function(require,module,exports){
 "use strict";
 /* jshint ignore:start */
 /* istanbul ignore next */
@@ -5693,7 +5749,7 @@ function Parser () { this.yy = {}; }Parser.prototype = parser;parser.Parser = Pa
 return new Parser;
 })();exports["default"] = handlebars;
 /* jshint ignore:end */
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 "use strict";
 var Visitor = require("./visitor")["default"];
 
@@ -5834,7 +5890,7 @@ PrintVisitor.prototype.Hash = function(hash) {
 PrintVisitor.prototype.HashPair = function(pair) {
   return pair.key + '=' + this.accept(pair.value);
 };
-},{"./visitor":27}],27:[function(require,module,exports){
+},{"./visitor":28}],28:[function(require,module,exports){
 "use strict";
 var Exception = require("../exception")["default"];
 var AST = require("./ast")["default"];
@@ -5958,7 +6014,7 @@ Visitor.prototype = {
 };
 
 exports["default"] = Visitor;
-},{"../exception":29,"./ast":19}],28:[function(require,module,exports){
+},{"../exception":30,"./ast":20}],29:[function(require,module,exports){
 "use strict";
 var Visitor = require("./visitor")["default"];
 
@@ -6171,7 +6227,7 @@ function omitLeft(body, i, multiple) {
 }
 
 exports["default"] = WhitespaceControl;
-},{"./visitor":27}],29:[function(require,module,exports){
+},{"./visitor":28}],30:[function(require,module,exports){
 "use strict";
 
 var errorProps = ['description', 'fileName', 'lineNumber', 'message', 'name', 'number', 'stack'];
@@ -6203,7 +6259,7 @@ function Exception(message, node) {
 Exception.prototype = new Error();
 
 exports["default"] = Exception;
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 "use strict";
 var Utils = require("./utils");
 var Exception = require("./exception")["default"];
@@ -6424,7 +6480,7 @@ exports.noop = noop;function initData(context, data) {
   }
   return data;
 }
-},{"./base":18,"./exception":29,"./utils":32}],31:[function(require,module,exports){
+},{"./base":19,"./exception":30,"./utils":33}],32:[function(require,module,exports){
 "use strict";
 // Build out our basic SafeString type
 function SafeString(string) {
@@ -6436,7 +6492,7 @@ SafeString.prototype.toString = SafeString.prototype.toHTML = function() {
 };
 
 exports["default"] = SafeString;
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 "use strict";
 /*jshint -W004 */
 var escape = {
@@ -6538,7 +6594,7 @@ exports.blockParams = blockParams;function appendContextPath(contextPath, id) {
 }
 
 exports.appendContextPath = appendContextPath;
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 // USAGE:
 // var handlebars = require('handlebars');
 
@@ -6566,7 +6622,7 @@ if (typeof require !== 'undefined' && require.extensions) {
   require.extensions[".hbs"] = extension;
 }
 
-},{"../dist/cjs/handlebars":16,"../dist/cjs/handlebars/compiler/printer":26,"../dist/cjs/handlebars/compiler/visitor":27,"fs":7}],34:[function(require,module,exports){
+},{"../dist/cjs/handlebars":17,"../dist/cjs/handlebars/compiler/printer":27,"../dist/cjs/handlebars/compiler/visitor":28,"fs":7}],35:[function(require,module,exports){
 /*
  * Copyright 2009-2011 Mozilla Foundation and contributors
  * Licensed under the New BSD license. See LICENSE.txt or:
@@ -6576,7 +6632,7 @@ exports.SourceMapGenerator = require('./source-map/source-map-generator').Source
 exports.SourceMapConsumer = require('./source-map/source-map-consumer').SourceMapConsumer;
 exports.SourceNode = require('./source-map/source-node').SourceNode;
 
-},{"./source-map/source-map-consumer":40,"./source-map/source-map-generator":41,"./source-map/source-node":42}],35:[function(require,module,exports){
+},{"./source-map/source-map-consumer":41,"./source-map/source-map-generator":42,"./source-map/source-node":43}],36:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -6675,7 +6731,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./util":43,"amdefine":44}],36:[function(require,module,exports){
+},{"./util":44,"amdefine":45}],37:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -6819,7 +6875,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./base64":37,"amdefine":44}],37:[function(require,module,exports){
+},{"./base64":38,"amdefine":45}],38:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -6863,7 +6919,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"amdefine":44}],38:[function(require,module,exports){
+},{"amdefine":45}],39:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -6945,7 +7001,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"amdefine":44}],39:[function(require,module,exports){
+},{"amdefine":45}],40:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2014 Mozilla Foundation and contributors
@@ -7033,7 +7089,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./util":43,"amdefine":44}],40:[function(require,module,exports){
+},{"./util":44,"amdefine":45}],41:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -7610,7 +7666,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./array-set":35,"./base64-vlq":36,"./binary-search":38,"./util":43,"amdefine":44}],41:[function(require,module,exports){
+},{"./array-set":36,"./base64-vlq":37,"./binary-search":39,"./util":44,"amdefine":45}],42:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -8012,7 +8068,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./array-set":35,"./base64-vlq":36,"./mapping-list":39,"./util":43,"amdefine":44}],42:[function(require,module,exports){
+},{"./array-set":36,"./base64-vlq":37,"./mapping-list":40,"./util":44,"amdefine":45}],43:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -8428,7 +8484,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./source-map-generator":41,"./util":43,"amdefine":44}],43:[function(require,module,exports){
+},{"./source-map-generator":42,"./util":44,"amdefine":45}],44:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -8749,7 +8805,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"amdefine":44}],44:[function(require,module,exports){
+},{"amdefine":45}],45:[function(require,module,exports){
 (function (process,__filename){
 /** vim: et:ts=4:sw=4:sts=4
  * @license amdefine 0.1.0 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
@@ -9052,14 +9108,14 @@ function amdefine(module, requireFn) {
 module.exports = amdefine;
 
 }).call(this,require('_process'),"/node_modules/handlebars/node_modules/source-map/node_modules/amdefine/amdefine.js")
-},{"_process":13,"path":12}],45:[function(require,module,exports){
+},{"_process":13,"path":12}],46:[function(require,module,exports){
 'use strict';
 
 module.exports = require('./lib/core.js')
 require('./lib/done.js')
 require('./lib/es6-extensions.js')
 require('./lib/node-extensions.js')
-},{"./lib/core.js":46,"./lib/done.js":47,"./lib/es6-extensions.js":48,"./lib/node-extensions.js":49}],46:[function(require,module,exports){
+},{"./lib/core.js":47,"./lib/done.js":48,"./lib/es6-extensions.js":49,"./lib/node-extensions.js":50}],47:[function(require,module,exports){
 'use strict';
 
 var asap = require('asap')
@@ -9166,7 +9222,7 @@ function doResolve(fn, onFulfilled, onRejected) {
   }
 }
 
-},{"asap":50}],47:[function(require,module,exports){
+},{"asap":51}],48:[function(require,module,exports){
 'use strict';
 
 var Promise = require('./core.js')
@@ -9181,7 +9237,7 @@ Promise.prototype.done = function (onFulfilled, onRejected) {
     })
   })
 }
-},{"./core.js":46,"asap":50}],48:[function(require,module,exports){
+},{"./core.js":47,"asap":51}],49:[function(require,module,exports){
 'use strict';
 
 //This file contains the ES6 extensions to the core Promises/A+ API
@@ -9291,7 +9347,7 @@ Promise.prototype['catch'] = function (onRejected) {
   return this.then(null, onRejected);
 }
 
-},{"./core.js":46,"asap":50}],49:[function(require,module,exports){
+},{"./core.js":47,"asap":51}],50:[function(require,module,exports){
 'use strict';
 
 //This file contains then/promise specific extensions that are only useful for node.js interop
@@ -9356,7 +9412,7 @@ Promise.prototype.nodeify = function (callback, ctx) {
   })
 }
 
-},{"./core.js":46,"asap":50}],50:[function(require,module,exports){
+},{"./core.js":47,"asap":51}],51:[function(require,module,exports){
 (function (process){
 
 // Use the fastest possible means to execute a task in a future turn
@@ -9473,7 +9529,7 @@ module.exports = asap;
 
 
 }).call(this,require('_process'))
-},{"_process":13}],51:[function(require,module,exports){
+},{"_process":13}],52:[function(require,module,exports){
 var request = require('request');
 var utils = require('utils');
 
@@ -9568,12 +9624,15 @@ var EventManager = {
      * @private
      * @param {Object|Function} target - The target
      * @param {String} eventName - The event name
+     * @param {Object} customData - Custom data that will be sent to the url
      */
-    _dispatchEvent: function (target, eventName) {
-        var targetObj = this._targets[target] || {};
+    _dispatchEvent: function (target, eventName, customData) {
+        var targetObj = this._targets[target] || {},
+            e;
         if (targetObj[eventName]) {
             targetObj[eventName].forEach(function (listenerObj) {
-                listenerObj.listener.call(listenerObj.context || target, this._createEvent(eventName));
+                e = this._createEvent(eventName, customData);
+                listenerObj.listener.call(listenerObj.context || target, e);
             }.bind(this));
         }
     },
@@ -9581,12 +9640,13 @@ var EventManager = {
     /**
      * Creates an event.
      * @param {string} eventName - The event name
+     * @param {Object} customData - Custom data that will be sent to the url
      * @private
      */
-    _createEvent: function (eventName) {
+    _createEvent: function (eventName, customData) {
         // For IE 9+ compatibility, we must use document.createEvent() for our CustomEvent.
         var evt = document.createEvent('CustomEvent');
-        evt.initCustomEvent(eventName, false, false, {});
+        evt.initCustomEvent(eventName, false, false, customData);
         return evt;
     },
 
@@ -9600,7 +9660,7 @@ var EventManager = {
 };
 
 module.exports = EventManager;
-},{"request":52,"utils":55}],52:[function(require,module,exports){
+},{"request":53,"utils":56}],53:[function(require,module,exports){
 'use strict';
 var Promise = require('promise');
 
@@ -9649,7 +9709,7 @@ module.exports = function (url, options) {
         });
 
 };
-},{"promise":45}],53:[function(require,module,exports){
+},{"promise":46}],54:[function(require,module,exports){
 var Promise = require('promise');
 var request = require('request');
 
@@ -9822,7 +9882,7 @@ ResourceManager.prototype = {
 };
 
 module.exports = new ResourceManager();
-},{"promise":45,"request":52}],54:[function(require,module,exports){
+},{"promise":46,"request":53}],55:[function(require,module,exports){
 'use strict';
 var ResourceManager = require('resource-manager');
 var request = require('request');
@@ -9831,6 +9891,7 @@ var path = require('path');
 var _eval = require('eval');
 var EventManager = require('event-manager');
 var Handlebars = require('handlebars');
+var slugify = require('slugify');
 
 /**
  * Router class.
@@ -9858,26 +9919,9 @@ Router.prototype = /** @lends Router */{
         this._pageMaps = {};
         this._history = [];
 
-        this._setupHelpers(options);
+        // setup helpers
+        Handlebars.registerHelper('slugify', slugify);
 
-    },
-
-    /**
-     * Registers helpers for templates that are lazy-loaded.
-     * @param {Object} options
-     * @private
-     */
-    _setupHelpers: function (options) {
-        options.handlebars = options.handlebars || {};
-        var helpers = options.handlebars.helpers,
-            key;
-        if (helpers) {
-            for (key in helpers) {
-                if (helpers.hasOwnProperty(key)) {
-                    Handlebars.registerHelper(key, helpers[key]);
-                }
-            }
-        }
     },
 
     /**
@@ -10053,34 +10097,20 @@ Router.prototype = /** @lends Router */{
      */
     showPage: function (url) {
         var config = this._config[url],
-            map = {}, page;
+            map = {}, page, data;
         if (!this._pageMaps[url]) {
             this._pageMaps[url] = map;
             map.Promise = ResourceManager.loadTemplate(config.template).then(function (content) {
                 page = map.page = require(config.script);
-                return this._compileTemplate(content, config.data).then(function (result) {
-                    return page.load({template: result});
-                }.bind(this));
+                return page.getData(config.data).then(function () {
+                    return page.load({template: Handlebars.compile(content)(data)});
+                });
             }.bind(this));
             return map.Promise;
         } else {
             this._pageMaps[url].show();
             return Promise.resolve();
         }
-    },
-
-    /**
-     * Parses handlebar template using data from a supplied url.
-     * @param {String} content - The raw, uncompiled content
-     * @param {String} dataUrl - The url where data lives
-     * @return {Promise} Returns a Promise that will contain compiled template content
-     * @private
-     */
-    _compileTemplate: function (content, dataUrl) {
-        return request(dataUrl).then(function (data) {
-            data = JSON.parse(data);
-            return Promise.resolve(Handlebars.compile(content)(data));
-        });
     }
 
 };
@@ -10088,7 +10118,7 @@ Router.prototype = /** @lends Router */{
 module.exports = function (options) {
     return new Router(options);
 };
-},{"eval":5,"event-manager":51,"handlebars":33,"path":12,"promise":45,"request":52,"resource-manager":53}],55:[function(require,module,exports){
+},{"eval":5,"event-manager":52,"handlebars":34,"path":12,"promise":46,"request":53,"resource-manager":54,"slugify":16}],56:[function(require,module,exports){
 'use strict';
 
 var ElementKit = require('element-kit');
@@ -10172,5 +10202,5 @@ module.exports = {
 };
 
 
-},{"element-kit":1}]},{},[54])(54)
+},{"element-kit":1}]},{},[55])(55)
 });

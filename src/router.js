@@ -6,6 +6,7 @@ var path = require('path');
 var _eval = require('eval');
 var EventManager = require('event-manager');
 var Handlebars = require('handlebars');
+var slugify = require('slugify');
 
 /**
  * Router class.
@@ -33,26 +34,9 @@ Router.prototype = /** @lends Router */{
         this._pageMaps = {};
         this._history = [];
 
-        this._setupHelpers(options);
+        // setup helpers
+        Handlebars.registerHelper('slugify', slugify);
 
-    },
-
-    /**
-     * Registers helpers for templates that are lazy-loaded.
-     * @param {Object} options
-     * @private
-     */
-    _setupHelpers: function (options) {
-        options.handlebars = options.handlebars || {};
-        var helpers = options.handlebars.helpers,
-            key;
-        if (helpers) {
-            for (key in helpers) {
-                if (helpers.hasOwnProperty(key)) {
-                    Handlebars.registerHelper(key, helpers[key]);
-                }
-            }
-        }
     },
 
     /**
@@ -228,34 +212,20 @@ Router.prototype = /** @lends Router */{
      */
     showPage: function (url) {
         var config = this._config[url],
-            map = {}, page;
+            map = {}, page, data;
         if (!this._pageMaps[url]) {
             this._pageMaps[url] = map;
             map.Promise = ResourceManager.loadTemplate(config.template).then(function (content) {
                 page = map.page = require(config.script);
-                return this._compileTemplate(content, config.data).then(function (result) {
-                    return page.load({template: result});
-                }.bind(this));
+                return page.getData(config.data).then(function () {
+                    return page.load({template: Handlebars.compile(content)(data)});
+                });
             }.bind(this));
             return map.Promise;
         } else {
             this._pageMaps[url].show();
             return Promise.resolve();
         }
-    },
-
-    /**
-     * Parses handlebar template using data from a supplied url.
-     * @param {String} content - The raw, uncompiled content
-     * @param {String} dataUrl - The url where data lives
-     * @return {Promise} Returns a Promise that will contain compiled template content
-     * @private
-     */
-    _compileTemplate: function (content, dataUrl) {
-        return request(dataUrl).then(function (data) {
-            data = JSON.parse(data);
-            return Promise.resolve(Handlebars.compile(content)(data));
-        });
     }
 
 };

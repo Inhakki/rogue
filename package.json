@@ -23,6 +23,7 @@
     "grunt-gh-pages": "^0.9.1",
     "grunt-jsdoc": "^0.6.2",
     "handlebars": "^3.0.0",
+    "handlebars-helper-slugify": "^0.3.2",
     "load-grunt-config": "~0.16.0",
     "mockery": "^1.4.0",
     "promise": "^6.1.0",
@@ -35,7 +36,8 @@
     "router": "./src/router.js",
     "request": "./src/request.js",
     "utils": "./src/utils.js",
-    "element-kit": "./external/element-kit/element-kit.js"
+    "element-kit": "./external/element-kit/element-kit.js",
+    "slugify": "./node_modules/handlebars-helper-slugify/slugify.js"
   },
   "dependencies": {
     "eval": "^0.1.0"

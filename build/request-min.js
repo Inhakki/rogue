@@ -1,5 +1,5 @@
 /** 
-* rogue - v2.6.1.
+* rogue - v2.6.2.
 * git://github.com/mkay581/rogue.git
 * Copyright 2015 Mark Kennedy. Licensed MIT.
 */

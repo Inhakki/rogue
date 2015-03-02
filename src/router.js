@@ -6,7 +6,7 @@ var path = require('path');
 var _eval = require('eval');
 var EventManager = require('event-manager');
 var Handlebars = require('handlebars');
-var slugify = require('slugify');
+var slugify = require('handlebars-helper-slugify');
 
 /**
  * Router class.

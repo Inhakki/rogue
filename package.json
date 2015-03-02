@@ -1,10 +1,13 @@
 {
   "name": "rogue",
-  "version": "2.6.4",
+  "version": "2.6.5",
   "description": "An un-opinionated, lightweight library for super fast web apps",
   "repository": {
     "type": "git",
     "url": "git://github.com/mkay581/rogue.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "author": {
     "name": "Mark Kennedy",
@@ -34,8 +37,7 @@
     "router": "./src/router.js",
     "request": "./src/request.js",
     "utils": "./src/utils.js",
-    "element-kit": "./external/element-kit/element-kit.js",
-    "slugify": "./node_modules/handlebars-helper-slugify/slugify.js"
+    "element-kit": "./external/element-kit/element-kit.js"
   },
   "dependencies": {
     "handlebars": "^3.0.0",

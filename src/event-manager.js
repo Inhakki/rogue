@@ -92,12 +92,15 @@ var EventManager = {
      * @private
      * @param {Object|Function} target - The target
      * @param {String} eventName - The event name
+     * @param {Object} customData - Custom data that will be sent to the url
      */
-    _dispatchEvent: function (target, eventName) {
-        var targetObj = this._targets[target] || {};
+    _dispatchEvent: function (target, eventName, customData) {
+        var targetObj = this._targets[target] || {},
+            e;
         if (targetObj[eventName]) {
             targetObj[eventName].forEach(function (listenerObj) {
-                listenerObj.listener.call(listenerObj.context || target, this._createEvent(eventName));
+                e = this._createEvent(eventName, customData);
+                listenerObj.listener.call(listenerObj.context || target, e);
             }.bind(this));
         }
     },
@@ -105,12 +108,13 @@ var EventManager = {
     /**
      * Creates an event.
      * @param {string} eventName - The event name
+     * @param {Object} customData - Custom data that will be sent to the url
      * @private
      */
-    _createEvent: function (eventName) {
+    _createEvent: function (eventName, customData) {
         // For IE 9+ compatibility, we must use document.createEvent() for our CustomEvent.
         var evt = document.createEvent('CustomEvent');
-        evt.initCustomEvent(eventName, false, false, {});
+        evt.initCustomEvent(eventName, false, false, customData);
         return evt;
     },
 

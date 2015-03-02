@@ -6,6 +6,9 @@
     "type": "git",
     "url": "git://github.com/mkay581/rogue.git"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "author": {
     "name": "Mark Kennedy",
     "url": "http://heyimmark.com"

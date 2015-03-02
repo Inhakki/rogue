@@ -1,6 +1,6 @@
 {
   "name": "rogue",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "description": "An un-opinionated, lightweight library for super fast web apps",
   "repository": {
     "type": "git",
@@ -22,8 +22,6 @@
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-gh-pages": "^0.9.1",
     "grunt-jsdoc": "^0.6.2",
-    "handlebars": "^3.0.0",
-    "handlebars-helper-slugify": "^0.3.2",
     "load-grunt-config": "~0.16.0",
     "mockery": "^1.4.0",
     "promise": "^6.1.0",
@@ -40,6 +38,8 @@
     "slugify": "./node_modules/handlebars-helper-slugify/slugify.js"
   },
   "dependencies": {
+    "handlebars": "^3.0.0",
+    "handlebars-helper-slugify": "^0.3.2",
     "eval": "^0.1.0"
   }
 }

@@ -1,5 +1,5 @@
 /** 
-* rogue - v2.6.5.
+* rogue - v2.7.0.
 * git://github.com/mkay581/rogue.git
 * Copyright 2015 Mark Kennedy. Licensed MIT.
 */
@@ -9945,6 +9945,7 @@ Router.prototype = /** @lends Router */{
         EventManager.createTarget(this);
 
         this._pageMaps = {};
+        this._moduleMaps = {};
         this._history = [];
 
         // setup helpers
@@ -10124,21 +10125,77 @@ Router.prototype = /** @lends Router */{
      * @returns {Promise}
      */
     showPage: function (url) {
-        var config = this._config[url],
-            map = {}, page, data;
+        var config = this._config.pages[url],
+            map = {}, page, template;
         if (!this._pageMaps[url]) {
             this._pageMaps[url] = map;
-            map.Promise = ResourceManager.loadTemplate(config.template).then(function (content) {
+            map.promise = ResourceManager.loadTemplate(config.template).then(function (templateHtml) {
                 page = map.page = require(config.script);
-                return page.getData(config.data).then(function () {
-                    return page.load({template: Handlebars.compile(content)(data)});
-                });
+                return page.getData(config.data).then(function (data) {
+                    return this.loadModules(config.modules).then(function () {
+                        template = Handlebars.compile(templateHtml)(data);
+                        return page.load({template: template});
+                    }.bind(this));
+                }.bind(this));
             }.bind(this));
-            return map.Promise;
+            return map.promise;
         } else {
             this._pageMaps[url].show();
             return Promise.resolve();
         }
+    },
+
+    /**
+     * Loads modules associated with a route.
+     * @param modules
+     */
+    loadModules: function (modules) {
+        var config,
+            promises = [];
+        modules.forEach(function (moduleKey) {
+            config = this._config.modules[moduleKey];
+            if (!config) {
+                promises.push(true);
+            }
+            if (!this._moduleMaps[moduleKey]) {
+                var map = {};
+                map.promise = this._loadModule(moduleKey);
+                this._moduleMaps[moduleKey] = map;
+                promises.push(map.promise);
+            } else {
+                this._moduleMaps[moduleKey].show();
+                promises.push(true);
+            }
+        }.bind(this));
+        // resolve when all modules have been loaded
+        return Promise.all(promises);
+    },
+
+    /**
+     * Loads an individual module.
+     * @param moduleKey
+     * @returns {*}
+     * @private
+     */
+    _loadModule: function (moduleKey) {
+        var map = {},
+            config = this._config.modules[moduleKey],
+            module,
+            template,
+            getDataPromise;
+        map.promise = ResourceManager.loadTemplate(config.template).then(function (templateHtml) {
+            if (config.script) {
+                module = map.module = require(config.script);
+                getDataPromise = module.getData(config.data);
+            } else {
+                getDataPromise = Promise.resolve();
+            }
+            return getDataPromise.then(function (data) {
+                template = Handlebars.compile(templateHtml)(data);
+                Handlebars.registerPartial(moduleKey, template);
+            });
+        }.bind(this));
+        return map.promise;
     }
 
 };

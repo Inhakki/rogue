@@ -1,5 +1,5 @@
 /** 
-* rogue - v2.8.0.
+* rogue - v2.8.1.
 * git://github.com/mkay581/rogue.git
 * Copyright 2015 Mark Kennedy. Licensed MIT.
 */
@@ -11497,7 +11497,8 @@ Router.prototype = /** @lends Router */{
     _onRouteRequest: function (path) {
         // do not navigate if already at the url being requested
         return new Promise(function (resolve) {
-            if (path !== this._currentPath) {
+
+            if (path && path !== this._currentPath) {
                 this._currentPath = path;
 
                 this.showPage(path).then(function () {
@@ -11510,6 +11511,7 @@ Router.prototype = /** @lends Router */{
 
                 this.dispatchEvent('url:change');
             } else {
+                // already at url!
                 resolve();
             }
         }.bind(this));
@@ -11521,6 +11523,14 @@ Router.prototype = /** @lends Router */{
      * @returns {Promise}
      */
     showPage: function (url) {
+
+        url = url[0] === '/' ? url.substr(1) : url; //remove leading slash
+
+        // no path means index
+        if (!url) {
+            url = 'index';
+        }
+
         var config = this._config.pages[url],
             map = {}, page, template;
         if (!this._pageMaps[url]) {
@@ -11528,9 +11538,12 @@ Router.prototype = /** @lends Router */{
             map.promise = ResourceManager.loadTemplate(config.template).then(function (templateHtml) {
                 page = map.page = require(config.script);
                 return page.getData(config.data).then(function (data) {
-                    return this.loadModules(config.modules).then(function () {
+                    return this.registerModules(config.modules).then(function (moduleMaps) {
                         template = Handlebars.compile(templateHtml)(data);
-                        return page.load({template: template});
+                        return page.load({template: template}).then(function () {
+                            // load modules
+                            return this.loadModules(moduleMaps);
+                        }.bind(this));
                     }.bind(this));
                 }.bind(this));
             }.bind(this));
@@ -11542,12 +11555,28 @@ Router.prototype = /** @lends Router */{
     },
 
     /**
-     * Loads modules associated with a route.
+     * Calls load() method on all modules.
+     * @param modulesMap
+     * @returns {*}
+     */
+    loadModules: function (modulesMap) {
+        var loadPromises = [];
+        _.each(modulesMap, function (map) {
+            if (map.module) {
+                loadPromises.push(map.module.load());
+            }
+        });
+        return Promise.all(loadPromises);
+    },
+
+    /**
+     * Registers a module as a partial of its route.
      * @param modules
      */
-    loadModules: function (modules) {
+    registerModules: function (modules) {
         var config,
-            promises = [];
+            promises = [],
+            moduleMaps = [];
         modules.forEach(function (moduleKey) {
             config = this._config.modules[moduleKey];
             if (!config) {
@@ -11555,7 +11584,9 @@ Router.prototype = /** @lends Router */{
             }
             if (!this._moduleMaps[moduleKey]) {
                 var map = {};
-                map.promise = this._loadModule(moduleKey);
+                map.promise = this._fetchModule(moduleKey).then(function (moduleMap) {
+                    moduleMaps.push(moduleMap);
+                });
                 this._moduleMaps[moduleKey] = map;
                 promises.push(map.promise);
             } else {
@@ -11564,16 +11595,18 @@ Router.prototype = /** @lends Router */{
             }
         }.bind(this));
         // resolve when all modules have been loaded
-        return Promise.all(promises);
+        return Promise.all(promises).then(function () {
+            return Promise.resolve(moduleMaps);
+        });
     },
 
     /**
-     * Loads an individual module.
+     * Fetches a modules template and its data.
      * @param moduleKey
      * @returns {*}
      * @private
      */
-    _loadModule: function (moduleKey) {
+    _fetchModule: function (moduleKey) {
         var map = {},
             config = this._config.modules[moduleKey],
             module,
@@ -11589,6 +11622,7 @@ Router.prototype = /** @lends Router */{
             return getDataPromise.then(function (data) {
                 template = Handlebars.compile(templateHtml)(data);
                 Handlebars.registerPartial(moduleKey, template);
+                return Promise.resolve(map);
             });
         }.bind(this));
         return map.promise;

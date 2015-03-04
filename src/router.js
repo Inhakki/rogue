@@ -7,6 +7,7 @@ var _eval = require('eval');
 var EventManager = require('event-manager');
 var Handlebars = require('handlebars');
 var slugify = require('handlebars-helper-slugify');
+var _ = require('underscore');
 
 /**
  * Router class.
@@ -44,36 +45,14 @@ Router.prototype = /** @lends Router */{
      * Starts managing routes.
      */
     start: function () {
-        this._fetchConfig(this.options.config)
-            .then(function (config) {
-                this._config = config;
-                // handle current url
-                this.triggerRoute(window.location.pathname);
-                // setup pop state events for future urls
-                window.addEventListener('popstate', this._getRouteRequestListener());
-            }.bind(this));
-    },
-
-    /**
-     * Fetches the config.
-     * @param data
-     * @return {Promise}
-     * @private
-     */
-    _fetchConfig: function (data) {
-        if (!data) {
+        this._config = this.options.config;
+        if (!this._config) {
             console.error('RouteManager error: no configuration data was supplied.');
         }
-        return new Promise(function (resolve) {
-            if (typeof data === 'string') {
-                request(data).then(function (contents) {
-                    contents = _eval(contents);
-                    resolve(contents);
-                });
-            } else {
-                resolve(data);
-            }
-        });
+        // handle current url
+        this.triggerRoute(window.location.pathname);
+        // setup pop state events for future urls
+        window.addEventListener('popstate', this._getRouteRequestListener());
     },
 
     /**
